@@ -160,7 +160,7 @@ function vStart() {
   return '<div class="stack-lg">' +
     '<section class="hero"><h1 class="display">Menschen zurück ins Gespräch holen.</h1><p class="lead">Für alle, die jemanden erreichen wollen, der eine verfassungsfeindliche Partei attraktiv findet. Nicht durch Überreden, sondern durch Zuhören, Beziehung und kluge nächste Schritte.</p><div class="row center"><button class="btn primary" data-go="kompass">Mit dem Kompass starten</button><button class="link" data-go="netz">Netzplan ansehen ›</button></div>' + heroArt() + '</section>' +
     '<div class="iconrow">' + mods + '</div>' +
-    (HOSTED && !isStandalone() ? '<div class="note"><strong>Als App auf dem Handy</strong>iPhone: In Safari unten auf „Teilen“ tippen, dann „Zum Home-Bildschirm“ und „Hinzufügen“. Android: Im Menü „App installieren“ wählen. Danach läuft Umsteigen wie eine App, auch offline. Deine Daten bleiben auf dem Gerät.</div>' : '') +
+    (HOSTED && !isStandalone() ? '<div class="note"><strong>Als App auf dem Handy</strong>iPhone: In Safari unten auf „Teilen“ tippen, dann „Zum Home-Bildschirm“ und „Hinzufügen“. Android: Im Browser-Menü „App installieren“ wählen. Danach läuft Umsteigen wie eine App, auch offline. Deine Daten bleiben auf dem Gerät.</div>' : '') +
     '<section><h2 class="sh">Drei Wege, ein Ziel. <span>Wähle, wo du gerade stehst.</span></h2><div class="rail">' + wege + '</div></section>' +
     (linien ? '<section><h2 class="sh">Die Linien. <span>Fünf Wege mit Stationen und Umsteigepunkten.</span></h2><div class="rail">' + linien + '</div></section>' : '') +
     (leit ? '<section><h2 class="sh">Leitplanken. <span>Gelten auf jeder Linie.</span></h2><div class="grid">' + leit + '</div><div class="row" style="margin-top:14px"><button class="link" data-go="leitplanken">Alle Leitplanken und Anlaufstellen ›</button></div></section>' : '') +
@@ -230,7 +230,7 @@ function vNetz() {
     (l.voraussetzungen && l.voraussetzungen.length ? '<details class="acc"><summary>Vor der Abfahrt</summary><div class="body">' + ul(l.voraussetzungen) + '</div></details>' : '') + '</section>';
   var route = '<div class="route" style="--lc:' + esc(lineColor(l)) + '">' + routeOf(l).map(function (it) { return stopCard(l, it, state.station === it.s.id); }).join('') + '</div>';
   return '<div class="stack-lg">' +
-    '<div class="page-head"><div class="eyebrow">Alle Linien</div><h1>Netzplan</h1><p>Wähle eine Linie. Die Stationen folgen von oben nach unten; Abzweige stehen eingerückt daneben, zusammen mit der Bedingung, unter der sie sinnvoll sind. Tippe auf eine Station, um Vorgehen, Sätze und Warnsignale zu sehen.</p></div>' +
+    '<div class="page-head"><div class="eyebrow">Alle Linien</div><h1>Netzplan</h1><p>Wähle eine Linie. Die Stationen folgen von oben nach unten aufeinander. Abzweige stehen eingerückt daneben, jeweils mit der Bedingung, unter der sie sinnvoll sind. Tippe auf eine Station, um Vorgehen, Sätze und Warnsignale zu sehen.</p></div>' +
     pick + head + route + '</div>';
 }
 
@@ -352,7 +352,7 @@ function kompassResult(res) {
 }
 function kompassMarkdown(res) {
   var out = ['# Mein Fahrplan (Kompass, ' + res.datum + ')', res.beantwortet + ' von ' + KOMPASS.fragen.length + ' Fragen beantwortet', ''];
-  (res.risiko || []).forEach(function (id) { var r = findIn(KOMPASS.risiko, id); if (r) out.push('WARNUNG: ' + r.text + ' -> ' + r.aktion, ''); });
+  (res.risiko || []).forEach(function (id) { var r = findIn(KOMPASS.risiko, id); if (r) out.push('WARNUNG: ' + r.text + ' – ' + r.aktion, ''); });
   var stufe = findIn(KOMPASS.stufen, res.stufe), bez = findIn(KOMPASS.beziehung, res.beziehung);
   if (stufe) out.push('Einbindung: ' + stufe.name + '. ' + stufe.hinweis);
   if (bez) out.push('Beziehung: ' + bez.name + '. ' + bez.hinweis);
@@ -376,7 +376,7 @@ function vTrainer() {
   if (!SZENARIEN.length) return missing('Trainer');
   var t = state.trainer;
   if (!t) {
-    return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Üben</div><h1>Gesprächstrainer</h1><p>Du liest, was die Person sagt, wählst eine Antwort und bekommst sofort eine Rückmeldung samt der Technik dahinter. Eine einzige richtige Antwort gibt es selten, aber manche Antworten schließen Türen.</p></div><div class="grid">' +
+    return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Üben</div><h1>Gesprächstrainer</h1><p>Du liest, was die Person sagt, wählst eine Antwort und bekommst sofort eine Rückmeldung samt der Technik dahinter. Die eine richtige Antwort gibt es selten. Manche Antworten schließen aber Türen.</p></div><div class="grid">' +
       SZENARIEN.map(function (s) { return '<button class="card card-link stack" data-act="trainer-start" data-id="' + esc(s.id) + '"><div class="row">' + ebeneChip(s.ebene) + '</div><strong>' + esc(s.titel) + '</strong><p class="small muted">' + esc(s.kontext) + '</p></button>'; }).join('') + '</div></div>';
   }
   var sz = findIn(SZENARIEN, t.id), node = sz.knoten[t.node];
@@ -404,7 +404,7 @@ function vKampagne() {
   var tabs = [['planer', 'Planer'], ['segmente', 'Zielgruppen'], ['bausteine', 'Bausteine'], ['phasen', 'Phasen'], ['kennzahlen', 'Wirkung messen']];
   var nav = '<div class="seg" role="tablist">' + tabs.map(function (t) { return '<button type="button" role="tab" aria-pressed="' + (state.kampTab === t[0]) + '" aria-selected="' + (state.kampTab === t[0]) + '" data-act="kamp-tab" data-tab="' + t[0] + '">' + t[1] + '</button>'; }).join('') + '</div>';
   var body = { planer: kampPlaner, segmente: kampSegmente, bausteine: kampBausteine, phasen: kampPhasen, kennzahlen: kampKennzahlen }[state.kampTab]();
-  return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Viele Menschen</div><h1>Kampagnenplaner</h1><p>Für Initiativen, Vereine, Kommunalpolitik und Teams. Der Planer schlägt Bausteine passend zu eurer Lage und euren Ressourcen vor. Jeder Baustein trägt seine Evidenzstufe, damit ihr keine Energie in Dinge steckt, die nicht wirken.</p></div>' + nav + body + '</div>';
+  return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Viele Menschen</div><h1>Kampagnenplaner</h1><p>Für Initiativen, Vereine, Kommunalpolitik und Teams. Der Planer schlägt Bausteine vor, die zu eurer Lage und euren Ressourcen passen. Jeder Baustein nennt seine Evidenzstufe, damit ihr keine Energie in Dinge steckt, die nicht wirken.</p></div>' + nav + body + '</div>';
 }
 function bausteinCard(b, open) {
   return '<details class="acc"' + (open ? ' open' : '') + '><summary>' + esc(b.name) + ' ' + chip(b.typ) + ev(b.evidenz) + chip('Aufwand ' + b.aufwand) + '</summary><div class="body stack">' +
@@ -475,7 +475,7 @@ function phaseRoute(phasen, only) {
     var kz = (ph.kennzahlen || []).map(function (id) { var k = findIn(KAMPAGNE.kennzahlen, id); return k ? chip(k.name) : ''; }).join('');
     var body = sel ? '<div class="stop-body">' +
       (ph.ziele && ph.ziele.length ? '<div><h4>Ziele dieser Phase</h4>' + ul(ph.ziele) + '</div>' : '') +
-      '<div><h4>' + (only ? 'Empfohlene Bausteine' : 'Bausteine') + '</h4>' + (bs.length ? '<div class="faq">' + bs.map(function (b) { return bausteinCard(b, false); }).join('') + '</div>' : '<p class="muted small">Für diese Phase gibt es keine Empfehlung. Sieh dir die Bausteine im Reiter „Bausteine“ an.</p>') + '</div>' +
+      '<div><h4>' + (only ? 'Empfohlene Bausteine' : 'Bausteine') + '</h4>' + (bs.length ? '<div class="faq">' + bs.map(function (b) { return bausteinCard(b, false); }).join('') + '</div>' : '<p class="muted small">Für diese Phase gibt es keine Empfehlung. Sieh im Reiter „Bausteine“ nach, was sonst passt.</p>') + '</div>' +
       (kz ? '<div><h4>Woran ihr merkt, ob es wirkt</h4><div class="row">' + kz + '</div></div>' : '') +
       (next ? '<div class="row"><button class="btn" data-act="phase" data-id="' + esc(next.id) + '">Weiter zu „' + esc(next.name) + '“</button></div>' : '<p class="muted small">Letzte Phase. Danach beginnt der Kreislauf von vorn, wieder mit dem Zuhören.</p>') +
       '</div>' : '';
@@ -484,7 +484,7 @@ function phaseRoute(phasen, only) {
   }).join('') + '</div>';
 }
 function kampPhasen() {
-  return '<div class="stack"><p class="muted small">Eine Kampagne ist eine Strecke, auf der jede Phase auf der vorigen aufbaut. Tippe auf eine Phase, um Ziele, Bausteine und Kennzahlen zu sehen.</p>' + phaseRoute(KAMPAGNE.phasen, null) + '</div>';
+  return '<div class="stack"><p class="muted small">Eine Kampagne ist eine Strecke, und jede Phase baut auf der vorigen auf. Tippe auf eine Phase, um Ziele, Bausteine und Kennzahlen zu sehen.</p>' + phaseRoute(KAMPAGNE.phasen, null) + '</div>';
 }
 function kampKennzahlen() {
   var rows = KAMPAGNE.kennzahlen.map(function (k) { return '<tr><td><strong>' + esc(k.name) + '</strong></td><td>' + esc(k.wie) + '</td><td>' + esc(k.warum) + '</td><td>' + esc(k.fallstrick) + '</td></tr>'; }).join('');
@@ -501,7 +501,7 @@ function vWissen() {
     var open = state.technik === t.id;
     return '<details class="acc" id="t-' + esc(t.id) + '"' + (open ? ' open' : '') + '><summary>' + esc(t.name) + ' ' + ev(t.evidenz) + ebeneChip(t.ebene) + '</summary><div class="body stack">' +
       '<p><strong>' + esc(t.kurz) + '</strong></p>' + paras(t.beschreibung) +
-      '<div class="station-detail"><div><h4>So geht es</h4>' + ol(t.so_gehts) + '</div><div class="note bad"><strong>Was schiefgehen kann</strong>' + ul(t.nicht) + '</div></div>' +
+      '<div class="station-detail"><div><h4>So geht’s</h4>' + ol(t.so_gehts) + '</div><div class="note bad"><strong>Was schiefgehen kann</strong>' + ul(t.nicht) + '</div></div>' +
       (t.beispiel ? '<div class="quote">' + esc(t.beispiel) + '</div>' : '') + quellen(t.quellen) + '</div></details>';
   }).join('');
   return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Wissensbasis</div><h1>Techniken und Evidenz</h1><p>Jede Technik mit Herkunft, Vorgehen, Beispiel, Grenzen und Quellen. Die Evidenzstufe zeigt, wie belastbar die Befunde sind.</p></div><div class="row">' + fe + fv + '</div><div class="faq">' + (list || '<div class="empty">Keine Technik passt zu diesem Filter.</div>') + '</div></div>';
@@ -520,7 +520,7 @@ function vLeitplanken() {
   var hilfe = Object.keys(groups).map(function (k) {
     return '<section class="stack"><h3>' + esc(k) + '</h3><div class="grid">' + groups[k].map(function (h) { return '<div class="card stack"><div class="row"><strong>' + esc(h.name) + '</strong>' + chip(h.region) + '</div><p class="small">' + esc(h.beschreibung) + '</p>' + (h.url ? '<a class="small" href="' + esc(h.url) + '" target="_blank" rel="noopener">' + esc(h.url.replace(/^https?:\/\//, '')) + '</a>' : '') + (h.telefon ? '<div class="small"><strong>Telefon:</strong> <span style="user-select:all">' + esc(h.telefon) + '</span></div>' : '') + '</div>'; }).join('') + '</div></section>';
   }).join('');
-  return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Ethik, Recht, Sicherheit</div><h1>Leitplanken</h1><p>Diese Regeln gelten auf allen Linien. Sie schützen die Person, dich und eure Beziehung. Und sie bewahren dich davor, in die Falle zu laufen, Menschen zu überwältigen, statt sie zu überzeugen.</p></div>' +
+  return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Ethik, Recht, Sicherheit</div><h1>Leitplanken</h1><p>Diese Regeln gelten auf allen Linien. Sie schützen die Person, dich und eure Beziehung – und sie bewahren dich davor, Menschen zu überwältigen, statt sie zu überzeugen.</p></div>' +
     '<section class="stack"><h2>Grundsätze</h2><div class="faq">' + g + '</div></section>' +
     (r ? '<section class="stack"><h2>Rote Linien</h2><div class="tbl-wrap"><table><thead><tr><th>Nicht so</th><th>Stattdessen</th></tr></thead><tbody>' + r + '</tbody></table></div></section>' : '') +
     (gef ? '<section class="stack"><h2>Wenn es gefährlich wird</h2>' + gef + '</section>' : '') +
@@ -562,7 +562,7 @@ function vTagebuch() {
       '<div class="wide row"><button class="btn primary" type="submit">Eintrag speichern</button></div></form>' +
     '<section class="stack"><h2>Einträge</h2>' + (list ? '<div class="faq">' + list + '</div>' : '<div class="empty">Noch keine Einträge.</div>') + '</section>' +
     '<details class="acc" id="sicherung"><summary>Sichern und auf ein anderes Gerät übertragen</summary><div class="body stack">' +
-      '<p class="small muted">Die Sicherung enthält Kompass-Ergebnis, Kampagnenplan und Tagebuch. Schick sie dir selbst, etwa per Signal, per Mail oder in deine Notizen, oder speichere sie als Datei. Auf dem anderen Gerät spielst du sie an dieser Stelle wieder ein.</p>' +
+      '<p class="small muted">Die Sicherung enthält Kompass-Ergebnis, Kampagnenplan und Tagebuch. Schick sie dir selbst – per Signal, per Mail oder in deine Notizen – oder speichere sie als Datei. Auf dem anderen Gerät spielst du sie an dieser Stelle wieder ein.</p>' +
       '<div class="row"><button class="btn primary" data-act="bk-share">Sicherung teilen</button>' + (HOSTED ? '<button class="btn" data-act="bk-download">Als Datei speichern</button><label class="btn" for="bk-file">Datei einspielen<input type="file" id="bk-file" accept="application/json,.json" hidden></label>' : '') + '<button class="btn" data-act="bk-copy">Kopieren</button></div>' +
       '<label class="fld">Oder Sicherungstext einfügen<textarea id="bk-io" placeholder="Hier den kopierten Sicherungstext einfügen"></textarea></label>' +
       '<div class="row"><button class="btn sm" data-act="bk-import">Einspielen</button>' + (state.confirmClear ? '<span class="row"><span class="small">Alle Tagebuch-Einträge wirklich löschen?</span><button class="btn sm danger" data-act="tb-clear-yes">Ja</button><button class="btn sm" data-act="tb-clear-no">Nein</button></span>' : '<button class="btn sm danger" data-act="tb-clear">Tagebuch löschen</button>') + '</div></div></details></div>';

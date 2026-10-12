@@ -6,12 +6,12 @@ window.APP_DATA.kompass = {
       "id": "th1",
       "bereich": "themen",
       "typ": "single",
-      "text": "Wie viel Raum nimmt Politik in ihren Gesprächen ein, egal mit wem?",
+      "text": "Wie oft kommt die Person im Gespräch auf Politik, ganz gleich, mit wem sie redet?",
       "warum": "Landet fast jedes Thema bei Politik, ist die Haltung Teil der Identität; dann trägt die Beziehung, nicht das Argument. Bleibt Politik ein Thema unter vielen, ist der Alltag der leichtere Einstieg (Spissinger, Praxis der Angehörigenberatung).",
       "optionen": [
         {
           "id": "th1a",
-          "text": "Fast jedes Gespräch landet dort, auch beim Essen oder im Urlaub",
+          "text": "Fast immer: Beinahe jedes Gespräch landet bei Politik, auch beim Essen oder im Urlaub",
           "gewichte": {
             "identitaet-heimat": 1,
             "protest-wut": 1
@@ -20,11 +20,11 @@ window.APP_DATA.kompass = {
             "belastung": 2,
             "offenheit": 1
           },
-          "hinweis": "Politik ist bei ihr Dauerthema. Vereinbart politikfreie Zeiten und Orte, damit die Beziehung nicht nur aus Streit besteht; das schützt auch dich."
+          "hinweis": "Politik ist für die Person ein Dauerthema. Vereinbart politikfreie Zeiten und Orte, damit die Beziehung nicht nur aus Streit besteht; das schützt auch dich."
         },
         {
           "id": "th1b",
-          "text": "Oft, aber sie kann es lassen, wenn man es sagt",
+          "text": "Oft, aber die Person lässt es, wenn man sie darum bittet",
           "gewichte": {},
           "skalen": {
             "offenheit": 2
@@ -32,23 +32,23 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "th1c",
-          "text": "Nur, wenn ein aktueller Anlass da ist",
+          "text": "Nur, wenn es einen aktuellen Anlass gibt",
           "gewichte": {},
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Politik ist für sie Anlass, nicht Lebensinhalt. Du kannst über den konkreten Anlass sprechen, ohne die ganze Haltung zu verhandeln."
+          "hinweis": "Politik ist für die Person ein Anlass, kein Lebensinhalt. Du kannst über den konkreten Anlass sprechen, ohne die ganze Haltung zu verhandeln."
         },
         {
           "id": "th1d",
-          "text": "Selten, sie redet lieber über anderes und teilt eher still Inhalte",
+          "text": "Selten: Die Person redet lieber über anderes und teilt politische Inhalte eher still",
           "gewichte": {
             "zugehoerigkeit": 1
           },
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Sie trägt ihre Haltung eher still. Sprich geteilte Inhalte ruhig und unter vier Augen an; dein Schweigen würde als Zustimmung gelesen."
+          "hinweis": "Die Person trägt ihre Haltung eher still. Sprich geteilte Inhalte ruhig und unter vier Augen an; dein Schweigen würde als Zustimmung gelesen."
         },
         {
           "id": "th1e",
@@ -61,7 +61,7 @@ window.APP_DATA.kompass = {
       "id": "th2",
       "bereich": "themen",
       "typ": "multi",
-      "text": "Wenn sie von sich aus auf Politik kommt: Womit fängt sie meistens an?",
+      "text": "Wenn die Person von sich aus auf Politik kommt: Womit fängt sie meistens an?",
       "warum": "Das Einstiegsthema zeigt, welches Bedürfnis vorne liegt. Sorge um Zuwanderung erklärt den Großteil der AfD-Sympathie (Schröder et al. 2026); Preise, Medien oder „die da oben“ verweisen auf andere Treiber und damit auf andere Zugänge.",
       "optionen": [
         {
@@ -129,7 +129,7 @@ window.APP_DATA.kompass = {
       "id": "th3",
       "bereich": "themen",
       "typ": "single",
-      "text": "Redet sie über eigene Erlebnisse oder über Zustände, die sie aus Nachrichten kennt?",
+      "text": "Redet die Person über eigene Erlebnisse oder über Zustände, die sie nur aus Nachrichten kennt?",
       "warum": "Politisch wirksam ist meist die Wahrnehmung der Lage Deutschlands, nicht die eigene (Teney 2026). Wer aus Nachrichten spricht, ist über Diskurse aktiviert (Ziller 2025); wer aus Erlebnissen spricht, braucht erst Anerkennung des Erlebten.",
       "optionen": [
         {
@@ -139,20 +139,20 @@ window.APP_DATA.kompass = {
             "gerechtigkeit-abgehaengt": 2,
             "anerkennung": 1
           },
-          "hinweis": "Ihre Erlebnisse sind echt. Nimm sie ernst und frag nach Einzelheiten, bevor du über die Schlüsse sprichst, die sie daraus zieht."
+          "hinweis": "Die Erlebnisse der Person sind echt. Nimm die Erlebnisse ernst und frag nach Einzelheiten, bevor du über die Schlüsse sprichst, die die Person daraus zieht."
         },
         {
           "id": "th3b",
-          "text": "Fast nur über Zustände aus Nachrichten und Kanälen, die sie selbst nicht erlebt hat",
+          "text": "Fast nur über Zustände aus Nachrichten und Kanälen, die die Person selbst nicht erlebt hat",
           "gewichte": {
             "misstrauen": 1,
             "kontrolle-angst": 1
           },
-          "hinweis": "Ihre Sorge ist medial gespeist. Frag, was sie selbst vor Ort erlebt hat; die Lücke zwischen Bild und Alltag ist ein guter Gesprächsanfang."
+          "hinweis": "Die Sorge ist medial gespeist. Frag, was die Person selbst vor Ort erlebt hat; die Lücke zwischen Medienbild und Alltag ist ein guter Gesprächsanfang."
         },
         {
           "id": "th3c",
-          "text": "Beides, und sie verknüpft es: „Bei uns ist das auch schon so“",
+          "text": "Beides, und die Person verknüpft es: „Bei uns ist das auch schon so“",
           "gewichte": {
             "identitaet-heimat": 1,
             "kontrolle-angst": 1
@@ -160,7 +160,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "th3d",
-          "text": "Sie erzählt Geschichten anderer weiter („der Kollege kennt einen, der…“)",
+          "text": "Vor allem Geschichten anderer, die die Person weitererzählt („der Kollege kennt einen, der…“)",
           "gewichte": {
             "zugehoerigkeit": 1,
             "misstrauen": 1
@@ -177,7 +177,7 @@ window.APP_DATA.kompass = {
       "id": "th4",
       "bereich": "themen",
       "typ": "single",
-      "text": "Wie spricht sie über Gruppen: pauschal („alle“, „immer“, „die“) oder unterscheidend?",
+      "text": "Wie spricht die Person über Gruppen: pauschal („alle“, „immer“, „die“) oder unterscheidend?",
       "warum": "Das Verhältnis von Totalisierungen zu Differenzierungen ist ein beobachtbares Maß für Offenheit; weniger rigide Ablehnung macht Distanzierung möglich (DJI 2021, Liht/Savage 2013). Danach richtet sich, ob du schon fragen darfst oder erst zuhören musst.",
       "optionen": [
         {
@@ -190,18 +190,18 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 0
           },
-          "hinweis": "Pauschalurteile sind verfestigt. Frag nach dem konkreten Fall („Wer genau?“), ohne zu belehren; liefere keine Gegenbeispiele, sondern lass sie selbst Ausnahmen benennen."
+          "hinweis": "Pauschalurteile sind verfestigt. Frag nach dem konkreten Fall („Wer genau?“), ohne zu belehren; liefere keine Gegenbeispiele, sondern lass die Person selbst Ausnahmen benennen."
         },
         {
           "id": "th4b",
-          "text": "Pauschal, aber mit Ausnahmen für Menschen, die sie kennt",
+          "text": "Pauschal, aber mit Ausnahmen für Menschen, die die Person kennt",
           "gewichte": {
             "identitaet-heimat": 1
           },
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Ihre Ausnahmen sind der Hebel. Sprich über diese Menschen und ihre Geschichten, nicht über Gruppen; das verschiebt Einstellungen nachweislich (Kalla/Broockman)."
+          "hinweis": "Diese Ausnahmen sind der Hebel. Sprich über diese Menschen und deren Geschichten, nicht über Gruppen; das verschiebt Einstellungen nachweislich (Kalla/Broockman)."
         },
         {
           "id": "th4c",
@@ -220,7 +220,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 3
           },
-          "hinweis": "Sie differenziert bereits. Du kannst früh zu Fragen übergehen, die Zweifel zulassen: „Gab es etwas, das dich an dieser Erklärung hat zweifeln lassen?“"
+          "hinweis": "Die Person differenziert bereits. Du kannst früh zu Fragen übergehen, die Zweifel zulassen: „Gab es etwas, das dich an dieser Erklärung hat zweifeln lassen?“"
         },
         {
           "id": "th4e",
@@ -233,7 +233,7 @@ window.APP_DATA.kompass = {
       "id": "th5",
       "bereich": "themen",
       "typ": "single",
-      "text": "Wie klingt es, wenn sie über Menschen spricht, die sie ablehnt?",
+      "text": "Wie klingt es, wenn die Person über Menschen spricht, die sie ablehnt?",
       "warum": "Der Ton unterscheidet Enttäuschung von Entmenschlichung. Spott ist oft Schutz vor eigener Verletzung; Ungeziefer-Vergleiche oder Schadenswünsche markieren eine Grenze, die du benennen musst (MBR 2025, Praxiskonsens).",
       "optionen": [
         {
@@ -285,7 +285,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "th5e",
-          "text": "Sie wünscht ihnen offen Schaden oder findet Angriffe auf sie richtig",
+          "text": "Feindselig: Die Person wünscht diesen Menschen offen Schaden oder findet es richtig, wenn sie angegriffen werden",
           "gewichte": {
             "protest-wut": 2
           },
@@ -314,12 +314,12 @@ window.APP_DATA.kompass = {
       "id": "th6",
       "bereich": "themen",
       "typ": "single",
-      "text": "Benutzt sie Ironie, Memes oder Codes, bei denen unklar bleibt, ob sie es ernst meint?",
+      "text": "Benutzt die Person Ironie, Memes oder Codes, bei denen unklar bleibt, ob sie es ernst meint?",
       "warum": "Ironie und Codes („war nur Spaß“) senken die Hemmschwelle und machen Widerspruch lächerlich; Szenecodes zeigen Nähe zu Milieus über die Partei hinaus (MBR 2025, Pfeiffer 2024). Darauf reagiert man mit ruhigem Nachfragen, nicht mit Empörung.",
       "optionen": [
         {
           "id": "th6a",
-          "text": "Nein, sie sagt direkt, was sie meint",
+          "text": "Nein, die Person sagt direkt, was sie meint",
           "gewichte": {},
           "skalen": {
             "offenheit": 2
@@ -341,11 +341,11 @@ window.APP_DATA.kompass = {
             "zugehoerigkeit": 2,
             "identitaet-heimat": 1
           },
-          "hinweis": "Szenecodes zeigen, dass sie sich in Milieus bewegt, die über die Partei hinausgehen. Lass dir bei einer Mobilen Beratung erklären, was die Codes bedeuten, bevor du sie ansprichst."
+          "hinweis": "Szenecodes zeigen, dass sich die Person in Milieus bewegt, die über die Partei hinausgehen. Lass dir bei einer Mobilen Beratung erklären, was die Codes bedeuten, bevor du das Thema ansprichst."
         },
         {
           "id": "th6d",
-          "text": "Ja, Ironie als Schutz: Sie vertritt etwas und nimmt es zugleich zurück",
+          "text": "Ja, Ironie als Schutz: Die Person vertritt etwas und nimmt es zugleich zurück",
           "gewichte": {
             "anerkennung": 1,
             "misstrauen": 1
@@ -365,8 +365,8 @@ window.APP_DATA.kompass = {
       "id": "th7",
       "bereich": "themen",
       "typ": "single",
-      "text": "Wie reagiert sie, wenn jemand sie oder die Partei als „rechts“ oder „Nazi“ bezeichnet?",
-      "warum": "Etiketten treffen das Bedürfnis nach Anerkennung und schaden dem Absender (Dusso/Perkins 2023); das Nazi-Label trifft nur eine Minderheit der Wählerschaft (Teney 2026). Ob sie das Etikett abwehrt, umdeutet oder annimmt, bestimmt, wie du Haltung zeigst.",
+      "text": "Wie reagiert die Person, wenn jemand sie oder die Partei als „rechts“ oder „Nazi“ bezeichnet?",
+      "warum": "Etiketten treffen das Bedürfnis nach Anerkennung und schaden dem Absender (Dusso/Perkins 2023); das Nazi-Label trifft nur eine Minderheit der Wählerschaft (Teney 2026). Ob die Person das Etikett abwehrt, umdeutet oder annimmt, bestimmt, wie du Haltung zeigst.",
       "optionen": [
         {
           "id": "th7a",
@@ -377,7 +377,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Sie lehnt das Etikett ab, teilt also einen Teil deiner Werte. Benenne konkrete Aussagen statt Personen zu etikettieren: „Dieser Satz ist rassistisch“, nicht „Du bist…“."
+          "hinweis": "Die Person lehnt das Etikett ab, teilt also einen Teil deiner Werte. Benenne konkrete Aussagen, statt Personen zu etikettieren: „Dieser Satz ist rassistisch“, nicht „Du bist…“."
         },
         {
           "id": "th7b",
@@ -389,7 +389,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Das Etikett ist für sie zur Identität geworden; Streit darüber bestätigt sie. Rede über Inhalte und konkrete Menschen, nicht über Zuschreibungen."
+          "hinweis": "Das Etikett ist für die Person zur Identität geworden; Streit darüber bestätigt sie nur. Rede über Inhalte und konkrete Menschen, nicht über Zuschreibungen."
         },
         {
           "id": "th7c",
@@ -404,7 +404,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "th7d",
-          "text": "Sie nimmt es an und nutzt es stolz als Selbstbezeichnung",
+          "text": "Stolz: Die Person nimmt es an und nutzt es als Selbstbezeichnung",
           "gewichte": {
             "identitaet-heimat": 2,
             "zugehoerigkeit": 1
@@ -416,7 +416,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "th7e",
-          "text": "Hat noch niemand in ihrer Gegenwart gesagt",
+          "text": "Hat noch niemand in Gegenwart der Person gesagt",
           "gewichte": {}
         },
         {
@@ -430,7 +430,7 @@ window.APP_DATA.kompass = {
       "id": "wb1",
       "bereich": "weltbild",
       "typ": "single",
-      "text": "Was sagt sie über Wahlen?",
+      "text": "Was sagt die Person über Wahlen?",
       "warum": "Misstrauen in Wahlen hat sich in vier Jahren verdreifacht (Mitte-Studie 2024/25: 18 %). Wer Wahlen für gefälscht hält, denkt verschwörungsförmig und braucht einen anderen Zugang als jemand, der sie für wirkungslos hält oder nur die Auswahl kritisiert.",
       "optionen": [
         {
@@ -443,7 +443,7 @@ window.APP_DATA.kompass = {
             "verschwoerung": 3,
             "offenheit": 0
           },
-          "hinweis": "Wahlbetrugsglaube lässt sich nicht mit Fakten lösen. Frag, woran sie merken würde, dass eine Wahl korrekt war, und würdige ihr Misstrauen als Anspruch an Ehrlichkeit."
+          "hinweis": "Wahlbetrugsglaube lässt sich nicht mit Fakten lösen. Frag, woran die Person merken würde, dass eine Wahl korrekt war, und würdige das Misstrauen als Anspruch an Ehrlichkeit."
         },
         {
           "id": "wb1b",
@@ -458,7 +458,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wb1c",
-          "text": "Ihre Stimme ist ein Denkzettel, damit „die anderen aufwachen“",
+          "text": "Die eigene Stimme ist ein Denkzettel, damit „die anderen aufwachen“",
           "gewichte": {
             "protest-wut": 3
           },
@@ -479,7 +479,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wb1e",
-          "text": "Sie wählt die Partei aus Überzeugung, die Forderungen stimmen für sie",
+          "text": "Die Person wählt die Partei aus Überzeugung, die Forderungen stimmen für sie",
           "gewichte": {
             "identitaet-heimat": 1,
             "kontrolle-angst": 1
@@ -499,7 +499,7 @@ window.APP_DATA.kompass = {
       "id": "wb2",
       "bereich": "weltbild",
       "typ": "single",
-      "text": "Lehnt sie die Demokratie als Idee ab oder nur, wie sie gerade funktioniert?",
+      "text": "Lehnt die Person die Idee der Demokratie ab oder nur die Art, wie die Demokratie gerade funktioniert?",
       "warum": "79 % nennen sich Demokrat:innen, nur 52 % sehen die Demokratie funktionieren (Mitte-Studie). Das Rückgewinnungspotenzial liegt bei diesen „systemkritischen Demokrat:innen“; wer die Idee selbst ablehnt, braucht Fachberatung statt Überzeugungsarbeit.",
       "optionen": [
         {
@@ -523,11 +523,11 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 3
           },
-          "hinweis": "Sie trägt die Demokratie noch mit. Das ist die beste Ausgangslage: Frag, was konkret funktionieren müsste, und zeig Wege, wie ihre Stimme vor Ort etwas bewirkt."
+          "hinweis": "Die Person trägt die Demokratie noch mit. Das ist die beste Ausgangslage: Frag, was konkret funktionieren müsste, und zeig Wege, wie die eigene Stimme vor Ort etwas bewirkt."
         },
         {
           "id": "wb2c",
-          "text": "Sie sieht die Partei als Retterin der „echten“ Demokratie gegen „das System“",
+          "text": "Die Person sieht die Partei als Retterin der „echten“ Demokratie gegen „das System“",
           "gewichte": {
             "misstrauen": 2,
             "identitaet-heimat": 1
@@ -536,11 +536,11 @@ window.APP_DATA.kompass = {
             "offenheit": 1,
             "verschwoerung": 2
           },
-          "hinweis": "Sie beansprucht die Demokratie für sich. Nutze das: Frag, welche Regeln auch für die eigene Seite gelten müssten, etwa Pressefreiheit oder Minderheitenschutz."
+          "hinweis": "Die Person beansprucht die Demokratie für sich. Nutze das: Frag, welche Regeln auch für die eigene Seite gelten müssten, etwa Pressefreiheit oder Minderheitenschutz."
         },
         {
           "id": "wb2d",
-          "text": "Sie ist unentschieden, mal so, mal so",
+          "text": "Unentschieden, mal so, mal so",
           "gewichte": {},
           "skalen": {
             "offenheit": 2
@@ -557,8 +557,8 @@ window.APP_DATA.kompass = {
       "id": "wb3",
       "bereich": "weltbild",
       "typ": "single",
-      "text": "Wie spricht sie über Gerichte, Grundgesetz und Verfassungsschutz?",
-      "warum": "Ob sie Rechtsstaat und Grundgesetz als gemeinsamen Boden anerkennt, entscheidet, ob du dich darauf berufen kannst. Hält sie Gerichte für gesteuert, wirken Verweise auf Urteile wie Beweise der Verschwörung (Imhoff et al. 2022, Praxiskonsens).",
+      "text": "Wie spricht die Person über Gerichte, Grundgesetz und Verfassungsschutz?",
+      "warum": "Ob die Person Rechtsstaat und Grundgesetz als gemeinsamen Boden anerkennt, entscheidet, ob du dich darauf berufen kannst. Hält die Person Gerichte für gesteuert, wirken Verweise auf Urteile wie Beweise der Verschwörung (Imhoff et al. 2022, Praxiskonsens).",
       "optionen": [
         {
           "id": "wb3a",
@@ -570,7 +570,7 @@ window.APP_DATA.kompass = {
             "verschwoerung": 2,
             "offenheit": 0
           },
-          "hinweis": "Verweise auf Urteile oder Behörden wirken bei ihr nicht, sie gelten als Teil des Systems. Argumentiere nicht über Institutionen, sondern über Erlebnisse und Menschen."
+          "hinweis": "Verweise auf Urteile oder Behörden wirken bei der Person nicht, denn Institutionen gelten als Teil des Systems. Argumentiere nicht über Institutionen, sondern über Erlebnisse und Menschen."
         },
         {
           "id": "wb3b",
@@ -585,14 +585,14 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wb3c",
-          "text": "Sie beruft sich selbst auf Grundrechte, vor allem Meinungsfreiheit",
+          "text": "Die Person beruft sich selbst auf Grundrechte, vor allem auf die Meinungsfreiheit",
           "gewichte": {
             "anerkennung": 2
           },
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Die Grundrechte sind gemeinsamer Boden. Frag, ob diese Rechte für alle gelten sollen, auch für Menschen, die sie ablehnt; das öffnet ohne Belehrung."
+          "hinweis": "Die Grundrechte sind gemeinsamer Boden. Frag, ob diese Rechte für alle gelten sollen, auch für Menschen, die die Person ablehnt; das öffnet ohne Belehrung."
         },
         {
           "id": "wb3d",
@@ -608,7 +608,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wb3e",
-          "text": "Das Thema kommt bei ihr nicht vor",
+          "text": "Das Thema kommt bei der Person nicht vor",
           "gewichte": {}
         },
         {
@@ -622,7 +622,7 @@ window.APP_DATA.kompass = {
       "id": "wb4",
       "bereich": "weltbild",
       "typ": "single",
-      "text": "Wie reagiert sie auf Kompromisse und lange Verhandlungen in der Politik?",
+      "text": "Wie reagiert die Person auf Kompromisse und lange Verhandlungen in der Politik?",
       "warum": "Der Ruf nach einem, der durchgreift, misst autoritäre Unterwürfigkeit (KSA-3) und wächst mit Bedrohungsgefühlen; „alternativlos“-Rhetorik schließt den Verhandlungsraum (Leipzig 2024). Wer Kompromisse grundsätzlich akzeptiert, ist für Beteiligung erreichbar.",
       "optionen": [
         {
@@ -634,7 +634,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Sie sucht Ordnung und Verlässlichkeit. Biete beides im Kleinen: klare Absprachen, eingehaltene Termine, Beteiligung mit sichtbarer Wirkung. Keine Angstbilder."
+          "hinweis": "Die Person sucht Ordnung und Verlässlichkeit. Biete beides im Kleinen: klare Absprachen, eingehaltene Termine, Beteiligung mit sichtbarer Wirkung. Keine Angstbilder."
         },
         {
           "id": "wb4b",
@@ -656,11 +656,11 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 3
           },
-          "hinweis": "Sie akzeptiert das Aushandeln. Lade sie ein, selbst zu erleben, wie Entscheidungen entstehen: Bürgerversammlung, Ortsbeirat, Betriebsrat."
+          "hinweis": "Die Person akzeptiert das Aushandeln. Dazu passt eine Einladung, selbst zu erleben, wie Entscheidungen entstehen: Bürgerversammlung, Ortsbeirat, Betriebsrat."
         },
         {
           "id": "wb4d",
-          "text": "Sie kann beide Seiten wiedergeben, bevor sie urteilt",
+          "text": "Die Person kann beide Seiten wiedergeben, bevor sie urteilt",
           "gewichte": {},
           "skalen": {
             "offenheit": 3
@@ -677,17 +677,17 @@ window.APP_DATA.kompass = {
       "id": "wb5",
       "bereich": "weltbild",
       "typ": "single",
-      "text": "Hält sie Gewalt in bestimmten Fällen für gerechtfertigt?",
+      "text": "Hält die Person Gewalt in bestimmten Fällen für gerechtfertigt?",
       "warum": "Meinungs- und Handlungsradikalisierung sind getrennte Prozesse (McCauley/Moskalenko): Verständnis für Gewalt ist nicht Gewaltbereitschaft. Die Antwort bestimmt aber, ob du allein weitermachen kannst oder Fachberatung brauchst (bpb 2024, Praxiskonsens).",
       "optionen": [
         {
           "id": "wb5a",
-          "text": "Nein, sie lehnt Gewalt klar ab, auch von der eigenen Seite",
+          "text": "Nein, die Person lehnt Gewalt klar ab, auch von der eigenen Seite",
           "gewichte": {},
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Gewaltablehnung ist gemeinsamer Boden. Wenn Mitstreiter:innen sie überschreiten, frag ruhig, wie sie das sieht; das stärkt Zweifel ohne Angriff."
+          "hinweis": "Gewaltablehnung ist gemeinsamer Boden. Wenn Mitstreiter:innen diese Grenze überschreiten, frag ruhig, wie die Person das sieht; das stärkt Zweifel ohne Angriff."
         },
         {
           "id": "wb5b",
@@ -699,11 +699,11 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Verständnis für Gewalt ist ein Vorbote, kein Urteil. Frag, was sie sich stattdessen wünschen würde, und benenne klar, wo deine Grenze liegt."
+          "hinweis": "Verständnis für Gewalt ist ein Vorbote, kein Urteil. Frag, was sich die Person stattdessen wünschen würde, und benenne klar, wo deine Grenze liegt."
         },
         {
           "id": "wb5c",
-          "text": "Gewalt gegen bestimmte Gruppen gilt ihr als Notwehr oder Selbstschutz",
+          "text": "Gewalt gegen bestimmte Gruppen gilt der Person als Notwehr oder Selbstschutz",
           "gewichte": {
             "kontrolle-angst": 2,
             "identitaet-heimat": 1
@@ -716,7 +716,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wb5d",
-          "text": "Sie spricht davon, selbst „zurückzuschlagen“, oder droht",
+          "text": "Die Person spricht davon, selbst „zurückzuschlagen“, oder droht",
           "gewichte": {
             "protest-wut": 2
           },
@@ -737,21 +737,21 @@ window.APP_DATA.kompass = {
       "id": "wb6",
       "bereich": "weltbild",
       "typ": "single",
-      "text": "Was soll ihrer Meinung nach mit Menschen oder Medien geschehen, die die Partei kritisieren?",
+      "text": "Was soll nach Meinung der Person mit Menschen oder Medien geschehen, die die Partei kritisieren?",
       "warum": "Autoritäre Aggression („mit aller Härte vorgehen“, KSA-3) trennt Streitlust von Feindbild: Wer Kritiker:innen bestraft sehen will, denkt in Freund und Feind. Das entscheidet, ob Argumente ankommen oder nur Loyalität abgerufen wird (Leipzig 2024).",
       "optionen": [
         {
           "id": "wb6a",
-          "text": "Nichts, sie sollen mitreden, sie sieht es nur anders",
+          "text": "Nichts, Kritiker:innen sollen mitreden; die Person sieht es nur anders",
           "gewichte": {},
           "skalen": {
             "offenheit": 3
           },
-          "hinweis": "Sie trennt Person und Position. Bei ihr tragen offene Fragen und Gegenerfahrungen; du kannst Widerspruch ohne Beziehungsrisiko äußern."
+          "hinweis": "Die Person trennt Position und Mensch. Hier tragen offene Fragen und Gegenerfahrungen; du kannst Widerspruch ohne Beziehungsrisiko äußern."
         },
         {
           "id": "wb6b",
-          "text": "Sie sollen „endlich den Mund halten“, sie nerven",
+          "text": "Kritiker:innen sollen „endlich den Mund halten“, sie nerven",
           "gewichte": {
             "protest-wut": 2
           },
@@ -761,7 +761,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wb6c",
-          "text": "Sie sind gekauft oder gesteuert, man sollte ihnen Geld und Posten entziehen",
+          "text": "Kritiker:innen sind gekauft oder gesteuert, man sollte ihnen Geld und Posten entziehen",
           "gewichte": {
             "misstrauen": 2,
             "protest-wut": 1
@@ -773,7 +773,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wb6d",
-          "text": "Sie sollten bestraft, verboten oder entlassen werden",
+          "text": "Kritiker:innen sollten bestraft, verboten oder entlassen werden",
           "gewichte": {
             "kontrolle-angst": 2,
             "protest-wut": 1
@@ -781,11 +781,11 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 0
           },
-          "hinweis": "Sie will Gegner:innen zum Schweigen bringen. Frag, wer entscheidet, wer schweigen muss, und ob das auch gegen sie selbst gelten dürfte; Faktenstreit bringt hier nichts."
+          "hinweis": "Die Person will Gegner:innen zum Schweigen bringen. Frag, wer entscheidet, wer schweigen muss, und ob das auch gegen die Person selbst gelten dürfte; Faktenstreit bringt hier nichts."
         },
         {
           "id": "wb6e",
-          "text": "Sie sollten „weg“: abgeschoben, eingesperrt, „an die Wand“",
+          "text": "Kritiker:innen sollten „weg“: abgeschoben, eingesperrt, „an die Wand“",
           "gewichte": {
             "kontrolle-angst": 2,
             "identitaet-heimat": 1
@@ -807,8 +807,8 @@ window.APP_DATA.kompass = {
       "id": "wb7",
       "bereich": "weltbild",
       "typ": "single",
-      "text": "Wer gehört für sie zum „Volk“ oder zu „uns“?",
-      "warum": "Homogenitätsüberzeugung und völkische Abgrenzung trennen Protest von Ethnonationalismus (Populismus-Kurzskala, Teney 2026). Ob sie „uns“ über Leistung, Wohnort oder Abstammung definiert, bestimmt, welche Geschichten und Begegnungen anknüpfen (Kalla/Broockman).",
+      "text": "Wer gehört für die Person zum „Volk“ oder zu „uns“?",
+      "warum": "Homogenitätsüberzeugung und völkische Abgrenzung trennen Protest von Ethnonationalismus (Populismus-Kurzskala, Teney 2026). Ob die Person „uns“ über Leistung, Wohnort oder Abstammung definiert, bestimmt, welche Geschichten und Begegnungen anknüpfen (Kalla/Broockman).",
       "optionen": [
         {
           "id": "wb7a",
@@ -819,7 +819,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 3
           },
-          "hinweis": "Ihr Wir ist offen und leistungsbezogen. Erzähle von Zugewanderten, die genau das tun; das passt in ihre Werte statt gegen sie."
+          "hinweis": "Dieses Wir ist offen und leistungsbezogen. Erzähle von Zugewanderten, die genau das tun; das knüpft an die Werte der Person an, statt ihnen zu widersprechen."
         },
         {
           "id": "wb7b",
@@ -834,7 +834,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wb7c",
-          "text": "Die Menschen ihrer Region oder ihres Ortes, gegen „die in Berlin“",
+          "text": "Die Menschen der eigenen Region oder des eigenen Ortes, gegen „die in Berlin“",
           "gewichte": {
             "identitaet-heimat": 2,
             "gerechtigkeit-abgehaengt": 1
@@ -856,7 +856,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wb7e",
-          "text": "Das wechselt, je nachdem, worüber sie gerade spricht",
+          "text": "Das wechselt, je nachdem, worüber die Person gerade spricht",
           "gewichte": {},
           "skalen": {
             "offenheit": 2
@@ -864,7 +864,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wb7f",
-          "text": "Sie benutzt solche Begriffe nicht",
+          "text": "Die Person benutzt solche Begriffe nicht",
           "gewichte": {}
         },
         {
@@ -878,16 +878,16 @@ window.APP_DATA.kompass = {
       "id": "bd1",
       "bereich": "beduerfnisse",
       "typ": "multi",
-      "text": "Was bekommt sie in der Partei oder ihrem Umfeld dort, was ihr sonst fehlt?",
+      "text": "Was bekommt die Person in der Partei oder in deren Umfeld, was ihr sonst fehlt?",
       "warum": "Nach dem 3N-Modell halten Netzwerk und Erzählung, nicht nur das Bedürfnis (Da Silva et al. 2024). Was die Partei liefert, muss ein demokratisches Angebot ersetzen können, sonst bleibt jeder Appell leer (Pfeiffer 2024: Gemeinschaft, Anerkennung, Identität).",
       "optionen": [
         {
           "id": "bd1a",
-          "text": "Leute, die anrufen, einladen und nach ihr fragen",
+          "text": "Leute, die anrufen, einladen und nach der Person fragen",
           "gewichte": {
             "zugehoerigkeit": 3
           },
-          "hinweis": "Sie wird dort gebraucht und vermisst. Biete Gemeinschaft, die sich echt anfühlt: regelmäßig, mit Ritualen und Aufgaben, nicht nur Gesprächsangebote."
+          "hinweis": "Die Person wird dort gebraucht und vermisst. Biete Gemeinschaft, die sich echt anfühlt: regelmäßig, mit Ritualen und Aufgaben, nicht nur Gesprächsangebote."
         },
         {
           "id": "bd1b",
@@ -898,12 +898,12 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bd1c",
-          "text": "Eine Aufgabe oder Rolle, in der sie wichtig ist",
+          "text": "Eine Aufgabe oder Rolle, in der die Person wichtig ist",
           "gewichte": {
             "anerkennung": 2,
             "zugehoerigkeit": 1
           },
-          "hinweis": "Bedeutsamkeit über Rollen ist ersetzbar: Verein, Nachbarschaft, Betrieb, Familie. Gib ihr eine Aufgabe, die ohne sie nicht läuft."
+          "hinweis": "Bedeutsamkeit über Rollen ist ersetzbar: Verein, Nachbarschaft, Betrieb, Familie. Gib der Person eine Aufgabe, die ohne sie nicht läuft."
         },
         {
           "id": "bd1d",
@@ -942,8 +942,8 @@ window.APP_DATA.kompass = {
       "id": "bd2",
       "bereich": "beduerfnisse",
       "typ": "single",
-      "text": "Gibt es ein Erlebnis von Kränkung oder Demütigung, das sie immer wieder erzählt?",
-      "warum": "Bedeutungsverlust durch Kränkung ist nach Kruglanski der häufigste Auslöser der Bedeutsamkeitssuche; die oft erzählte Geschichte ist die Tür zum Bedürfnis. Wo sie passierte, zeigt, ob Arbeit, Staat, Familie oder Öffentlichkeit das Vertrauen brachen.",
+      "text": "Gibt es ein Erlebnis von Kränkung oder Demütigung, das die Person immer wieder erzählt?",
+      "warum": "Bedeutungsverlust durch Kränkung ist nach Kruglanski der häufigste Auslöser der Bedeutsamkeitssuche; die oft erzählte Geschichte ist die Tür zum Bedürfnis. Wo die Kränkung passierte, zeigt, ob Arbeit, Staat, Familie oder Öffentlichkeit das Vertrauen brachen.",
       "optionen": [
         {
           "id": "bd2a",
@@ -952,7 +952,7 @@ window.APP_DATA.kompass = {
             "anerkennung": 2,
             "kontrolle-angst": 1
           },
-          "hinweis": "Hör dir die Geschichte noch einmal ganz an und spiegle, was sie bedeutet hat. Erst danach lässt sich über die Schlüsse sprechen, die sie daraus zieht."
+          "hinweis": "Hör dir die Geschichte noch einmal ganz an und spiegle, was das Erlebnis für die Person bedeutet hat. Erst danach lässt sich über die Schlüsse sprechen, die daraus gezogen werden."
         },
         {
           "id": "bd2b",
@@ -961,7 +961,7 @@ window.APP_DATA.kompass = {
             "misstrauen": 2,
             "gerechtigkeit-abgehaengt": 1
           },
-          "hinweis": "Ihr Misstrauen hat einen Anfang. Würdige die Erfahrung, bevor du Institutionen verteidigst; sonst stehst du in ihren Augen auf deren Seite."
+          "hinweis": "Das Misstrauen hat einen Anfang. Würdige die Erfahrung, bevor du Institutionen verteidigst; sonst stehst du in den Augen der Person auf deren Seite."
         },
         {
           "id": "bd2c",
@@ -996,17 +996,17 @@ window.APP_DATA.kompass = {
       "id": "bd3",
       "bereich": "beduerfnisse",
       "typ": "single",
-      "text": "Hat sie das Gefühl, in ihrem Leben und Umfeld etwas bewirken zu können?",
+      "text": "Hat die Person das Gefühl, in ihrem Leben und Umfeld etwas bewirken zu können?",
       "warum": "71,7 % meinen, Leute wie sie hätten keinen Einfluss, 63,7 % halten Engagement für sinnlos (Leipzig 2024); Kontrollverlust erhöht die Neigung, rechts zu wählen (Hilmer et al. 2017). Das Gegenmittel ist Beteiligung mit spürbarer Wirkung, nicht Beschwichtigung.",
       "optionen": [
         {
           "id": "bd3a",
-          "text": "Ja, sie packt an und sieht Ergebnisse, auch über den Alltag hinaus",
+          "text": "Ja, die Person packt an und sieht Ergebnisse, auch über den Alltag hinaus",
           "gewichte": {},
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Selbstwirksamkeit ist da. Lenke sie auf etwas Konkretes vor Ort: Ortsbeirat, Verein, Betriebsrat, Petition; geh mit, statt nur hinzuschicken."
+          "hinweis": "Selbstwirksamkeit ist da. Lenke diese Kraft auf etwas Konkretes vor Ort: Ortsbeirat, Verein, Betriebsrat, Petition; geh mit, statt nur hinzuschicken."
         },
         {
           "id": "bd3b",
@@ -1018,11 +1018,11 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Ohnmacht mit lauter Stimme. Frag, wo sie je etwas bewirkt hat, und such gemeinsam eine kleine politische Erfahrung, die das wiederholt."
+          "hinweis": "Ohnmacht mit lauter Stimme. Frag, wo die Person je etwas bewirkt hat, und such gemeinsam eine kleine politische Erfahrung, die das wiederholt."
         },
         {
           "id": "bd3c",
-          "text": "Kaum noch, sie fühlt sich ausgeliefert: Arbeit, Gesundheit, Amt, Geld",
+          "text": "Kaum noch, die Person fühlt sich ausgeliefert: Arbeit, Gesundheit, Amt, Geld",
           "gewichte": {
             "kontrolle-angst": 3
           },
@@ -1032,7 +1032,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bd3d",
-          "text": "Sie hat resigniert: „Es ändert sich eh nichts, egal was man tut“",
+          "text": "Resigniert: „Es ändert sich eh nichts, egal was man tut“",
           "gewichte": {
             "protest-wut": 1,
             "kontrolle-angst": 1
@@ -1052,7 +1052,7 @@ window.APP_DATA.kompass = {
       "id": "bd4",
       "bereich": "beduerfnisse",
       "typ": "single",
-      "text": "Mit wem vergleicht sie sich, wenn sie sich benachteiligt fühlt?",
+      "text": "Mit wem vergleicht sich die Person, wenn sie sich benachteiligt fühlt?",
       "warum": "Nicht objektive Armut, sondern gefühlte Benachteiligung im Vergleich treibt die Hinwendung (Hilmer et al. 2017, Schröder et al. 2026). Die Vergleichsgruppe zeigt, ob Fairness, Migration oder Eliten den Kern bilden und welche Geschichten anknüpfen.",
       "optionen": [
         {
@@ -1061,16 +1061,16 @@ window.APP_DATA.kompass = {
           "gewichte": {
             "gerechtigkeit-abgehaengt": 3
           },
-          "hinweis": "Ihr Maßstab ist Leistung und Fairness. Argumentiere in diesen Werten, nicht in deinen, und erzähle von Menschen, die hart arbeiten und trotzdem zu „den anderen“ gezählt werden."
+          "hinweis": "Der Maßstab der Person ist Leistung und Fairness. Argumentiere in diesen Werten, nicht in deinen, und erzähle von Menschen, die hart arbeiten und trotzdem zu „den anderen“ gezählt werden."
         },
         {
           "id": "bd4b",
-          "text": "Mit Zugewanderten, die aus ihrer Sicht bevorzugt werden",
+          "text": "Mit Zugewanderten, die aus Sicht der Person bevorzugt werden",
           "gewichte": {
             "gerechtigkeit-abgehaengt": 2,
             "identitaet-heimat": 2
           },
-          "hinweis": "Hier verbinden sich Fairness und Migrationssorge. Tabuisiere das Thema nicht; frag nach konkreten Fällen und erzähle von einzelnen Menschen statt über Gruppen zu reden."
+          "hinweis": "Hier verbinden sich Fairness und Migrationssorge. Tabuisiere das Thema nicht; frag nach konkreten Fällen und erzähle von einzelnen Menschen, statt über Gruppen zu reden."
         },
         {
           "id": "bd4c",
@@ -1087,11 +1087,11 @@ window.APP_DATA.kompass = {
             "identitaet-heimat": 2,
             "gerechtigkeit-abgehaengt": 1
           },
-          "hinweis": "Regionale Kränkung ist oft real (geschlossene Schulen, fehlende Ärzte). Nimm sie ernst und frag, was sich konkret verändert hat, bevor ihr über Schuld sprecht."
+          "hinweis": "Regionale Kränkung ist oft real (geschlossene Schulen, fehlende Ärzte). Nimm das ernst und frag, was sich konkret verändert hat, bevor ihr über Schuld sprecht."
         },
         {
           "id": "bd4e",
-          "text": "Mit ihrem eigenen früheren Leben: „Früher ging es uns besser“",
+          "text": "Mit dem eigenen früheren Leben: „Früher ging es uns besser“",
           "gewichte": {
             "identitaet-heimat": 1,
             "kontrolle-angst": 1
@@ -1099,7 +1099,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bd4f",
-          "text": "Sie fühlt sich nicht benachteiligt",
+          "text": "Die Person fühlt sich nicht benachteiligt",
           "gewichte": {}
         },
         {
@@ -1113,8 +1113,8 @@ window.APP_DATA.kompass = {
       "id": "bd5",
       "bereich": "beduerfnisse",
       "typ": "single",
-      "text": "Was würde ihr nach eigener Aussage mehr Sicherheit geben?",
-      "warum": "Sicherheitsbedürfnisse sind legitim, ihr Inhalt unterscheidet sich: Ordnungswünsche verweisen auf Kontrolle, materielle Sicherheit auf Gerechtigkeit, Stillstand auf Identität (Stenner, Hilmer et al. 2017). Was genau Sicherheit gäbe, bestimmt dein Angebot.",
+      "text": "Was würde der Person nach eigener Aussage mehr Sicherheit geben?",
+      "warum": "Sicherheitsbedürfnisse sind legitim, aber der Inhalt unterscheidet sich: Ordnungswünsche verweisen auf Kontrolle, materielle Sicherheit auf Gerechtigkeit, Stillstand auf Identität (Stenner, Hilmer et al. 2017). Was genau Sicherheit gäbe, bestimmt dein Angebot.",
       "optionen": [
         {
           "id": "bd5a",
@@ -1139,7 +1139,7 @@ window.APP_DATA.kompass = {
             "identitaet-heimat": 2,
             "kontrolle-angst": 1
           },
-          "hinweis": "Sie sucht Halt im Vertrauten. Erkenne an, was bleiben soll, und zeig, dass Vertrautes und Veränderung nebeneinander bestehen können."
+          "hinweis": "Die Person sucht Halt im Vertrauten. Erkenne an, was bleiben soll, und zeig, dass Vertrautes und Veränderung nebeneinander bestehen können."
         },
         {
           "id": "bd5d",
@@ -1151,15 +1151,15 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bd5e",
-          "text": "Dass sie nicht allein ist, wenn etwas passiert",
+          "text": "Nicht allein zu sein, wenn etwas passiert",
           "gewichte": {
             "zugehoerigkeit": 2
           },
-          "hinweis": "Ihre Sicherheit ist sozial. Verlässliche Menschen sind das Angebot: regelmäßiger Kontakt, Hilfe im Alltag, feste Verabredungen."
+          "hinweis": "Sicherheit ist für die Person etwas Soziales. Verlässliche Menschen sind das Angebot: regelmäßiger Kontakt, Hilfe im Alltag, feste Verabredungen."
         },
         {
           "id": "bd5f",
-          "text": "Sicherheit ist für sie kein Thema",
+          "text": "Sicherheit ist für die Person kein Thema",
           "gewichte": {}
         },
         {
@@ -1173,8 +1173,8 @@ window.APP_DATA.kompass = {
       "id": "bd6",
       "bereich": "beduerfnisse",
       "typ": "single",
-      "text": "Wo fühlt sie sich nach eigener Aussage zugehörig, abgesehen von der Partei?",
-      "warum": "Beziehungen außerhalb der Szene sind der wichtigste Schutz- und Ausstiegsfaktor (Bjørgo, Jensen et al.); fehlen sie, wird die Gruppe zum Lebensmittelpunkt (Violence Prevention Network). Daran entscheidet sich, ob du Brücken stärkst oder neu bauen musst.",
+      "text": "Wo fühlt sich die Person nach eigener Aussage zugehörig, abgesehen von der Partei?",
+      "warum": "Beziehungen außerhalb der Szene sind der wichtigste Schutz- und Ausstiegsfaktor (Bjørgo, Jensen et al.); fehlen solche Beziehungen, wird die Gruppe zum Lebensmittelpunkt (Violence Prevention Network). Daran entscheidet sich, ob du Brücken stärkst oder neu bauen musst.",
       "optionen": [
         {
           "id": "bd6a",
@@ -1183,7 +1183,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "kapital": 2
           },
-          "hinweis": "Diese Bindungen sind das Gegengewicht zur Szene. Stärke sie, ohne sie politisch aufzuladen: gemeinsame Routinen, Aufgaben, Feste."
+          "hinweis": "Diese Bindungen sind das Gegengewicht zur Szene. Stärke diese Bindungen, ohne sie politisch aufzuladen: gemeinsame Routinen, Aufgaben, Feste."
         },
         {
           "id": "bd6b",
@@ -1191,7 +1191,7 @@ window.APP_DATA.kompass = {
           "gewichte": {
             "zugehoerigkeit": 3
           },
-          "hinweis": "Die Partei füllt eine Lücke, die vorher etwas anderes gefüllt hat. Frag, was ihr fehlt, und hilf, es außerhalb der Szene wiederzufinden."
+          "hinweis": "Die Partei füllt eine Lücke, die vorher etwas anderes gefüllt hat. Frag, was der Person fehlt, und hilf, es außerhalb der Szene wiederzufinden."
         },
         {
           "id": "bd6c",
@@ -1203,7 +1203,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bd6d",
-          "text": "Nirgends richtig, sie beschreibt sich als Außenseiterin",
+          "text": "Nirgends richtig, die Person beschreibt sich selbst als Außenseiter:in",
           "gewichte": {
             "zugehoerigkeit": 3
           },
@@ -1231,12 +1231,12 @@ window.APP_DATA.kompass = {
       "id": "bd7",
       "bereich": "beduerfnisse",
       "typ": "single",
-      "text": "Wie geht sie mit Fragen um, auf die es keine einfache Antwort gibt?",
-      "warum": "Selbstunsicherheit treibt in Gruppen mit klaren Normen und einfachen Erklärungen (Hogg; Choi/Hogg 2020). Wer Ungewissheit schlecht aushält, braucht Verlässlichkeit und Klarheit von dir statt Ambivalenz; wer sie stehen lassen kann, verträgt offene Fragen.",
+      "text": "Wie geht die Person mit Fragen um, auf die es keine einfache Antwort gibt?",
+      "warum": "Selbstunsicherheit treibt in Gruppen mit klaren Normen und einfachen Erklärungen (Hogg; Choi/Hogg 2020). Wer Ungewissheit schlecht aushält, braucht Verlässlichkeit und Klarheit von dir statt Ambivalenz; wer Offenes stehen lassen kann, verträgt auch offene Fragen.",
       "optionen": [
         {
           "id": "bd7a",
-          "text": "Sie greift zu einer einfachen Erklärung und hält daran fest",
+          "text": "Die Person greift zu einer einfachen Erklärung und hält daran fest",
           "gewichte": {
             "kontrolle-angst": 2,
             "misstrauen": 1
@@ -1245,11 +1245,11 @@ window.APP_DATA.kompass = {
             "offenheit": 1,
             "verschwoerung": 1
           },
-          "hinweis": "Einfache Erklärungen sind ihr Halt. Nimm ihr nichts weg, ohne etwas anzubieten: klare Absprachen, eine verständliche Gegenerzählung, Verlässlichkeit in der Beziehung."
+          "hinweis": "Einfache Erklärungen geben der Person Halt. Nimm nichts weg, ohne etwas anzubieten: klare Absprachen, eine verständliche Gegenerzählung, Verlässlichkeit in der Beziehung."
         },
         {
           "id": "bd7b",
-          "text": "Sie wird unruhig oder gereizt und bricht ab",
+          "text": "Die Person wird unruhig oder gereizt und bricht ab",
           "gewichte": {
             "kontrolle-angst": 2
           },
@@ -1259,7 +1259,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bd7c",
-          "text": "Sie verlässt sich auf das, was „ihre Leute“ dazu sagen",
+          "text": "Die Person verlässt sich auf das, was „ihre Leute“ dazu sagen",
           "gewichte": {
             "zugehoerigkeit": 2,
             "misstrauen": 1
@@ -1270,12 +1270,12 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bd7d",
-          "text": "Sie kann offene Fragen stehen lassen, ohne sofort zu urteilen",
+          "text": "Die Person kann offene Fragen stehen lassen, ohne sofort zu urteilen",
           "gewichte": {},
           "skalen": {
             "offenheit": 3
           },
-          "hinweis": "Sie hält Unsicherheit aus. Fragen nach Quellen, Erlebnissen und eigenen Vorbehalten sind bei ihr erlaubt und führen weiter als jedes Gegenargument."
+          "hinweis": "Die Person hält Unsicherheit aus. Fragen nach Quellen, Erlebnissen und eigenen Vorbehalten sind hier erlaubt und führen weiter als jedes Gegenargument."
         },
         {
           "id": "bd7e",
@@ -1288,7 +1288,7 @@ window.APP_DATA.kompass = {
       "id": "gf1",
       "bereich": "gefuehle",
       "typ": "single",
-      "text": "Welches Gefühl ist bei ihr am deutlichsten, wenn es um Politik geht?",
+      "text": "Welches Gefühl ist bei der Person am deutlichsten, wenn es um Politik geht?",
       "warum": "Die Partei wirkt als Gefühlsgemeinschaft, an der Argumente abprallen (Spissinger). Das Leitgefühl bestimmt den Zugang: Wut will gehört werden, Angst braucht Sicherheit, Bitterkeit Anerkennung, Stolz Respekt (Motivational Interviewing, Itzchakov et al. 2017).",
       "optionen": [
         {
@@ -1305,7 +1305,7 @@ window.APP_DATA.kompass = {
           "gewichte": {
             "kontrolle-angst": 3
           },
-          "hinweis": "Angst lässt sich nicht wegargumentieren. Benenne, was verlässlich ist und bleibt, und frag, was ihr konkret Sicherheit geben würde."
+          "hinweis": "Angst lässt sich nicht wegargumentieren. Benenne, was verlässlich ist und bleibt, und frag, was der Person konkret Sicherheit geben würde."
         },
         {
           "id": "gf1c",
@@ -1314,7 +1314,7 @@ window.APP_DATA.kompass = {
             "gerechtigkeit-abgehaengt": 2,
             "anerkennung": 1
           },
-          "hinweis": "Hinter Bitterkeit steckt oft ein unerfülltes Versprechen. Frag, was sie erwartet hatte und wer es gebrochen hat."
+          "hinweis": "Hinter Bitterkeit steckt oft ein unerfülltes Versprechen. Frag, was die Person erwartet hatte und wer es gebrochen hat."
         },
         {
           "id": "gf1d",
@@ -1340,7 +1340,7 @@ window.APP_DATA.kompass = {
           "id": "gf1f",
           "text": "Gleichgültigkeit, es ist eher Gewohnheit",
           "gewichte": {},
-          "hinweis": "Politik ist bei ihr Nebensache. Der Hebel ist der Alltag und die Beziehung, nicht das Argument."
+          "hinweis": "Politik ist für die Person Nebensache. Die Hebel sind Alltag und Beziehung, nicht das Argument."
         },
         {
           "id": "gf1g",
@@ -1353,7 +1353,7 @@ window.APP_DATA.kompass = {
       "id": "gf2",
       "bereich": "gefuehle",
       "typ": "multi",
-      "text": "Was löst bei ihr die heftigste Reaktion aus?",
+      "text": "Was löst bei der Person die heftigste Reaktion aus?",
       "warum": "Auslöser zeigen das verletzte Bedürfnis genauer als Parolen und lassen sich im Gespräch gezielt meiden oder vorbereiten. Beschämung und Belehrung aktivieren Abwehr, nicht Nachdenken (Itzchakov et al. 2017, Dusso/Perkins 2023).",
       "optionen": [
         {
@@ -1365,16 +1365,16 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "gf2b",
-          "text": "Wenn sie sich belehrt, bevormundet oder beschämt fühlt",
+          "text": "Wenn sich die Person belehrt, bevormundet oder beschämt fühlt",
           "gewichte": {
             "anerkennung": 2,
             "protest-wut": 1
           },
-          "hinweis": "Belehrung ist ihr Auslöser. Formuliere in Ich-Sätzen, frag statt zu erklären, und gib ihr Raum, selbst zu einem Schluss zu kommen."
+          "hinweis": "Belehrung ist der Auslöser. Formuliere in Ich-Sätzen, frag, statt zu erklären, und gib der Person Raum, selbst zu einem Schluss zu kommen."
         },
         {
           "id": "gf2c",
-          "text": "Wenn jemand sie oder „ihre Leute“ als rechts oder Nazi bezeichnet",
+          "text": "Wenn jemand die Person oder „ihre Leute“ als rechts oder Nazi bezeichnet",
           "gewichte": {
             "anerkennung": 2,
             "zugehoerigkeit": 1
@@ -1382,22 +1382,22 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "gf2d",
-          "text": "Wenn andere etwas bekommen, das ihr verwehrt bleibt",
+          "text": "Wenn andere etwas bekommen, das der Person verwehrt bleibt",
           "gewichte": {
             "gerechtigkeit-abgehaengt": 2
           }
         },
         {
           "id": "gf2e",
-          "text": "Wenn jemand aus ihrem Umfeld auf Abstand zur Partei geht",
+          "text": "Wenn jemand aus dem Umfeld der Person auf Abstand zur Partei geht",
           "gewichte": {
             "zugehoerigkeit": 2
           },
-          "hinweis": "Abstand anderer trifft ihre Loyalität, nicht ihre Argumente. Verlange von ihr keine Distanzierung vor anderen; Zweifel darf sie zuerst nur dir gegenüber zeigen."
+          "hinweis": "Abstand anderer trifft die Loyalität der Person, nicht ihre Argumente. Verlange keine Distanzierung vor anderen; Zweifel darf die Person zuerst nur dir gegenüber zeigen."
         },
         {
           "id": "gf2f",
-          "text": "Wenn sich etwas in ihrem Ort, Betrieb oder Alltag verändert",
+          "text": "Wenn sich etwas im Ort, Betrieb oder Alltag der Person verändert",
           "gewichte": {
             "identitaet-heimat": 2,
             "kontrolle-angst": 1
@@ -1405,7 +1405,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "gf2g",
-          "text": "Nichts davon, sie bleibt meist ruhig",
+          "text": "Nichts davon, die Person bleibt meist ruhig",
           "gewichte": {},
           "skalen": {
             "offenheit": 2
@@ -1417,7 +1417,7 @@ window.APP_DATA.kompass = {
       "id": "gf3",
       "bereich": "gefuehle",
       "typ": "single",
-      "text": "Wie zeigt sich ihre Wut, wenn sie kommt?",
+      "text": "Wie sieht es aus, wenn die Person wütend wird?",
       "warum": "Heiße Wut ist Beteiligung und klingt ab; kalter Zynismus und Rückzug sind schwerer zu erreichen; Beleidigung und Drohung verlangen Grenzen und Selbstschutz (Angehörigenberatung, Nocun). Danach richtet sich, ob Pause-Regel, Ich-Botschaft oder Abbruch passt.",
       "optionen": [
         {
@@ -1442,11 +1442,11 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Zynismus schützt vor Enttäuschung. Nicht mitspotten, nicht belehren; frag ernsthaft, was sie früher einmal erwartet hat."
+          "hinweis": "Zynismus schützt vor Enttäuschung. Nicht mitspotten, nicht belehren; frag ernsthaft, was die Person früher einmal erwartet hat."
         },
         {
           "id": "gf3c",
-          "text": "Sie zieht sich zurück, schweigt oder bricht den Kontakt ab",
+          "text": "Zurückgezogen: Die Person schweigt oder bricht den Kontakt ab",
           "gewichte": {
             "zugehoerigkeit": 1,
             "anerkennung": 1
@@ -1455,11 +1455,11 @@ window.APP_DATA.kompass = {
             "offenheit": 1,
             "kapital": 1
           },
-          "hinweis": "Rückzug ist ihre Form von Wut. Lass die Tür offen, benenne Pausen als Pausen und melde dich ohne das Thema wieder."
+          "hinweis": "Rückzug ist hier die Form der Wut. Lass die Tür offen, benenne Pausen als Pausen und melde dich ohne das Thema wieder."
         },
         {
           "id": "gf3d",
-          "text": "Sie wird beleidigend, verletzend oder droht",
+          "text": "Beleidigend, verletzend oder drohend",
           "gewichte": {
             "protest-wut": 2
           },
@@ -1471,7 +1471,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "gf3e",
-          "text": "Sie wird selten wütend, eher traurig oder müde",
+          "text": "Selten wütend, eher traurig oder müde",
           "gewichte": {
             "gerechtigkeit-abgehaengt": 1,
             "anerkennung": 1
@@ -1491,12 +1491,12 @@ window.APP_DATA.kompass = {
       "id": "gf4",
       "bereich": "gefuehle",
       "typ": "single",
-      "text": "Woran merkst du, dass sie Angst hat, auch wenn sie es nie so nennt?",
+      "text": "Woran merkst du, dass die Person Angst hat, auch wenn sie es nie so nennt?",
       "warum": "Angst zeigt sich oft als Wut, Rückzug oder Nachrichtenhunger; AfD-Nahe sorgen sich deutlich häufiger um ihre Zukunft (67 % gegenüber 46 %, Hilmer et al. 2017). Wer Angst hinter Wut erkennt, kann Sicherheit anbieten statt zu kontern.",
       "optionen": [
         {
           "id": "gf4a",
-          "text": "Sie wird wütend und laut",
+          "text": "An Wut und Lautstärke",
           "gewichte": {
             "kontrolle-angst": 2,
             "protest-wut": 1
@@ -1505,7 +1505,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "gf4b",
-          "text": "Sie wird still und zieht sich zurück",
+          "text": "An Stille und Rückzug",
           "gewichte": {
             "zugehoerigkeit": 1,
             "kontrolle-angst": 1
@@ -1513,7 +1513,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "gf4c",
-          "text": "Sie liest noch mehr Nachrichten und Kanäle",
+          "text": "An noch mehr Nachrichten und Kanälen",
           "gewichte": {
             "misstrauen": 1,
             "kontrolle-angst": 1
@@ -1525,24 +1525,24 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "gf4d",
-          "text": "Sie sucht Bestätigung bei Gleichgesinnten",
+          "text": "An der Suche nach Bestätigung bei Gleichgesinnten",
           "gewichte": {
             "zugehoerigkeit": 2
           }
         },
         {
           "id": "gf4e",
-          "text": "Sie spricht offen darüber, auch mit mir",
+          "text": "Daran, dass die Person offen darüber spricht, auch mit mir",
           "gewichte": {},
           "skalen": {
             "offenheit": 3,
             "kapital": 3
           },
-          "hinweis": "Dass sie dir Angst zeigt, ist Vertrauen. Nimm die Angst an, ohne die Schlüsse zu bestätigen; das ist der Moment für Zuhören statt Argument."
+          "hinweis": "Dass die Person dir Angst zeigt, ist Vertrauen. Nimm die Angst an, ohne die Schlüsse zu bestätigen; das ist der Moment für Zuhören statt Argument."
         },
         {
           "id": "gf4f",
-          "text": "Ich erkenne bei ihr keine Angst",
+          "text": "Ich erkenne bei der Person keine Angst",
           "gewichte": {}
         }
       ]
@@ -1551,12 +1551,12 @@ window.APP_DATA.kompass = {
       "id": "gf5",
       "bereich": "gefuehle",
       "typ": "single",
-      "text": "Worauf ist sie sichtbar stolz?",
+      "text": "Worauf ist die Person sichtbar stolz?",
       "warum": "Stolz zeigt, wo Anerkennung andocken kann; Würdigung konkreter Leistung stillt das Bedürfnis nach Bedeutsamkeit außerhalb der Szene (Kruglanski). Wer sich abwertet, ist über Rollen erreichbar, wer auf „Durchblick“ stolz ist, über kritisches Denken.",
       "optionen": [
         {
           "id": "gf5a",
-          "text": "Auf ihre Arbeit, ihr Können, das, was sie aufgebaut hat",
+          "text": "Auf Arbeit und Können, auf das, was die Person aufgebaut hat",
           "gewichte": {
             "anerkennung": 2
           },
@@ -1569,7 +1569,7 @@ window.APP_DATA.kompass = {
             "identitaet-heimat": 2,
             "zugehoerigkeit": 1
           },
-          "hinweis": "Heimatstolz ist kein Gegner. Erkenne an, was bleiben soll, und frag, was Heimat für sie konkret ausmacht."
+          "hinweis": "Heimatstolz ist kein Gegner. Erkenne an, was bleiben soll, und frag, was Heimat für die Person konkret ausmacht."
         },
         {
           "id": "gf5c",
@@ -1581,7 +1581,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "verschwoerung": 2
           },
-          "hinweis": "Würdige ihr kritisches Denken und lade ein, es auf beide Seiten anzuwenden: Wie würde sie merken, dass ihre Quelle sie täuscht?"
+          "hinweis": "Würdige das kritische Denken und lade ein, es auf beide Seiten anzuwenden: Woran würde die Person merken, dass ihre Quelle sie täuscht?"
         },
         {
           "id": "gf5d",
@@ -1593,11 +1593,11 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "gf5e",
-          "text": "Auf wenig, sie wertet sich eher ab",
+          "text": "Auf wenig, die Person wertet sich eher ab",
           "gewichte": {
             "anerkennung": 3
           },
-          "hinweis": "Fehlender Selbstwert macht die Szene attraktiv, weil sie Bedeutung verleiht. Gib ihr Aufgaben, in denen sie gebraucht wird, und benenne, was sie gut macht."
+          "hinweis": "Fehlender Selbstwert macht die Szene attraktiv, weil die Szene Bedeutung verleiht. Gib der Person Aufgaben, in denen sie gebraucht wird, und benenne, was sie gut macht."
         },
         {
           "id": "gf5f",
@@ -1610,7 +1610,7 @@ window.APP_DATA.kompass = {
       "id": "gf6",
       "bereich": "gefuehle",
       "typ": "single",
-      "text": "Worauf freut sie sich oder was gibt ihr Hoffnung?",
+      "text": "Worauf freut sich die Person, was gibt ihr Hoffnung?",
       "warum": "Niedergangspessimismus kennzeichnet den radikal-rechten Kern (Teney 2026); Hoffnungen außerhalb der Politik sind Brücken und Schutzfaktoren (Bjørgo: Partnerschaft, Familie, Pläne). Danach richtet sich, ob du an Lebensthemen oder an Wirksamkeit ansetzt.",
       "optionen": [
         {
@@ -1621,7 +1621,7 @@ window.APP_DATA.kompass = {
             "offenheit": 2,
             "kapital": 1
           },
-          "hinweis": "Hier liegt ihr Leben außerhalb der Politik. Verbringe Zeit damit, gemeinsam und ohne das Thema; das hält die Beziehung und zeigt, dass sie mehr ist als ihre Haltung."
+          "hinweis": "Hier liegt das Leben der Person außerhalb der Politik. Verbringe Zeit damit, gemeinsam und ohne das Thema; das hält die Beziehung und zeigt, dass die Person mehr ist als ihre Haltung."
         },
         {
           "id": "gf6b",
@@ -1630,7 +1630,7 @@ window.APP_DATA.kompass = {
             "protest-wut": 2,
             "kontrolle-angst": 1
           },
-          "hinweis": "Ihre Hoffnung ist politisch gebunden. Frag, was sich dann in ihrem Alltag konkret ändern soll, und ob es dafür auch heute schon Wege gibt."
+          "hinweis": "Die Hoffnung ist politisch gebunden. Frag, was sich dann im Alltag der Person konkret ändern soll, und ob es dafür auch heute schon Wege gibt."
         },
         {
           "id": "gf6c",
@@ -1675,12 +1675,12 @@ window.APP_DATA.kompass = {
       "id": "gf7",
       "bereich": "gefuehle",
       "typ": "single",
-      "text": "Was passiert, wenn du ihr Gefühl ansprichst statt ihrer Aussage, etwa „Das klingt enttäuscht“?",
-      "warum": "Empathisches Spiegeln senkt Abwehr und macht Einstellungen weniger extrem (Itzchakov et al. 2017; Yeomans et al. 2020). Ob sie darauf eingeht, zeigt, ob der Zugang über Gefühle offen ist oder erst Vertrauen aufgebaut werden muss.",
+      "text": "Was passiert, wenn du das Gefühl der Person ansprichst statt ihrer Aussage, etwa „Das klingt enttäuscht“?",
+      "warum": "Empathisches Spiegeln senkt Abwehr und macht Einstellungen weniger extrem (Itzchakov et al. 2017; Yeomans et al. 2020). Ob die Person darauf eingeht, zeigt, ob der Zugang über Gefühle offen ist oder erst Vertrauen aufgebaut werden muss.",
       "optionen": [
         {
           "id": "gf7a",
-          "text": "Sie wird weicher und erzählt mehr",
+          "text": "Die Person wird weicher und erzählt mehr",
           "gewichte": {},
           "skalen": {
             "offenheit": 3,
@@ -1690,7 +1690,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "gf7b",
-          "text": "Sie blockt ab: „Das ist kein Gefühl, das sind Fakten“",
+          "text": "Die Person blockt ab: „Das ist kein Gefühl, das sind Fakten“",
           "gewichte": {
             "anerkennung": 1,
             "kontrolle-angst": 1
@@ -1698,11 +1698,11 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Gefühle anzusprechen wirkt bei ihr als Entwertung. Bleib bei Erlebnissen und Sachfragen („Was ist da genau passiert?“); das Gefühl darf unbenannt mitlaufen."
+          "hinweis": "Gefühle anzusprechen wirkt auf die Person wie eine Entwertung. Bleib bei Erlebnissen und Sachfragen („Was ist da genau passiert?“); das Gefühl darf unbenannt mitlaufen."
         },
         {
           "id": "gf7c",
-          "text": "Sie wird wütender oder fühlt sich ertappt",
+          "text": "Die Person wird wütender oder fühlt sich ertappt",
           "gewichte": {
             "protest-wut": 1,
             "anerkennung": 1
@@ -1713,7 +1713,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "gf7d",
-          "text": "Sie lenkt ab oder macht einen Witz",
+          "text": "Die Person lenkt ab oder macht einen Witz",
           "gewichte": {},
           "skalen": {
             "offenheit": 1
@@ -1723,7 +1723,7 @@ window.APP_DATA.kompass = {
           "id": "gf7e",
           "text": "Habe ich bisher nicht ausprobiert",
           "gewichte": {},
-          "hinweis": "Probiere es im ruhigen Moment, nicht im Streit: ein Satz, der ihr Gefühl benennt, ohne Deutung und ohne Gegenargument. Dann abwarten."
+          "hinweis": "Probiere es im ruhigen Moment, nicht im Streit: ein Satz, der das Gefühl benennt, ohne Deutung und ohne Gegenargument. Dann abwarten."
         }
       ]
     },
@@ -1731,7 +1731,7 @@ window.APP_DATA.kompass = {
       "id": "qu1",
       "bereich": "quellen",
       "typ": "multi",
-      "text": "Über welche Kanäle kommen politische Inhalte täglich zu ihr?",
+      "text": "Über welche Kanäle kommen politische Inhalte täglich zur Person?",
       "warum": "Kanäle unterscheiden sich in Dynamik und Gegenstrategie: Geschlossene Chats liefern Verschwörungsinhalte, Kurzvideos Empörung per Algorithmus, Lokalgruppen Zugehörigkeit. Nur bei gemeinsam genutzten Medien gibt es geteilten Boden (Lewandowsky/Cook 2020).",
       "optionen": [
         {
@@ -1752,7 +1752,7 @@ window.APP_DATA.kompass = {
           "gewichte": {
             "protest-wut": 1
           },
-          "hinweis": "Kurzvideos wirken über Emotion und Wiederholung, nicht über Argumente. Frag, welches Video sie zuletzt überzeugt hat, und schaut es gemeinsam an."
+          "hinweis": "Kurzvideos wirken über Emotion und Wiederholung, nicht über Argumente. Frag, welches Video die Person zuletzt überzeugt hat, und schaut es gemeinsam an."
         },
         {
           "id": "qu1c",
@@ -1793,12 +1793,12 @@ window.APP_DATA.kompass = {
       "id": "qu2",
       "bereich": "quellen",
       "typ": "single",
-      "text": "Wie viel Zeit verbringt sie nach deinem Eindruck täglich mit diesen Inhalten?",
+      "text": "Wie viel Zeit verbringt die Person nach deinem Eindruck täglich mit diesen Inhalten?",
       "warum": "Dosis und Dauerschleife machen aus Meinungen eine Weltsicht: Ständiger Konsum liefert Bestätigung und Empörung im Minutentakt. Daran entscheidet sich, ob Abschalten und Medienmechanik Thema sein müssen oder Inhalte nur Anlass sind (Kurswechsel 2022, KAST).",
       "optionen": [
         {
           "id": "qu2a",
-          "text": "Fast ständig, das Handy ist immer dabei und sie teilt sofort",
+          "text": "Fast ständig, das Handy ist immer dabei und Inhalte werden sofort geteilt",
           "gewichte": {
             "zugehoerigkeit": 1,
             "misstrauen": 1
@@ -1824,11 +1824,11 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Inhalte sind bei ihr Anlass, nicht Dauerbegleitung. Über konkrete Ereignisse lässt sich sachlich sprechen; die Haltung musst du nicht als Ganzes verhandeln."
+          "hinweis": "Inhalte sind für die Person Anlass, nicht Dauerbegleitung. Über konkrete Ereignisse lässt sich sachlich sprechen; die Haltung musst du nicht als Ganzes verhandeln."
         },
         {
           "id": "qu2d",
-          "text": "Sie hört es vor allem von anderen, selbst liest sie wenig",
+          "text": "Kaum, die Person hört es vor allem von anderen und liest selbst wenig",
           "gewichte": {
             "zugehoerigkeit": 2
           },
@@ -1845,31 +1845,31 @@ window.APP_DATA.kompass = {
       "id": "qu3",
       "bereich": "quellen",
       "typ": "single",
-      "text": "Warum hält sie ihre Quellen für glaubwürdig?",
-      "warum": "Das Glaubwürdigkeitskriterium bestimmt, wer sie erreichen kann: Nur Botschafter:innen, die sie selbst anerkennt, kommen an (Lewandowsky/Cook 2020; Walter et al. 2020). Prüft sie Belege, trägt Sachlichkeit; vertraut sie Bekannten, tragen Menschen.",
+      "text": "Warum hält die Person ihre Quellen für glaubwürdig?",
+      "warum": "Das Glaubwürdigkeitskriterium bestimmt, wer die Person erreichen kann: Nur Botschafter:innen, die sie selbst anerkennt, kommen an (Lewandowsky/Cook 2020; Walter et al. 2020). Prüft die Person Belege, trägt Sachlichkeit; vertraut sie Bekannten, tragen Menschen.",
       "optionen": [
         {
           "id": "qu3a",
-          "text": "Weil sie „unabhängig“ sind und nicht zum „Mainstream“ gehören",
+          "text": "Weil die Quellen „unabhängig“ sind und nicht zum „Mainstream“ gehören",
           "gewichte": {
             "misstrauen": 2
           },
           "skalen": {
             "verschwoerung": 2
           },
-          "hinweis": "Unabhängigkeit ist ihr Maßstab. Frag, wie unabhängig die Quelle wirklich ist: Wer finanziert sie, was passiert mit Widerspruch, wer verdient an der Empörung?"
+          "hinweis": "Unabhängigkeit ist der Maßstab der Person. Frag, wie unabhängig die Quelle wirklich ist: Wer finanziert sie, was passiert mit Widerspruch, wer verdient an der Empörung?"
         },
         {
           "id": "qu3b",
-          "text": "Weil Menschen, die sie kennt und schätzt, sie teilen",
+          "text": "Weil Menschen, die die Person kennt und schätzt, diese Quellen teilen",
           "gewichte": {
             "zugehoerigkeit": 2
           },
-          "hinweis": "Vertrauen läuft bei ihr über Personen. Menschen, die sie respektiert und anders denken, sind glaubwürdiger als jede Statistik; ermögliche solche Begegnungen."
+          "hinweis": "Vertrauen läuft bei der Person über Menschen. Wer respektiert wird und anders denkt, ist glaubwürdiger als jede Statistik; ermögliche solche Begegnungen."
         },
         {
           "id": "qu3c",
-          "text": "Weil sie bestätigen, was sie selbst erlebt hat",
+          "text": "Weil die Quellen bestätigen, was die Person selbst erlebt hat",
           "gewichte": {
             "gerechtigkeit-abgehaengt": 1,
             "identitaet-heimat": 1
@@ -1885,12 +1885,12 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "qu3e",
-          "text": "Sie prüft tatsächlich Belege und Gegenpositionen",
+          "text": "Die Person prüft tatsächlich Belege und Gegenpositionen",
           "gewichte": {},
           "skalen": {
             "offenheit": 3
           },
-          "hinweis": "Bei ihr trägt Sachlichkeit. Prüft gemeinsam Quellen mit denselben Maßstäben auf beiden Seiten, respektvoll und ohne Besserwisserei."
+          "hinweis": "Hier trägt Sachlichkeit. Prüft gemeinsam Quellen mit denselben Maßstäben auf beiden Seiten, respektvoll und ohne Besserwisserei."
         },
         {
           "id": "qu3f",
@@ -1903,7 +1903,7 @@ window.APP_DATA.kompass = {
       "id": "qu4",
       "bereich": "quellen",
       "typ": "single",
-      "text": "Spricht sie in eigenen Worten oder übernimmt sie Begriffe und Sätze aus ihren Kanälen?",
+      "text": "Spricht die Person in eigenen Worten oder übernimmt sie Begriffe und Sätze aus ihren Kanälen?",
       "warum": "Übernommene Formeln zeigen, wie weit die Erzählung eigenes Denken ersetzt hat; Szenebegriffe markieren Nähe zu Milieus über die Partei hinaus (MBR 2025, Pfeiffer 2024). Danach richtet sich, ob du nach eigenen Worten fragst oder eine Grenze setzen musst.",
       "optionen": [
         {
@@ -1913,7 +1913,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 3
           },
-          "hinweis": "Sie denkt selbst. Fragen nach ihren Beispielen und Erlebnissen finden Anschluss; du musst keine Videos widerlegen."
+          "hinweis": "Die Person denkt selbst. Fragen nach eigenen Beispielen und Erlebnissen finden Anschluss; du musst keine Videos widerlegen."
         },
         {
           "id": "qu4b",
@@ -1935,7 +1935,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Bitte sie, es in eigenen Worten zu erklären: „Wie würdest du das jemandem sagen, der das Video nicht kennt?“ Eigene Worte bringen eigenes Denken zurück."
+          "hinweis": "Bitte die Person, es in eigenen Worten zu erklären: „Wie würdest du das jemandem sagen, der das Video nicht kennt?“ Eigene Worte bringen eigenes Denken zurück."
         },
         {
           "id": "qu4d",
@@ -1961,7 +1961,7 @@ window.APP_DATA.kompass = {
       "id": "qu5",
       "bereich": "quellen",
       "typ": "multi",
-      "text": "Welche Art von Inhalten zeigt oder schickt sie dir am häufigsten?",
+      "text": "Welche Art von Inhalten zeigt oder schickt dir die Person am häufigsten?",
       "warum": "Die Form der Inhalte verrät das Bedürfnis dahinter und bestimmt deine Antwort: Einzelfall-Videos sprechen Angst an und lassen sich nicht mit Statistik beantworten, Spott sucht Zustimmung, Enthüllungen versprechen Durchblick (Lewandowsky/Cook 2020).",
       "optionen": [
         {
@@ -1970,7 +1970,7 @@ window.APP_DATA.kompass = {
           "gewichte": {
             "kontrolle-angst": 2
           },
-          "hinweis": "Einzelfälle wecken Angst, Statistik löscht sie nicht. Reagiere auf das Gefühl („Das hat dich erschreckt?“) und frag, was sie vor Ort selbst erlebt."
+          "hinweis": "Einzelfälle wecken Angst, Statistik löscht sie nicht. Reagiere auf das Gefühl („Das hat dich erschreckt?“) und frag, was die Person vor Ort selbst erlebt."
         },
         {
           "id": "qu5b",
@@ -1978,7 +1978,7 @@ window.APP_DATA.kompass = {
           "gewichte": {
             "protest-wut": 2
           },
-          "hinweis": "Spott sucht Komplizenschaft. Nicht mitlachen, nicht empören; frag ruhig, was sie an der Person wirklich stört."
+          "hinweis": "Spott sucht Komplizenschaft. Nicht mitlachen, nicht empören; frag ruhig, was die Person an den Verspotteten wirklich stört."
         },
         {
           "id": "qu5c",
@@ -1989,7 +1989,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "verschwoerung": 2
           },
-          "hinweis": "Enthüllungen bedienen das Bedürfnis nach Durchblick. Frag nach der Mechanik: Wer verdient daran, dass sie sich getäuscht fühlt?"
+          "hinweis": "Enthüllungen bedienen das Bedürfnis nach Durchblick. Frag nach der Mechanik: Wer verdient daran, dass sich die Person getäuscht fühlt?"
         },
         {
           "id": "qu5d",
@@ -1998,7 +1998,7 @@ window.APP_DATA.kompass = {
             "zugehoerigkeit": 2,
             "identitaet-heimat": 1
           },
-          "hinweis": "Sie teilt Zugehörigkeit, nicht Argumente. Frag, was sie an der Person überzeugt; oft ist es der Ton, nicht der Inhalt."
+          "hinweis": "Die Person teilt Zugehörigkeit, nicht Argumente. Frag, was an dem Auftritt überzeugt; oft ist es der Ton, nicht der Inhalt."
         },
         {
           "id": "qu5e",
@@ -2021,7 +2021,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "qu5g",
-          "text": "Sie schickt oder zeigt mir nichts",
+          "text": "Die Person schickt oder zeigt mir nichts",
           "gewichte": {}
         }
       ]
@@ -2030,12 +2030,12 @@ window.APP_DATA.kompass = {
       "id": "qu6",
       "bereich": "quellen",
       "typ": "single",
-      "text": "Wie spricht sie über Algorithmen, Empfehlungen und das, was ihr Feed ihr zeigt?",
+      "text": "Wie spricht die Person über Algorithmen, Empfehlungen und das, was ihr der Feed zeigt?",
       "warum": "Prebunking und Medienmechanik wirken stärker als nachträgliche Gegenargumente (O’Mahony et al. 2023), aber nur, wenn die Person die Mechanik als Thema zulässt. Wer gezielte Unterdrückung der eigenen Seite annimmt, denkt bereits verschwörungsförmig.",
       "optionen": [
         {
           "id": "qu6a",
-          "text": "Das Thema ist ihr fremd, der Feed ist für sie „die Nachrichten“",
+          "text": "Das Thema ist der Person fremd, der Feed ist für sie „die Nachrichten“",
           "gewichte": {},
           "skalen": {
             "offenheit": 2
@@ -2044,7 +2044,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "qu6b",
-          "text": "Sie kennt das Prinzip, hält ihre Kanäle aber für die Ausnahme",
+          "text": "Die Person kennt das Prinzip, hält ihre Kanäle aber für die Ausnahme",
           "gewichte": {
             "misstrauen": 1
           },
@@ -2054,7 +2054,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "qu6c",
-          "text": "Sie glaubt, Plattformen und Staat unterdrücken gezielt ihre Seite",
+          "text": "Die Person glaubt, Plattformen und Staat unterdrücken gezielt ihre Seite",
           "gewichte": {
             "misstrauen": 2,
             "protest-wut": 1
@@ -2063,16 +2063,16 @@ window.APP_DATA.kompass = {
             "verschwoerung": 3,
             "offenheit": 0
           },
-          "hinweis": "Zensurglaube ist Teil der Erzählung; jede Einschränkung bestätigt ihn. Lenke auf die Erzählung selbst: Wer profitiert davon, dass sie sich unterdrückt fühlt?"
+          "hinweis": "Zensurglaube ist Teil der Erzählung; jede Einschränkung bestätigt ihn. Lenke auf die Erzählung selbst: Wer profitiert davon, dass sich die Person unterdrückt fühlt?"
         },
         {
           "id": "qu6d",
-          "text": "Sie ist selbst kritisch und hat schon Kanäle abbestellt",
+          "text": "Die Person ist selbst kritisch und hat schon Kanäle abbestellt",
           "gewichte": {},
           "skalen": {
             "offenheit": 3
           },
-          "hinweis": "Sie reguliert sich selbst. Frag, was den Ausschlag gab; solche Momente sind Vorbilder für weitere Zweifel."
+          "hinweis": "Die Person reguliert sich selbst. Frag, was den Ausschlag gab; solche Momente sind Vorbilder für weitere Zweifel."
         },
         {
           "id": "qu6e",
@@ -2085,17 +2085,17 @@ window.APP_DATA.kompass = {
       "id": "qu7",
       "bereich": "quellen",
       "typ": "single",
-      "text": "Gibt es eine Quelle oder Person, der ihr beide vertraut?",
+      "text": "Gibt es jemanden oder ein Medium, dem ihr beide vertraut, du und die Person?",
       "warum": "Korrekturen wirken nur aus Quellen, die das Gegenüber anerkennt; glaubwürdige Botschafter:innen wie Aussteiger:innen oder respektierte Bekannte sind die wirksamste Brücke (Lewandowsky/Cook 2020). Ohne gemeinsame Quelle wird jeder Link zum Angriff.",
       "optionen": [
         {
           "id": "qu7a",
-          "text": "Ja, eine Person: Bekannte, Fachkraft, Aussteiger:in",
+          "text": "Ja, einen Menschen: Bekannte, Fachkraft, Aussteiger:in",
           "gewichte": {},
           "skalen": {
             "kapital": 2
           },
-          "hinweis": "Diese Person ist deine wichtigste Brücke. Nicht instrumentalisieren, aber Begegnungen ermöglichen und ihre Sicht im Gespräch erwähnen."
+          "hinweis": "Dieser Mensch ist deine wichtigste Brücke. Nicht instrumentalisieren, aber Begegnungen ermöglichen und seine Sicht im Gespräch erwähnen."
         },
         {
           "id": "qu7b",
@@ -2108,7 +2108,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "qu7c",
-          "text": "Nein, sie lehnt alles ab, was ich nenne",
+          "text": "Nein, die Person lehnt alles ab, was ich nenne",
           "gewichte": {
             "misstrauen": 3
           },
@@ -2130,21 +2130,21 @@ window.APP_DATA.kompass = {
       "id": "wi1",
       "bereich": "widerspruch",
       "typ": "single",
-      "text": "Wie reagiert sie, wenn du ruhig nachfragst, etwa „Wie kommst du darauf?“ oder „Wen meinst du genau?“",
-      "warum": "Offene Nachfragen sind das Kernwerkzeug der Beratungsstellen (KAST, MBR) und der Street Epistemology. Ob sie erklärt, abblockt oder eine Prüfung wittert, entscheidet, ob du mit Fragen arbeiten kannst oder erst Vertrauen aufbauen musst.",
+      "text": "Wie reagiert die Person, wenn du ruhig nachfragst, etwa „Wie kommst du darauf?“ oder „Wen meinst du genau?“",
+      "warum": "Offene Nachfragen sind das Kernwerkzeug der Beratungsstellen (KAST, MBR) und der Street Epistemology. Ob die Person erklärt, abblockt oder eine Prüfung wittert, entscheidet, ob du mit Fragen arbeiten kannst oder erst Vertrauen aufbauen musst.",
       "optionen": [
         {
           "id": "wi1a",
-          "text": "Sie erklärt in eigenen Worten, was sie meint",
+          "text": "Die Person erklärt in eigenen Worten, was sie meint",
           "gewichte": {},
           "skalen": {
             "offenheit": 3
           },
-          "hinweis": "Gute Basis: Sie denkt mit, wenn man fragt. Bleib bei Fragen statt bei Belegen und fass zusammen, was du gehört hast."
+          "hinweis": "Gute Basis: Die Person denkt mit, wenn man fragt. Bleib bei Fragen statt bei Belegen und fass zusammen, was du gehört hast."
         },
         {
           "id": "wi1b",
-          "text": "Sie wiederholt die Parole, nur lauter",
+          "text": "Die Person wiederholt die Parole, nur lauter",
           "gewichte": {
             "protest-wut": 1
           },
@@ -2154,18 +2154,18 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wi1c",
-          "text": "Sie fühlt sich geprüft und wird misstrauisch",
+          "text": "Die Person fühlt sich geprüft und wird misstrauisch",
           "gewichte": {
             "misstrauen": 2
           },
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Fragen wirken auf sie wie ein Verhör. Frag seltener, erzähl mehr von dir und sag offen, warum du etwas wissen willst."
+          "hinweis": "Fragen wirken auf die Person wie ein Verhör. Frag seltener, erzähl mehr von dir und sag offen, warum du etwas wissen willst."
         },
         {
           "id": "wi1d",
-          "text": "Sie springt zu einem anderen Aufreger",
+          "text": "Die Person springt zu einem anderen Aufreger",
           "gewichte": {},
           "skalen": {
             "offenheit": 1
@@ -2173,12 +2173,12 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wi1e",
-          "text": "Sie gibt zu, es nicht genau zu wissen",
+          "text": "Die Person gibt zu, es nicht genau zu wissen",
           "gewichte": {},
           "skalen": {
             "offenheit": 3
           },
-          "hinweis": "Sie kann Unsicherheit aushalten. Das ist der Moment für gemeinsames Nachschauen, nicht für ein Triumphgefühl."
+          "hinweis": "Die Person kann Unsicherheit aushalten. Das ist der Moment für gemeinsames Nachschauen, nicht für ein Triumphgefühl."
         },
         {
           "id": "wi1f",
@@ -2192,31 +2192,31 @@ window.APP_DATA.kompass = {
       "id": "wi2",
       "bereich": "widerspruch",
       "typ": "single",
-      "text": "Was passiert, wenn du ihr eine eigene Erfahrung erzählst, die zu ihrer Sicht nicht passt?",
-      "warum": "Nicht wertender Austausch von Erfahrungen verschiebt Einstellungen über Monate, reine Argumente nicht (Kalla/Broockman 2020). Ihre Reaktion auf Erzählungen zeigt, ob dieser am besten belegte Zugang bei ihr offensteht.",
+      "text": "Was passiert, wenn du der Person eine eigene Erfahrung erzählst, die zu ihrer Sicht nicht passt?",
+      "warum": "Nicht wertender Austausch von Erfahrungen verschiebt Einstellungen über Monate, reine Argumente nicht (Kalla/Broockman 2020). Die Reaktion auf Erzählungen zeigt, ob dieser am besten belegte Zugang bei der Person offensteht.",
       "optionen": [
         {
           "id": "wi2a",
-          "text": "Sie hört zu und fragt nach",
+          "text": "Die Person hört zu und fragt nach",
           "gewichte": {},
           "skalen": {
             "offenheit": 3,
             "kapital": 2
           },
-          "hinweis": "Erzählen trägt bei ihr. Mehr Geschichten von konkreten Menschen, weniger Zahlen und Links."
+          "hinweis": "Erzählen trägt bei der Person. Mehr Geschichten von konkreten Menschen, weniger Zahlen und Links."
         },
         {
           "id": "wi2b",
-          "text": "„Das ist die Ausnahme.“ Sie hört zu, aber es ändert nichts",
+          "text": "„Das ist die Ausnahme.“ Die Person hört zu, aber es ändert nichts",
           "gewichte": {},
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Das ist normal. Erzählungen wirken verzögert. Wiederhole sie gelegentlich, ohne daraus ein Argument zu machen."
+          "hinweis": "Das ist normal, Erzählungen wirken verzögert. Wiederhole die Geschichte gelegentlich, ohne daraus ein Argument zu machen."
         },
         {
           "id": "wi2c",
-          "text": "Sie zählt sofort Gegenbeispiele auf",
+          "text": "Die Person zählt sofort Gegenbeispiele auf",
           "gewichte": {
             "protest-wut": 1
           },
@@ -2226,7 +2226,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wi2d",
-          "text": "Sie wertet die Menschen in der Geschichte ab",
+          "text": "Die Person wertet die Menschen in der Geschichte ab",
           "gewichte": {
             "identitaet-heimat": 1
           },
@@ -2239,7 +2239,7 @@ window.APP_DATA.kompass = {
           "id": "wi2e",
           "text": "Habe ich noch nie probiert",
           "gewichte": {},
-          "hinweis": "Probiere es: eine kurze, echte Geschichte aus deinem Leben, ohne Moral am Ende. Danach fragen, ob sie Ähnliches kennt."
+          "hinweis": "Probiere es: eine kurze, echte Geschichte aus deinem Leben, ohne Moral am Ende. Danach fragen, ob die Person Ähnliches kennt."
         }
       ]
     },
@@ -2247,18 +2247,18 @@ window.APP_DATA.kompass = {
       "id": "wi3",
       "bereich": "widerspruch",
       "typ": "single",
-      "text": "Fragt sie dich von sich aus, wie du etwas siehst?",
-      "warum": "Neugier auf deine Sicht ist das sichtbarste Zeichen von Gesprächsoffenheit und Vertrauen in dich. Fehlt sie, läuft das Gespräch einseitig, und du musst zuerst zuhören und spiegeln, bevor du selbst etwas sagst (Itzchakov et al. 2017).",
+      "text": "Fragt dich die Person von sich aus, wie du etwas siehst?",
+      "warum": "Neugier auf deine Sicht ist das sichtbarste Zeichen von Gesprächsoffenheit und Vertrauen in dich. Fehlt diese Neugier, läuft das Gespräch einseitig, und du musst zuerst zuhören und spiegeln, bevor du selbst etwas sagst (Itzchakov et al. 2017).",
       "optionen": [
         {
           "id": "wi3a",
-          "text": "Ja, und sie hört die Antwort auch an",
+          "text": "Ja, und die Person hört sich die Antwort auch an",
           "gewichte": {},
           "skalen": {
             "offenheit": 3,
             "kapital": 2
           },
-          "hinweis": "Nutze das: Sag ehrlich, wie du es siehst, in Ich-Form und ohne Etikett. Sie hat dich eingeladen."
+          "hinweis": "Nutze das: Sag ehrlich, wie du es siehst, in Ich-Form und ohne Etikett. Die Person hat dich eingeladen."
         },
         {
           "id": "wi3b",
@@ -2272,7 +2272,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wi3c",
-          "text": "Selten, meist redet sie",
+          "text": "Selten, meist redet die Person",
           "gewichte": {},
           "skalen": {
             "offenheit": 1
@@ -2285,7 +2285,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 0
           },
-          "hinweis": "Einseitige Gespräche kippen schnell. Vereinbart einen Wechsel: erst sie zehn Minuten, dann du, ohne Unterbrechung."
+          "hinweis": "Einseitige Gespräche kippen schnell. Vereinbart einen Wechsel: erst die Person zehn Minuten, dann du, ohne Unterbrechung."
         },
         {
           "id": "wi3e",
@@ -2298,12 +2298,12 @@ window.APP_DATA.kompass = {
       "id": "wi4",
       "bereich": "widerspruch",
       "typ": "multi",
-      "text": "Was passiert, wenn du bei einem einzigen Punkt bleiben willst?",
-      "warum": "Parolen-Hopping und Linkfluten sind die häufigsten Gründe, warum Gespräche scheitern (MBR, KAST). Ob sie beim Thema bleiben kann, entscheidet, ob du vorab eine Ein-Thema-Regel vereinbaren musst.",
+      "text": "Was passiert, wenn du mit der Person bei einem einzigen Punkt bleiben willst?",
+      "warum": "Parolen-Hopping und Linkfluten sind die häufigsten Gründe, warum Gespräche scheitern (MBR, KAST). Ob die Person beim Thema bleiben kann, entscheidet, ob du vorab eine Ein-Thema-Regel vereinbaren musst.",
       "optionen": [
         {
           "id": "wi4a",
-          "text": "Sie bleibt dabei und geht ins Detail",
+          "text": "Die Person bleibt dabei und geht ins Detail",
           "gewichte": {},
           "skalen": {
             "offenheit": 3
@@ -2311,7 +2311,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wi4b",
-          "text": "Sie springt zum nächsten Aufreger",
+          "text": "Die Person springt zum nächsten Aufreger",
           "gewichte": {
             "protest-wut": 1
           },
@@ -2322,7 +2322,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wi4c",
-          "text": "Sie holt Videos oder Links aufs Handy",
+          "text": "Die Person holt Videos oder Links aufs Handy",
           "gewichte": {
             "misstrauen": 1
           },
@@ -2333,7 +2333,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wi4d",
-          "text": "Sie bricht ab: „Das hat keinen Sinn mit dir.“",
+          "text": "Die Person bricht ab: „Das hat keinen Sinn mit dir.“",
           "gewichte": {},
           "skalen": {
             "offenheit": 0
@@ -2342,7 +2342,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wi4e",
-          "text": "Sie wird persönlich und greift dich an",
+          "text": "Die Person wird persönlich und greift dich an",
           "gewichte": {
             "protest-wut": 2
           },
@@ -2361,12 +2361,12 @@ window.APP_DATA.kompass = {
       "id": "wi5",
       "bereich": "widerspruch",
       "typ": "single",
-      "text": "Wie reagiert sie, wenn du deine eigene Haltung klar sagst, ohne sie anzugreifen?",
-      "warum": "Praxiskonsens: Position zeigen bei Wertschätzung der Person, denn Schweigen wird als Zustimmung gelesen. Ihre Reaktion auf offenen Dissens zeigt, ob Verschiedenheit in eurer Beziehung Platz hat oder Reaktanz auslöst.",
+      "text": "Wie reagiert die Person, wenn du deine eigene Haltung klar sagst, ohne sie anzugreifen?",
+      "warum": "Praxiskonsens: Position zeigen bei Wertschätzung der Person, denn Schweigen wird als Zustimmung gelesen. Die Reaktion auf offenen Dissens zeigt, ob Verschiedenheit in eurer Beziehung Platz hat oder Reaktanz auslöst.",
       "optionen": [
         {
           "id": "wi5a",
-          "text": "Sie akzeptiert, dass wir verschieden denken",
+          "text": "Die Person akzeptiert, dass wir verschieden denken",
           "gewichte": {},
           "skalen": {
             "offenheit": 3,
@@ -2376,7 +2376,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wi5b",
-          "text": "Sie versucht, mich zu überzeugen, bleibt aber freundlich",
+          "text": "Die Person versucht, mich zu überzeugen, bleibt aber freundlich",
           "gewichte": {},
           "skalen": {
             "offenheit": 2,
@@ -2385,7 +2385,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wi5c",
-          "text": "Sie wertet mich ab: naiv, Gutmensch, Schlafschaf",
+          "text": "Die Person wertet mich ab: naiv, Gutmensch, Schlafschaf",
           "gewichte": {
             "protest-wut": 1,
             "misstrauen": 1
@@ -2393,11 +2393,11 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Benenne die Abwertung ruhig als Grenze. Abwerten ist bei ihr Schutz. Frag später, was sie an deiner Sicht so stört."
+          "hinweis": "Benenne die Abwertung ruhig als Grenze. Abwerten ist hier Schutz. Frag später, was die Person an deiner Sicht so stört."
         },
         {
           "id": "wi5d",
-          "text": "Sie zieht sich zurück und geht auf Abstand",
+          "text": "Die Person zieht sich zurück und geht auf Abstand",
           "gewichte": {
             "zugehoerigkeit": 1
           },
@@ -2419,8 +2419,8 @@ window.APP_DATA.kompass = {
       "id": "wi6",
       "bereich": "widerspruch",
       "typ": "single",
-      "text": "Äußert sie selbst manchmal Kritik an der Partei oder an Leuten aus ihrem politischen Umfeld?",
-      "warum": "Eigene Kritik an der Partei ist geäußerte Ambivalenz und das stärkste Öffnungssignal (Priester/Petty 1996; DJI-Distanzierungskriterien). Ob sie nur Taktik oder auch Inhalte kritisiert, zeigt, wo du anknüpfen kannst, ohne dass sie verteidigen muss.",
+      "text": "Äußert die Person selbst manchmal Kritik an der Partei oder an Leuten aus ihrem politischen Umfeld?",
+      "warum": "Eigene Kritik an der Partei ist geäußerte Ambivalenz und das stärkste Öffnungssignal (Priester/Petty 1996; DJI-Distanzierungskriterien). Ob die Person nur Taktik oder auch Inhalte kritisiert, zeigt, wo du anknüpfen kannst, ohne dass sie verteidigen muss.",
       "optionen": [
         {
           "id": "wi6a",
@@ -2429,7 +2429,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 3
           },
-          "hinweis": "Greif ihre eigene Kritik auf und frag nach, ohne sie zu verstärken. Sie darf die Grenze selbst ziehen; dein Nachlegen würde sie wieder in die Verteidigung bringen."
+          "hinweis": "Greif die eigene Kritik der Person auf und frag nach, ohne zu verstärken. Die Grenze darf die Person selbst ziehen; dein Nachlegen würde sie wieder in die Verteidigung bringen."
         },
         {
           "id": "wi6b",
@@ -2443,14 +2443,14 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wi6c",
-          "text": "Nur unter vier Augen, vor anderen verteidigt sie alles",
+          "text": "Nur unter vier Augen, vor anderen verteidigt die Person alles",
           "gewichte": {
             "zugehoerigkeit": 2
           },
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Ihre Zweifel sind da, aber an Loyalität gebunden. Sprich nur zu zweit darüber und verlange nie, dass sie vor anderen Abstand zeigt."
+          "hinweis": "Die Zweifel sind da, aber an Loyalität gebunden. Sprich nur zu zweit darüber und verlange nie, dass die Person vor anderen Abstand zeigt."
         },
         {
           "id": "wi6d",
@@ -2465,7 +2465,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wi6e",
-          "text": "Nein, sie verteidigt alles, auch Widersprüchliches",
+          "text": "Nein, die Person verteidigt alles, auch Widersprüchliches",
           "gewichte": {
             "zugehoerigkeit": 2
           },
@@ -2484,18 +2484,18 @@ window.APP_DATA.kompass = {
       "id": "wi7",
       "bereich": "widerspruch",
       "typ": "single",
-      "text": "Was passiert nach einem Gespräch, in dem sie einen Zweifel zugelassen hat?",
+      "text": "Was passiert nach einem Gespräch, in dem die Person einen Zweifel zugelassen hat?",
       "warum": "Zweifel verfallen nach Tagen (Coppock 2017) oder werden mit Loyalitätsbekundung überdeckt, dem Doubling down. Was danach passiert, zeigt, ob du Zweifel nur stehen lassen oder behutsam wieder aufgreifen solltest.",
       "optionen": [
         {
           "id": "wi7a",
-          "text": "Sie kommt von sich aus darauf zurück",
+          "text": "Die Person kommt von sich aus darauf zurück",
           "gewichte": {},
           "skalen": {
             "offenheit": 3,
             "kapital": 2
           },
-          "hinweis": "Sie arbeitet weiter daran. Nicht drängen: Frag nur, was sie seitdem beschäftigt hat."
+          "hinweis": "Die Person arbeitet weiter daran. Nicht drängen; frag nur, was seither durch den Kopf gegangen ist."
         },
         {
           "id": "wi7b",
@@ -2508,7 +2508,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wi7c",
-          "text": "Sie verteidigt die Partei danach noch stärker",
+          "text": "Die Person verteidigt die Partei danach noch stärker",
           "gewichte": {
             "zugehoerigkeit": 2
           },
@@ -2519,7 +2519,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "wi7d",
-          "text": "Sie hat bisher nie gezweifelt",
+          "text": "Die Person hat bisher nie gezweifelt",
           "gewichte": {},
           "skalen": {
             "offenheit": 0
@@ -2536,7 +2536,7 @@ window.APP_DATA.kompass = {
       "id": "vs1",
       "bereich": "verschwoerung",
       "typ": "single",
-      "text": "Wenn etwas Unerwartetes passiert, etwa eine Krise, ein Unglück oder ein Wahlergebnis: Wie erklärt sie es?",
+      "text": "Wenn etwas Unerwartetes passiert, etwa eine Krise, ein Unglück oder ein Wahlergebnis: Wie erklärt es die Person?",
       "warum": "„Nichts geschieht durch Zufall“ ist das Kernmuster der Verschwörungsmentalität (Imhoff et al. 2022). Es trennt konkrete Unzufriedenheit von einem Deutungsmuster, an dem Fakten abprallen, und bestimmt, ob du über Inhalte oder über die Erzählung selbst sprichst.",
       "optionen": [
         {
@@ -2549,7 +2549,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "vs1b",
-          "text": "Als Versagen oder Eigeninteresse konkreter Politiker",
+          "text": "Als Versagen oder Eigeninteresse konkreter Politiker:innen",
           "gewichte": {
             "protest-wut": 1
           },
@@ -2589,8 +2589,8 @@ window.APP_DATA.kompass = {
       "id": "vs2",
       "bereich": "verschwoerung",
       "typ": "multi",
-      "text": "Wem traut sie zu, bei strittigen Fragen die Wahrheit zu sagen?",
-      "warum": "Verschwörungsdenken ist vor allem verlagertes Vertrauen. Wohin es gewandert ist, entscheidet, welche Boten und Quellen bei ihr überhaupt ankommen (Handbuch Verschwörungsmythen: vertrauenswürdige Botschafter statt Gegenargumente).",
+      "text": "Wem traut die Person zu, bei strittigen Fragen die Wahrheit zu sagen?",
+      "warum": "Verschwörungsdenken ist vor allem verlagertes Vertrauen. Wohin es gewandert ist, entscheidet, welche Boten und Quellen bei der Person überhaupt ankommen (Handbuch Verschwörungsmythen: vertrauenswürdige Botschafter statt Gegenargumente).",
       "optionen": [
         {
           "id": "vs2a",
@@ -2603,14 +2603,14 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "vs2b",
-          "text": "Menschen, die sie persönlich kennt",
+          "text": "Menschen, die die Person persönlich kennt",
           "gewichte": {
             "zugehoerigkeit": 1
           },
           "skalen": {
             "verschwoerung": 1
           },
-          "hinweis": "Ihr Vertrauen ist persönlich. Du und andere aus ihrem Umfeld seid die glaubwürdigsten Boten, keine Studie und kein Link."
+          "hinweis": "Das Vertrauen ist persönlich. Du und andere aus dem Umfeld der Person seid die glaubwürdigsten Boten, keine Studie und kein Link."
         },
         {
           "id": "vs2c",
@@ -2625,14 +2625,14 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "vs2d",
-          "text": "Aussteigern und Menschen, die „es selbst erlebt haben“",
+          "text": "Aussteiger:innen und Menschen, die „es selbst erlebt haben“",
           "gewichte": {
             "misstrauen": 1
           },
           "skalen": {
             "verschwoerung": 1
           },
-          "hinweis": "Aussteigerberichte und persönliche Erfahrung erreichen sie. Solche Geschichten sind dein bester Zugang."
+          "hinweis": "Aussteigerberichte und persönliche Erfahrung erreichen die Person. Solche Geschichten sind dein bester Zugang."
         },
         {
           "id": "vs2e",
@@ -2643,7 +2643,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "verschwoerung": 2
           },
-          "hinweis": "Würdige, dass sie selbst denken will, und lade sie ein, dieselbe Strenge auf beide Seiten anzuwenden."
+          "hinweis": "Würdige, dass die Person selbst denken will, und lade sie ein, dieselbe Strenge auf beide Seiten anzuwenden."
         },
         {
           "id": "vs2f",
@@ -2667,12 +2667,12 @@ window.APP_DATA.kompass = {
       "id": "vs3",
       "bereich": "verschwoerung",
       "typ": "single",
-      "text": "Wie geht sie mit Informationen um, bevor sie sie weitergibt?",
+      "text": "Wie geht die Person mit Informationen um, bevor sie diese weitergibt?",
       "warum": "Asymmetrisches Prüfen ist Bestätigungsdenken: Was passt, wird geteilt, was stört, wird zerpflückt. Inokulation gegen Manipulationstechniken wirkt deutlich stärker als nachträgliche Korrektur (O’Mahony et al. 2023).",
       "optionen": [
         {
           "id": "vs3a",
-          "text": "Sie prüft Quellen, auch bei Dingen, die ihr gefallen",
+          "text": "Die Person prüft Quellen, auch bei Dingen, die ihr gefallen",
           "gewichte": {},
           "skalen": {
             "verschwoerung": 0,
@@ -2681,18 +2681,18 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "vs3b",
-          "text": "Sie prüft nur, was ihr nicht passt",
+          "text": "Die Person prüft nur, was ihr nicht passt",
           "gewichte": {
             "misstrauen": 1
           },
           "skalen": {
             "verschwoerung": 2
           },
-          "hinweis": "Prüft gemeinsam einmal etwas, das ihr gefällt, mit denselben Fragen. Nicht als Falle, sondern als Spiel mit offenem Ausgang."
+          "hinweis": "Prüft gemeinsam einmal etwas, das der Person gefällt, mit denselben Fragen. Nicht als Falle, sondern als Spiel mit offenem Ausgang."
         },
         {
           "id": "vs3c",
-          "text": "Sie teilt sofort weiter, was ins Bild passt",
+          "text": "Die Person teilt sofort weiter, was ins Bild passt",
           "gewichte": {
             "zugehoerigkeit": 1
           },
@@ -2703,7 +2703,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "vs3d",
-          "text": "Sie fragt nicht nach Quellen, sondern ob es sich richtig anfühlt",
+          "text": "Die Person fragt nicht nach Quellen, sondern ob es sich richtig anfühlt",
           "gewichte": {
             "misstrauen": 1
           },
@@ -2713,7 +2713,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "vs3e",
-          "text": "Sie gibt kaum etwas weiter",
+          "text": "Die Person gibt kaum etwas weiter",
           "gewichte": {},
           "skalen": {
             "verschwoerung": 0
@@ -2730,22 +2730,22 @@ window.APP_DATA.kompass = {
       "id": "vs4",
       "bereich": "verschwoerung",
       "typ": "single",
-      "text": "Wie geht sie damit um, wenn eine ihrer Vorhersagen nicht eingetreten ist?",
+      "text": "Wie geht die Person damit um, wenn eine ihrer Vorhersagen nicht eingetreten ist?",
       "warum": "Nicht eingetroffene Vorhersagen sind der Lackmustest für Weltbild-Geschlossenheit: Wer Gegenbelege in die Erzählung einbaut, ist mit Fakten nicht erreichbar (Warnsignal nach Swire-Thompson et al. 2020); wer einräumt, ist für Fragen offen.",
       "optionen": [
         {
           "id": "vs4a",
-          "text": "Sie räumt es ein, manchmal sogar mit Humor",
+          "text": "Die Person räumt es ein, manchmal sogar mit Humor",
           "gewichte": {},
           "skalen": {
             "verschwoerung": 0,
             "offenheit": 3
           },
-          "hinweis": "Sie kann Irrtum zugeben. Die Frage „Was müsste passieren, damit du zweifelst?“ ist bei ihr erlaubt und wirkt."
+          "hinweis": "Die Person kann Irrtum zugeben. Die Frage „Was müsste passieren, damit du zweifelst?“ ist hier erlaubt und wirkt."
         },
         {
           "id": "vs4b",
-          "text": "Sie spricht einfach nicht mehr davon",
+          "text": "Die Person spricht einfach nicht mehr davon",
           "gewichte": {},
           "skalen": {
             "verschwoerung": 1,
@@ -2785,12 +2785,12 @@ window.APP_DATA.kompass = {
       "id": "vs5",
       "bereich": "verschwoerung",
       "typ": "multi",
-      "text": "Wenn sie von „denen“ spricht, die angeblich im Hintergrund steuern: Wen meint sie?",
+      "text": "Wenn die Person von „denen“ spricht, die angeblich im Hintergrund steuern: Wen meint sie?",
       "warum": "Vom diffusen Elitenmisstrauen zu benannten Drahtziehern führt der Weg in geschlossene Erzählungen; bei Chiffren wie „Globalisten“ laufen antisemitische Codes mit. Dort ist eine klare Grenze nötig, keine Diskussion (MBR, Praxiskonsens).",
       "optionen": [
         {
           "id": "vs5a",
-          "text": "Sie spricht nicht von Steuerung im Hintergrund",
+          "text": "Die Person spricht nicht von Steuerung im Hintergrund",
           "gewichte": {},
           "skalen": {
             "verschwoerung": 0
@@ -2798,7 +2798,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "vs5b",
-          "text": "Konkrete Politiker, Parteien oder die Regierung",
+          "text": "Konkrete Politiker:innen, Parteien oder die Regierung",
           "gewichte": {
             "protest-wut": 1
           },
@@ -2850,7 +2850,7 @@ window.APP_DATA.kompass = {
       "id": "vs6",
       "bereich": "verschwoerung",
       "typ": "single",
-      "text": "Wie wirkt sie, wenn sie über „die Wahrheit hinter den Dingen“ spricht?",
+      "text": "Wie wirkt die Person, wenn sie über „die Wahrheit hinter den Dingen“ spricht?",
       "warum": "Verschwörungserzählungen erfüllen Bedürfnisse: Durchblick, Bedeutung, Zugehörigkeit oder Schutz vor Angst. Das Handbuch Verschwörungsmythen rät, Beweggründe zu verstehen, bevor man widerlegt. Das Gefühl beim Erzählen zeigt den Beweggrund.",
       "optionen": [
         {
@@ -2872,7 +2872,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "verschwoerung": 2
           },
-          "hinweis": "Die Erzählung gibt ihr Bedeutsamkeit. Wer sie ihr nimmt, muss etwas anbieten: eine Rolle, in der ihr Wissen oder ihre Erfahrung zählt."
+          "hinweis": "Die Erzählung gibt der Person Bedeutsamkeit. Wer die Erzählung wegnimmt, muss etwas anbieten: eine Rolle, in der das Wissen oder die Erfahrung der Person zählt."
         },
         {
           "id": "vs6c",
@@ -2883,7 +2883,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "verschwoerung": 1
           },
-          "hinweis": "Hinter der Erzählung steht Angst. Beruhigen hilft mehr als widerlegen: Was gibt ihr Sicherheit, was kannst du verlässlich zusagen?"
+          "hinweis": "Hinter der Erzählung steht Angst. Beruhigen hilft mehr als widerlegen: Was gibt der Person Sicherheit, was kannst du verlässlich zusagen?"
         },
         {
           "id": "vs6d",
@@ -2894,7 +2894,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "verschwoerung": 2
           },
-          "hinweis": "Die Erzählung ist ihre Gemeinschaft. Angriffe darauf treffen ihre Freunde. Baue Gemeinschaft außerhalb auf, bevor du über Inhalte sprichst."
+          "hinweis": "Die Erzählung ist für die Person Gemeinschaft; Angriffe darauf treffen ihre Freunde. Baue Gemeinschaft außerhalb auf, bevor du über Inhalte sprichst."
         },
         {
           "id": "vs6e",
@@ -2906,7 +2906,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "vs6f",
-          "text": "Sie spricht nicht so",
+          "text": "Die Person spricht nicht so",
           "gewichte": {},
           "skalen": {
             "verschwoerung": 0
@@ -2918,8 +2918,8 @@ window.APP_DATA.kompass = {
       "id": "vs7",
       "bereich": "verschwoerung",
       "typ": "multi",
-      "text": "Hat ihr Misstrauen schon Folgen in ihrem Alltag?",
-      "warum": "Verhaltensfolgen trennen eine Mentalität von einer Lebensführung. Sie markieren den Umsteigepunkt von privaten Gesprächen zu Fachberatung, besonders bei Reichsbürger-Bezug (Praxis der Beratungsstellen, Fachstelle Rechtsextremismus und Familie).",
+      "text": "Hat das Misstrauen der Person schon Folgen im Alltag?",
+      "warum": "Verhaltensfolgen trennen eine Mentalität von einer Lebensführung und markieren den Umsteigepunkt von privaten Gesprächen zu Fachberatung, besonders bei Reichsbürger-Bezug (Praxis der Beratungsstellen, Fachstelle Rechtsextremismus und Familie).",
       "optionen": [
         {
           "id": "vs7a",
@@ -2931,18 +2931,18 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "vs7b",
-          "text": "Sie meidet Ärzte, Vorsorge oder Behörden",
+          "text": "Die Person meidet Ärzte, Vorsorge oder Behörden",
           "gewichte": {
             "misstrauen": 2
           },
           "skalen": {
             "verschwoerung": 2
           },
-          "hinweis": "Nicht missionieren, aber die eigene Norm sichtbar machen: „Ich gehe hin, und ich bleibe dein Freund.“ Normen naher Menschen wirken (Winter et al. 2022)."
+          "hinweis": "Nicht missionieren, aber die eigene Norm sichtbar machen: „Ich gehe hin, und ich bleibe an deiner Seite.“ Normen naher Menschen wirken (Winter et al. 2022)."
         },
         {
           "id": "vs7c",
-          "text": "Sie bereitet sich auf einen Zusammenbruch vor: Vorräte, Bargeld, Rückzugspläne",
+          "text": "Die Person bereitet sich auf einen Zusammenbruch vor: Vorräte, Bargeld, Rückzugspläne",
           "gewichte": {
             "kontrolle-angst": 2
           },
@@ -2952,7 +2952,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "vs7d",
-          "text": "Sie erkennt den Staat nicht mehr an: Bescheide ignoriert, Reichsbürger-Begriffe",
+          "text": "Die Person erkennt den Staat nicht mehr an: Bescheide ignoriert, Reichsbürger-Begriffe",
           "gewichte": {
             "misstrauen": 2
           },
@@ -2964,7 +2964,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "vs7e",
-          "text": "Sie hat Kontakte abgebrochen, die „nicht aufgewacht“ sind",
+          "text": "Die Person hat Kontakte abgebrochen, die „nicht aufgewacht“ sind",
           "gewichte": {
             "zugehoerigkeit": 2
           },
@@ -2972,7 +2972,7 @@ window.APP_DATA.kompass = {
             "verschwoerung": 2,
             "belastung": 1
           },
-          "hinweis": "Du bist vielleicht einer der letzten Außenkontakte. Halte ihn ohne das Thema und such dir Unterstützung bei einer Angehörigenberatung."
+          "hinweis": "Du bist vielleicht eine der letzten Brücken nach draußen. Halte den Kontakt ohne das Thema und such dir Unterstützung bei einer Angehörigenberatung."
         },
         {
           "id": "vs7f",
@@ -2985,14 +2985,14 @@ window.APP_DATA.kompass = {
       "id": "nw1",
       "bereich": "netzwerk",
       "typ": "single",
-      "text": "Gibt es Gruppen, in denen sie mit Andersdenkenden gemeinsam etwas tut, nicht nur redet?",
+      "text": "Gibt es Gruppen, in denen die Person mit Andersdenkenden gemeinsam etwas tut, nicht nur redet?",
       "warum": "Kontakt auf Augenhöhe mit gemeinsamem Ziel baut Vorurteile ab, bloßes Nebeneinander nicht. Die Ausstiegsforschung nennt stabile Bezüge jenseits der Szene als wichtigsten Schutzfaktor (Bjørgo, DJI-Abschlusskriterien).",
       "optionen": [
         {
           "id": "nw1a",
           "text": "Ja, regelmäßig: Verein, Mannschaft, Feuerwehr, Ehrenamt",
           "gewichte": {},
-          "hinweis": "Gemeinsame Aufgaben sind die stärkste Brücke. Halte sie lebendig und sprich dort nicht über Politik."
+          "hinweis": "Gemeinsame Aufgaben sind die stärkste Brücke. Halte diese Aufgaben lebendig und sprich dort nicht über Politik."
         },
         {
           "id": "nw1b",
@@ -3003,15 +3003,15 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "nw1c",
-          "text": "Früher ja, sie hat sich daraus zurückgezogen",
+          "text": "Früher ja, die Person hat sich daraus zurückgezogen",
           "gewichte": {
             "zugehoerigkeit": 2
           },
-          "hinweis": "Rückzug aus gemischten Gruppen ist ein Frühwarnzeichen. Lade sie konkret zu etwas ein, bei dem sie gebraucht wird, ohne das Thema."
+          "hinweis": "Rückzug aus gemischten Gruppen ist ein Frühwarnzeichen. Lade die Person konkret zu etwas ein, bei dem sie gebraucht wird, ohne das Thema."
         },
         {
           "id": "nw1d",
-          "text": "Nein, ihre Gruppen denken politisch alle gleich",
+          "text": "Nein, die Gruppen der Person denken politisch alle gleich",
           "gewichte": {
             "zugehoerigkeit": 2,
             "identitaet-heimat": 1
@@ -3019,7 +3019,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "nw1e",
-          "text": "Nein, sie ist in keiner Gruppe",
+          "text": "Nein, die Person ist in keiner Gruppe",
           "gewichte": {
             "zugehoerigkeit": 2,
             "anerkennung": 1
@@ -3037,39 +3037,39 @@ window.APP_DATA.kompass = {
       "id": "nw2",
       "bereich": "netzwerk",
       "typ": "single",
-      "text": "Gibt es in ihrem Umfeld eine Person, die die Partei aktiv vertritt und sie mitzieht?",
+      "text": "Gibt es im Umfeld der Person jemanden, der die Partei aktiv vertritt und die Person mitzieht?",
       "warum": "Hinwendung läuft über Beziehungen: Radikalisierte Freunde erhöhen das Risiko stärker als Familie (Jasko et al.), nahe Personen in der Szene blockieren Ausstiegsfaktoren (Jensen et al.). Ob es eine Zugperson gibt, bestimmt deine Rolle.",
       "optionen": [
         {
           "id": "nw2a",
-          "text": "Ja, eine sehr nahe Person: Partner, Elternteil, beste Freundin",
+          "text": "Ja, jemand ganz Nahes: Partner:in, Elternteil, beste Freundin oder bester Freund",
           "gewichte": {
             "zugehoerigkeit": 3
           },
-          "hinweis": "Gegen diese Person zu argumentieren, verliert. Stärke deine eigene Verbindung, bleib verlässlich und hol dir Angehörigenberatung."
+          "hinweis": "Gegen diesen Menschen zu argumentieren, verliert. Stärke deine eigene Verbindung, bleib verlässlich und hol dir Angehörigenberatung."
         },
         {
           "id": "nw2b",
-          "text": "Ja, im weiteren Umfeld: Kollege, Vereinskamerad, Nachbar",
+          "text": "Ja, im weiteren Umfeld: Kollegium, Verein, Nachbarschaft",
           "gewichte": {
             "zugehoerigkeit": 2
           }
         },
         {
           "id": "nw2c",
-          "text": "Nein, sie kam eher über Kanäle und Medien dazu",
+          "text": "Nein, die Person kam eher über Kanäle und Medien dazu",
           "gewichte": {
             "misstrauen": 1
           }
         },
         {
           "id": "nw2d",
-          "text": "Sie ist selbst diejenige, die andere mitzieht",
+          "text": "Die Person zieht selbst andere mit",
           "gewichte": {
             "anerkennung": 2,
             "zugehoerigkeit": 1
           },
-          "hinweis": "Sie hat in der Szene Rolle und Anerkennung. Eine Rolle außerhalb muss genauso echt sein. Allein schaffst du das kaum: Fachberatung einbeziehen."
+          "hinweis": "Die Person hat in der Szene Rolle und Anerkennung. Eine Rolle außerhalb muss genauso echt sein. Allein schaffst du das kaum: Fachberatung einbeziehen."
         },
         {
           "id": "nw2e",
@@ -3082,7 +3082,7 @@ window.APP_DATA.kompass = {
       "id": "nw3",
       "bereich": "netzwerk",
       "typ": "single",
-      "text": "Gibt es außer dir Menschen, die ihr nahestehen und sich ähnliche Sorgen machen?",
+      "text": "Gibt es außer dir Menschen, die der Person nahestehen und sich ähnliche Sorgen machen?",
       "warum": "Angehörigenberatung rät, Verbündete zu suchen und sich abzusprechen, damit nicht alle gleichzeitig auf die Person einreden und niemand allein trägt. Wer allein ist, erschöpft sich und bricht eher ab (Selbstschutz vor Fremdschutz).",
       "optionen": [
         {
@@ -3101,7 +3101,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "belastung": 1
           },
-          "hinweis": "Sprecht euch ab. Drei Leute, die einzeln einreden, wirken wie Belagerung und bestätigen ihr Gefühl, angegriffen zu werden."
+          "hinweis": "Sprecht euch ab. Drei Leute, die einzeln einreden, wirken wie eine Belagerung und bestätigen das Gefühl der Person, angegriffen zu werden."
         },
         {
           "id": "nw3c",
@@ -3134,8 +3134,8 @@ window.APP_DATA.kompass = {
       "id": "nw4",
       "bereich": "netzwerk",
       "typ": "single",
-      "text": "Hat sie im Alltag persönlichen Kontakt zu Menschen aus den Gruppen, die sie politisch ablehnt?",
-      "warum": "Begegnung baut Vorurteile ab, wenn sie freiwillig ist und ein gemeinsames Ziel hat; flüchtiger Kontakt verstärkt sie eher (Pettigrew/Tropp 2006; Paluck et al. 2019). Ob sie solche Menschen kennt, entscheidet: an Ausnahmen anknüpfen oder Begegnung ermöglichen.",
+      "text": "Hat die Person im Alltag persönlichen Kontakt zu Menschen aus den Gruppen, die sie politisch ablehnt?",
+      "warum": "Begegnung baut Vorurteile ab, wenn sie freiwillig ist und ein gemeinsames Ziel hat; flüchtiger Kontakt verstärkt Vorurteile eher (Pettigrew/Tropp 2006; Paluck et al. 2019). Ob die Person solche Menschen kennt, entscheidet: an Ausnahmen anknüpfen oder Begegnung ermöglichen.",
       "optionen": [
         {
           "id": "nw4a",
@@ -3144,7 +3144,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Diese Menschen sind ihre Ausnahmen. Sprich über sie mit Namen und Geschichten, nicht über Gruppen; so verschiebt sich das Bild (Kalla/Broockman 2020)."
+          "hinweis": "Diese Menschen sind die Ausnahmen im Bild der Person. Nenne Namen und erzähle Geschichten dieser Menschen, statt über Gruppen zu reden; so verschiebt sich das Bild (Kalla/Broockman 2020)."
         },
         {
           "id": "nw4b",
@@ -3159,24 +3159,24 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "nw4c",
-          "text": "Ja, und gerade daraus stammen ihre negativen Erlebnisse",
+          "text": "Ja, und gerade daraus stammen die negativen Erlebnisse der Person",
           "gewichte": {
             "kontrolle-angst": 2,
             "gerechtigkeit-abgehaengt": 1
           },
-          "hinweis": "Ihr Erlebnis ist echt und wird nicht wegargumentiert. Frag nach Einzelheiten und spiegle, was es für sie bedeutet hat, bevor ihr über den Schluss daraus sprecht."
+          "hinweis": "Das Erlebnis ist echt und wird nicht wegargumentiert. Frag nach Einzelheiten und spiegle, was es für die Person bedeutet hat, bevor ihr über den Schluss daraus sprecht."
         },
         {
           "id": "nw4d",
-          "text": "Nein, in ihrem Alltag kommt das kaum vor",
+          "text": "Nein, im Alltag der Person kommt das kaum vor",
           "gewichte": {
             "identitaet-heimat": 1
           },
-          "hinweis": "Ihr Bild stammt aus Kanälen, nicht aus Begegnung. Erzähle von Menschen, die du kennst, und ermögliche Begegnung nur dort, wo sie freiwillig und mit gemeinsamer Aufgabe entsteht."
+          "hinweis": "Das Bild stammt aus Kanälen, nicht aus Begegnung. Erzähle von Menschen, die du kennst, und ermögliche Begegnung nur dort, wo sie freiwillig und mit gemeinsamer Aufgabe entsteht."
         },
         {
           "id": "nw4e",
-          "text": "Sie meidet solche Kontakte bewusst",
+          "text": "Die Person meidet solche Kontakte bewusst",
           "gewichte": {
             "identitaet-heimat": 2,
             "kontrolle-angst": 1
@@ -3197,7 +3197,7 @@ window.APP_DATA.kompass = {
       "id": "nw5",
       "bereich": "netzwerk",
       "typ": "single",
-      "text": "Wie reagiert ihr Umfeld, wenn sie ihre politische Haltung äußert?",
+      "text": "Wie reagiert das Umfeld, wenn die Person ihre politische Haltung äußert?",
       "warum": "Normen naher Menschen moderieren Verschwörungs- und Abwertungsdenken: Wo Nahestehende sichtbar anders stehen, verliert die Mentalität an Wirkung (Winter et al. 2022). Schweigen wird dagegen als Zustimmung gelesen (Praxiskonsens).",
       "optionen": [
         {
@@ -3221,7 +3221,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Ihr Umfeld hält Dissens aus. Das ist die beste Ausgangslage: weiter so, ohne Etiketten."
+          "hinweis": "Das Umfeld hält Dissens aus. Das ist die beste Ausgangslage: weiter so, ohne Etiketten."
         },
         {
           "id": "nw5d",
@@ -3233,14 +3233,14 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "nw5e",
-          "text": "Sie äußert sich im Umfeld kaum, nur mir gegenüber",
+          "text": "Die Person äußert sich im Umfeld kaum, nur mir gegenüber",
           "gewichte": {
             "anerkennung": 1
           },
           "skalen": {
             "kapital": 2
           },
-          "hinweis": "Sie vertraut dir etwas an, das sie sonst nicht zeigt. Das ist Beziehungskapital. Nicht weitertragen, nicht bloßstellen."
+          "hinweis": "Die Person vertraut dir etwas an, das sie sonst nicht zeigt. Das ist Beziehungskapital. Nicht weitertragen, nicht bloßstellen."
         },
         {
           "id": "nw5f",
@@ -3253,12 +3253,12 @@ window.APP_DATA.kompass = {
       "id": "nw6",
       "bereich": "netzwerk",
       "typ": "single",
-      "text": "Wie spricht sie über Menschen, die sich von ihr abgewandt haben?",
+      "text": "Wie spricht die Person über Menschen, die sich von ihr abgewandt haben?",
       "warum": "Ob verlorene Kontakte schmerzen oder ideologisch umgedeutet werden, zeigt, ob Beziehungen außerhalb der Szene noch Zugkraft haben. Genau diese Beziehungen sind die Pull-Faktoren für Distanzierung (Bjørgo, C-REX).",
       "optionen": [
         {
           "id": "nw6a",
-          "text": "Verletzt, es tut ihr sichtbar leid",
+          "text": "Verletzt, es tut der Person sichtbar leid",
           "gewichte": {
             "zugehoerigkeit": 2,
             "anerkennung": 1
@@ -3266,7 +3266,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Der Schmerz ist dein Ansatzpunkt: Die Beziehungen fehlen ihr. Frag, was sie an den Menschen vermisst, nicht, was schiefging."
+          "hinweis": "Der Schmerz ist dein Ansatzpunkt, denn die Beziehungen fehlen der Person. Frag nach dem, was die Person an diesen Menschen vermisst, nicht nach dem, was schiefging."
         },
         {
           "id": "nw6b",
@@ -3286,11 +3286,11 @@ window.APP_DATA.kompass = {
             "anerkennung": 2,
             "misstrauen": 1
           },
-          "hinweis": "Der Abbruch bestätigt ihre Erzählung vom Ausgeschlossensein. Zeig, dass du anders denkst und trotzdem bleibst. Das widerlegt sie mehr als Worte."
+          "hinweis": "Der Abbruch bestätigt die Erzählung vom Ausgeschlossensein. Zeig, dass du anders denkst und trotzdem bleibst; das widerlegt die Erzählung mehr als Worte."
         },
         {
           "id": "nw6d",
-          "text": "Gar nicht, sie erwähnt sie nicht mehr",
+          "text": "Gar nicht, die Person erwähnt diese Menschen nicht mehr",
           "gewichte": {
             "zugehoerigkeit": 1
           }
@@ -3311,14 +3311,14 @@ window.APP_DATA.kompass = {
       "id": "nw7",
       "bereich": "netzwerk",
       "typ": "single",
-      "text": "Wer würde es merken, wenn sie sich für Wochen zurückzöge?",
-      "warum": "Je weniger Menschen außerhalb der Szene eine Person halten, desto mehr wird die Gruppe zum Lebensmittelpunkt, und desto weniger greift Einfluss aus Familie und Freundeskreis (Violence Prevention Network). Das zeigt, wie dringend Außenkontakte sind.",
+      "text": "Wer würde es merken, wenn sich die Person für Wochen zurückzöge?",
+      "warum": "Je weniger Menschen außerhalb der Szene jemanden halten, desto mehr wird die Gruppe zum Lebensmittelpunkt und desto weniger greift der Einfluss von Familie und Freundeskreis (Violence Prevention Network). Das zeigt, wie dringend Außenkontakte sind.",
       "optionen": [
         {
           "id": "nw7a",
-          "text": "Viele: Familie, Freunde, Kollegen, Verein",
+          "text": "Viele: Familie, Freundeskreis, Kollegium, Verein",
           "gewichte": {},
-          "hinweis": "Sie ist gut eingebettet. Dein Job ist nicht, sie zu retten, sondern einer von vielen verlässlichen Kontakten zu bleiben."
+          "hinweis": "Die Person ist gut eingebettet. Deine Aufgabe ist nicht Rettung, sondern einer von vielen verlässlichen Kontakten zu bleiben."
         },
         {
           "id": "nw7b",
@@ -3336,7 +3336,7 @@ window.APP_DATA.kompass = {
           "gewichte": {
             "zugehoerigkeit": 3
           },
-          "hinweis": "Die Szene ist ihr Sicherheitsnetz geworden. Außenkontakte müssen aktiv gepflegt werden: regelmäßig, verlässlich, ohne Thema."
+          "hinweis": "Die Szene ist zum Sicherheitsnetz der Person geworden. Außenkontakte müssen aktiv gepflegt werden: regelmäßig, verlässlich, ohne das Thema."
         },
         {
           "id": "nw7d",
@@ -3372,23 +3372,23 @@ window.APP_DATA.kompass = {
       "id": "bi1",
       "bereich": "biografie",
       "typ": "multi",
-      "text": "Wie erlebt sie ihre Arbeit, oder die letzte, die sie hatte?",
+      "text": "Wie erlebt die Person ihre Arbeit oder die letzte, die sie hatte?",
       "warum": "Kontrollverlust und Ausgeliefertsein am Arbeitsplatz erhöhen die Wahrscheinlichkeit, rechts zu wählen, Arbeitslosigkeit nicht; Befristung und fehlender Tarif wiegen schwer (Hilmer et al. 2017). Die Arbeitserfahrung zeigt, welches Bedürfnis verletzt ist.",
       "optionen": [
         {
           "id": "bi1a",
-          "text": "Sie hat Einfluss und wird gefragt",
+          "text": "Die Person hat Einfluss und wird gefragt",
           "gewichte": {},
-          "hinweis": "Arbeit ist bei ihr Quelle von Anerkennung, nicht von Kränkung. Der Hebel liegt woanders."
+          "hinweis": "Arbeit ist für die Person eine Quelle von Anerkennung, nicht von Kränkung. Der Hebel liegt woanders."
         },
         {
           "id": "bi1b",
-          "text": "Sie wird übergangen, Entscheidungen kommen von oben",
+          "text": "Die Person wird übergangen, Entscheidungen kommen von oben",
           "gewichte": {
             "kontrolle-angst": 2,
             "anerkennung": 1
           },
-          "hinweis": "Erlebte Ohnmacht im Betrieb ist einer der stärksten Prädiktoren. Frag, wo sie Mitsprache hätte: Betriebsrat, Gewerkschaft, Team."
+          "hinweis": "Erlebte Ohnmacht im Betrieb ist einer der stärksten Prädiktoren. Frag, wo die Person Mitsprache hätte: Betriebsrat, Gewerkschaft, Team."
         },
         {
           "id": "bi1c",
@@ -3400,16 +3400,16 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bi1d",
-          "text": "Hart und schlecht bezahlt, ihre Leistung sieht keiner",
+          "text": "Hart und schlecht bezahlt, die Leistung sieht keiner",
           "gewichte": {
             "anerkennung": 2,
             "gerechtigkeit-abgehaengt": 1
           },
-          "hinweis": "Würdige konkret, was sie leistet, bevor es um Politik geht. Gesehen werden ist hier schon ein Teil der Lösung."
+          "hinweis": "Würdige konkret, was die Person leistet, bevor es um Politik geht. Gesehen zu werden ist hier schon ein Teil der Lösung."
         },
         {
           "id": "bi1e",
-          "text": "Sie schafft die Arbeit körperlich kaum noch",
+          "text": "Die Person schafft die Arbeit körperlich kaum noch",
           "gewichte": {
             "kontrolle-angst": 1,
             "anerkennung": 1
@@ -3417,7 +3417,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bi1f",
-          "text": "Trifft nicht zu, sie hat lange nicht oder nie gearbeitet",
+          "text": "Trifft nicht zu, die Person hat lange nicht oder nie gearbeitet",
           "gewichte": {}
         },
         {
@@ -3431,12 +3431,12 @@ window.APP_DATA.kompass = {
       "id": "bi2",
       "bereich": "biografie",
       "typ": "single",
-      "text": "Wie spricht sie über Rente und Alter?",
+      "text": "Wie spricht die Person über Rente und Alter?",
       "warum": "„Ich habe 40 Jahre gearbeitet und bekomme weniger als …“ ist die typische Form der moralischen Ökonomie: Fairness zwischen Leistenden und Empfangenden. Die Art der Klage zeigt, ob Anerkennung, Gerechtigkeit oder Rollenverlust dahintersteht.",
       "optionen": [
         {
           "id": "bi2a",
-          "text": "Gelassen, sie sieht sich abgesichert",
+          "text": "Gelassen, die Person sieht sich abgesichert",
           "gewichte": {}
         },
         {
@@ -3453,20 +3453,20 @@ window.APP_DATA.kompass = {
           "gewichte": {
             "gerechtigkeit-abgehaengt": 3
           },
-          "hinweis": "Frag, womit genau sie vergleicht, und würdige ihren Beitrag, bevor du die Rechnung prüfst. Statistik gegen das Gefühl verliert."
+          "hinweis": "Frag, womit genau die Person vergleicht, und würdige ihren Beitrag, bevor du die Rechnung prüfst. Statistik gegen das Gefühl verliert."
         },
         {
           "id": "bi2d",
-          "text": "Seit dem Berufsende fühlt sie sich überflüssig",
+          "text": "Seit dem Berufsende fühlt sich die Person überflüssig",
           "gewichte": {
             "anerkennung": 3,
             "zugehoerigkeit": 1
           },
-          "hinweis": "Rollenverlust. Eine Aufgabe, in der sie gebraucht wird, wirkt mehr als jedes Gespräch über Politik."
+          "hinweis": "Rollenverlust. Eine Aufgabe, in der die Person gebraucht wird, wirkt mehr als jedes Gespräch über Politik."
         },
         {
           "id": "bi2e",
-          "text": "Rente ist für sie noch weit weg und kein Thema",
+          "text": "Rente ist für die Person noch weit weg und kein Thema",
           "gewichte": {}
         },
         {
@@ -3480,7 +3480,7 @@ window.APP_DATA.kompass = {
       "id": "bi3",
       "bereich": "biografie",
       "typ": "multi",
-      "text": "Spricht sie über Belastungen durch Krankheit, Pflege oder das Gesundheitssystem, bei sich oder Angehörigen?",
+      "text": "Spricht die Person über Belastungen durch Krankheit, Pflege oder das Gesundheitssystem, bei sich oder Angehörigen?",
       "warum": "Dauerbelastung senkt die Toleranz für lange, komplexe Gespräche, und schlechte Erfahrungen mit Ärzten, Kassen oder Pflege sind oft der Ort, an dem Misstrauen gegen Institutionen begann. Das bestimmt Gesprächslänge und Einstieg.",
       "optionen": [
         {
@@ -3490,7 +3490,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bi3b",
-          "text": "Ja, sie erzählt, wie Beschwerden ihren Alltag einschränken",
+          "text": "Ja, die Person erzählt, wie Beschwerden den Alltag einschränken",
           "gewichte": {
             "kontrolle-angst": 2
           },
@@ -3498,7 +3498,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bi3c",
-          "text": "Sie hat sich von Ärzten, Kassen oder Behörden schlecht behandelt gefühlt",
+          "text": "Die Person hat sich von Ärzten, Kassen oder Behörden schlecht behandelt gefühlt",
           "gewichte": {
             "misstrauen": 2,
             "gerechtigkeit-abgehaengt": 1
@@ -3507,7 +3507,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bi3d",
-          "text": "Sie pflegt einen Angehörigen",
+          "text": "Die Person pflegt Angehörige",
           "gewichte": {
             "anerkennung": 2,
             "kontrolle-angst": 1
@@ -3533,7 +3533,7 @@ window.APP_DATA.kompass = {
       "id": "bi4",
       "bereich": "biografie",
       "typ": "single",
-      "text": "Gab es einen Wendepunkt, nach dem sich ihre Haltung spürbar verschärft hat?",
+      "text": "Gab es einen Wendepunkt, nach dem sich die Haltung der Person spürbar verschärft hat?",
       "warum": "Krisen aktivieren latente Dispositionen, Vorbehalte werden durch Erlebnisse und Diskurse aktiviert (Stenner, Ziller 2025). Der Wendepunkt zeigt das verletzte Bedürfnis; dort setzt du an, nicht bei der politischen Schlussfolgerung.",
       "optionen": [
         {
@@ -3563,7 +3563,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bi4d",
-          "text": "Eine Krise wie Corona oder Hochwasser, in der sie sich alleingelassen fühlte",
+          "text": "Eine Krise wie Corona oder Hochwasser, in der sich die Person alleingelassen fühlte",
           "gewichte": {
             "misstrauen": 2,
             "kontrolle-angst": 1
@@ -3580,7 +3580,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bi4f",
-          "text": "Sie war schon immer so",
+          "text": "Die Person war schon immer so",
           "gewichte": {
             "identitaet-heimat": 1
           }
@@ -3596,19 +3596,19 @@ window.APP_DATA.kompass = {
       "id": "bi5",
       "bereich": "biografie",
       "typ": "single",
-      "text": "Wie hat sie sich früher politisch orientiert, soweit du es weißt?",
-      "warum": "Schwache Parteibindung und Wechselbereitschaft kennzeichnen viele Hinwendungen (Mau; Arzheimer/Berning 2019). Woher sie politisch kommt, zeigt, welche Werte anknüpfbar sind: Gerechtigkeit, Ordnung oder das Gefühl, erstmals gehört zu werden.",
+      "text": "Wie hat sich die Person früher politisch orientiert, soweit du es weißt?",
+      "warum": "Schwache Parteibindung und Wechselbereitschaft kennzeichnen viele Hinwendungen (Mau; Arzheimer/Berning 2019). Woher die Person politisch kommt, zeigt, welche Werte anknüpfbar sind: Gerechtigkeit, Ordnung oder das Gefühl, erstmals gehört zu werden.",
       "optionen": [
         {
           "id": "bi5a",
-          "text": "Sie hat oft gewechselt oder je nach Lage gewählt",
+          "text": "Die Person hat oft gewechselt oder je nach Lage gewählt",
           "gewichte": {
             "protest-wut": 1
           },
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Wer gewechselt hat, kann wieder wechseln. Frag, was sie bei der jeweiligen Wahl erwartet hat und was davon enttäuscht wurde."
+          "hinweis": "Wer gewechselt hat, kann wieder wechseln. Frag, was die Person bei der jeweiligen Wahl erwartet hat und was davon enttäuscht wurde."
         },
         {
           "id": "bi5b",
@@ -3617,16 +3617,16 @@ window.APP_DATA.kompass = {
             "gerechtigkeit-abgehaengt": 2,
             "anerkennung": 1
           },
-          "hinweis": "Gerechtigkeit ist ihr alter Wert. Knüpf daran an: Wer trägt die Lasten, wer wird gesehen? Die Enttäuschung über die frühere Seite ernst nehmen, nicht verteidigen."
+          "hinweis": "Gerechtigkeit ist der alte Wert der Person. Knüpf daran an: Wer trägt die Lasten, wer wird gesehen? Die Enttäuschung über die frühere Seite ernst nehmen, nicht verteidigen."
         },
         {
           "id": "bi5c",
-          "text": "Früher konservativ, die Partei ist für sie die Fortsetzung",
+          "text": "Früher konservativ, die Partei ist für die Person die Fortsetzung",
           "gewichte": {
             "identitaet-heimat": 2,
             "kontrolle-angst": 1
           },
-          "hinweis": "Ordnung, Familie und Verlässlichkeit sind ihre Werte. Frag, wo die Partei diese Werte selbst verletzt, etwa im Umgang mit Menschen; die Werte nicht angreifen."
+          "hinweis": "Ordnung, Familie und Verlässlichkeit sind die Werte der Person. Frag, wo die Partei diese Werte selbst verletzt, etwa im Umgang mit Menschen; die Werte nicht angreifen."
         },
         {
           "id": "bi5d",
@@ -3635,15 +3635,15 @@ window.APP_DATA.kompass = {
             "protest-wut": 1,
             "misstrauen": 1
           },
-          "hinweis": "Die Partei hat sie als Erste erreicht und ihr das Gefühl gegeben, dass ihre Stimme zählt. Ein demokratisches Angebot muss das genauso konkret tun."
+          "hinweis": "Die Partei hat die Person als Erste erreicht und ihr das Gefühl gegeben, dass ihre Stimme zählt. Ein demokratisches Angebot muss das genauso konkret tun."
         },
         {
           "id": "bi5e",
-          "text": "Seit ich sie kenne, denkt sie so",
+          "text": "Seit ich die Person kenne, denkt sie so",
           "gewichte": {
             "identitaet-heimat": 1
           },
-          "hinweis": "Die Haltung ist alt und Teil ihres Selbstbilds. Erwarte keine Wende; realistisch sind Beziehung, rote Linien und einzelne Zweifel."
+          "hinweis": "Die Haltung ist alt und Teil des Selbstbilds. Erwarte keine Wende; realistisch sind Beziehung, rote Linien und einzelne Zweifel."
         },
         {
           "id": "bi5f",
@@ -3656,7 +3656,7 @@ window.APP_DATA.kompass = {
       "id": "bi6",
       "bereich": "biografie",
       "typ": "single",
-      "text": "Wenn sie über „Leute wie uns“ spricht: Wo ordnet sie sich ein?",
+      "text": "Wenn die Person über „Leute wie uns“ spricht: Wo ordnet sie sich ein?",
       "warum": "AfD-Wählende stufen ihren Status unabhängig vom Einkommen niedriger ein (Hilmer et al. 2017). Der subjektive Platz, nicht der Kontostand, bestimmt die Kränkung; die Selbstbeschreibung zeigt, ob Gerechtigkeit, Anerkennung oder Ohnmacht dominiert.",
       "optionen": [
         {
@@ -3665,7 +3665,7 @@ window.APP_DATA.kompass = {
           "gewichte": {
             "gerechtigkeit-abgehaengt": 3
           },
-          "hinweis": "Argumentiere in ihren Werten: Leistung, Fairness, Fleiß. Zeig, dass auch andere, die sie zu „denen“ zählt, hart arbeiten."
+          "hinweis": "Argumentiere in den Werten der Person: Leistung, Fairness, Fleiß. Zeig, dass auch andere, die zu „denen“ gezählt werden, hart arbeiten."
         },
         {
           "id": "bi6b",
@@ -3699,7 +3699,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bi6f",
-          "text": "Sie spricht nicht von „Leuten wie uns“",
+          "text": "Die Person spricht nicht von „Leuten wie uns“",
           "gewichte": {}
         }
       ]
@@ -3708,8 +3708,8 @@ window.APP_DATA.kompass = {
       "id": "bi7",
       "bereich": "biografie",
       "typ": "single",
-      "text": "Wie spricht sie über die Zukunft, ihre eigene und die des Landes?",
-      "warum": "Politisch wirkt das Bild von der Lage Deutschlands stärker als die eigene Lage (Teney 2026); Niedergangspessimismus prägt das autoritäre Profil. Ob die Angst persönlich oder kollektiv ist, entscheidet, ob du über ihr Leben oder über andere Menschen sprichst.",
+      "text": "Wie spricht die Person über die Zukunft, die eigene und die des Landes?",
+      "warum": "Politisch wirkt das Bild von der Lage Deutschlands stärker als die eigene Lage (Teney 2026); Niedergangspessimismus prägt das autoritäre Profil. Ob die Angst persönlich oder kollektiv ist, entscheidet, ob du über das Leben der Person oder über andere Menschen sprichst.",
       "optionen": [
         {
           "id": "bi7a",
@@ -3734,7 +3734,7 @@ window.APP_DATA.kompass = {
             "identitaet-heimat": 2,
             "kontrolle-angst": 1
           },
-          "hinweis": "Nicht ihre Lage ist das Problem, sondern ihr Bild vom Land. Geschichten konkreter Menschen verschieben das Bild, Statistiken nicht."
+          "hinweis": "Nicht die eigene Lage ist das Problem, sondern das Bild vom Land. Geschichten konkreter Menschen verschieben das Bild, Statistiken nicht."
         },
         {
           "id": "bi7d",
@@ -3743,7 +3743,7 @@ window.APP_DATA.kompass = {
             "kontrolle-angst": 2,
             "protest-wut": 1
           },
-          "hinweis": "Nicht das Ganze bestreiten. Frag nach dem einen Punkt, der sich für sie konkret ändern müsste, und was sie selbst dazu tun könnte."
+          "hinweis": "Nicht das Ganze bestreiten. Frag nach dem einen Punkt, der sich für die Person konkret ändern müsste, und was sie selbst dazu tun könnte."
         },
         {
           "id": "bi7e",
@@ -3755,7 +3755,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "verschwoerung": 2
           },
-          "hinweis": "Untergangsszenarien rechtfertigen Härte. Keine Gegenprognosen. Frag, was sie konkret tun würde, wenn es nicht kommt, und bleib ruhig."
+          "hinweis": "Untergangsszenarien rechtfertigen Härte. Keine Gegenprognosen. Frag, was die Person konkret tun würde, wenn es nicht kommt, und bleib ruhig."
         },
         {
           "id": "bi7f",
@@ -3768,7 +3768,7 @@ window.APP_DATA.kompass = {
       "id": "hm1",
       "bereich": "heimat",
       "typ": "multi",
-      "text": "Wenn sie von Heimat spricht, was meint sie vor allem?",
+      "text": "Wenn die Person von Heimat spricht, was meint sie vor allem?",
       "warum": "Heimat kann Ort, Beziehung, Brauch, Ordnung oder Abgrenzung bedeuten. Je nachdem ist der Zugang Mitgestaltung, Gemeinschaft, Mitmachen oder das Erzählen einzelner Geschichten (Perspective-Getting, Kalla/Broockman 2021).",
       "optionen": [
         {
@@ -3777,7 +3777,7 @@ window.APP_DATA.kompass = {
           "gewichte": {
             "identitaet-heimat": 2
           },
-          "hinweis": "Ortsbindung ist eine Ressource. Gemeinsam etwas vor Ort gestalten (Fest, Pflanzaktion, Dorfladen) verbindet sie mit anderen."
+          "hinweis": "Ortsbindung ist eine Ressource. Gemeinsam etwas vor Ort zu gestalten (Fest, Pflanzaktion, Dorfladen) verbindet die Person mit anderen."
         },
         {
           "id": "hm1b",
@@ -3786,7 +3786,7 @@ window.APP_DATA.kompass = {
             "zugehoerigkeit": 2,
             "identitaet-heimat": 1
           },
-          "hinweis": "Heimat heißt bei ihr Beziehungen. Die kannst du stärken, ohne je über Politik zu reden."
+          "hinweis": "Heimat heißt für die Person Beziehungen. Die kannst du stärken, ohne je über Politik zu reden."
         },
         {
           "id": "hm1c",
@@ -3810,11 +3810,11 @@ window.APP_DATA.kompass = {
           "gewichte": {
             "identitaet-heimat": 3
           },
-          "hinweis": "Heimat ist hier vor allem Abgrenzung. Nicht über Gruppen streiten, sondern Geschichten einzelner Menschen erzählen und ihre anhören."
+          "hinweis": "Heimat ist hier vor allem Abgrenzung. Nicht über Gruppen streiten, sondern Geschichten einzelner Menschen erzählen und die der Person anhören."
         },
         {
           "id": "hm1f",
-          "text": "Sie spricht nicht von Heimat",
+          "text": "Die Person spricht nicht von Heimat",
           "gewichte": {}
         }
       ]
@@ -3823,7 +3823,7 @@ window.APP_DATA.kompass = {
       "id": "hm2",
       "bereich": "heimat",
       "typ": "multi",
-      "text": "Wie beschreibt sie die Veränderung ihres Ortes in den letzten Jahren?",
+      "text": "Wie beschreibt die Person die Veränderung ihres Ortes in den letzten Jahren?",
       "warum": "Subjektive Bewertungen des Ortes weichen oft vom objektiven Zustand ab (FES-Kreisanalyse), Sorgen werden durch Diskurse aktiviert (Ziller 2025). Ob ein realer Verlust, eine Unsicherheit oder ein übernommenes Bild dahintersteht, bestimmt das Gespräch.",
       "optionen": [
         {
@@ -3833,7 +3833,7 @@ window.APP_DATA.kompass = {
             "identitaet-heimat": 2,
             "gerechtigkeit-abgehaengt": 1
           },
-          "hinweis": "Der Verlust ist real und greifbar. Frag, was sie am meisten vermisst, und ob sich etwas davon gemeinsam zurückholen lässt."
+          "hinweis": "Der Verlust ist real und greifbar. Frag, was die Person am meisten vermisst, und ob sich etwas davon gemeinsam zurückholen lässt."
         },
         {
           "id": "hm2b",
@@ -3846,15 +3846,15 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "hm2c",
-          "text": "Unsicherer: Sie geht abends ungern raus",
+          "text": "Unsicherer: Die Person geht abends ungern raus",
           "gewichte": {
             "kontrolle-angst": 3
           },
-          "hinweis": "Sicherheitssorgen ernst nehmen. Frag konkret, was passiert ist und was ihr Sicherheit geben würde, bevor du Zahlen nennst."
+          "hinweis": "Sicherheitssorgen ernst nehmen. Frag konkret, was passiert ist und was der Person Sicherheit geben würde, bevor du Zahlen nennst."
         },
         {
           "id": "hm2d",
-          "text": "Teurer: Sie kann sich den Ort kaum noch leisten",
+          "text": "Teurer: Die Person kann sich den Ort kaum noch leisten",
           "gewichte": {
             "gerechtigkeit-abgehaengt": 2,
             "kontrolle-angst": 1
@@ -3862,16 +3862,16 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "hm2e",
-          "text": "Sie beschreibt Veränderungen, die ich vor Ort so nicht sehe",
+          "text": "Die Person beschreibt Veränderungen, die ich vor Ort so nicht sehe",
           "gewichte": {
             "misstrauen": 1,
             "identitaet-heimat": 1
           },
-          "hinweis": "Die Sorge stammt eher aus Kanälen als vom Ort. Sprich über die Quellen und ihre eigene Erfahrung vor Ort, nicht über den Ort selbst."
+          "hinweis": "Die Sorge stammt eher aus Kanälen als vom Ort. Sprich über die Quellen und die eigene Erfahrung der Person vor Ort, nicht über den Ort selbst."
         },
         {
           "id": "hm2g",
-          "text": "Sie spricht nicht über Veränderungen im Ort",
+          "text": "Die Person spricht nicht über Veränderungen im Ort",
           "gewichte": {}
         },
         {
@@ -3885,7 +3885,7 @@ window.APP_DATA.kompass = {
       "id": "hm3",
       "bereich": "heimat",
       "typ": "multi",
-      "text": "Wie spricht sie über Berlin, die Großstädte oder „die da oben“ im Verhältnis zu ihrem Ort?",
+      "text": "Wie spricht die Person über Berlin, die Großstädte oder „die da oben“ im Verhältnis zum eigenen Ort?",
       "warum": "Erlebte Geringschätzung von oben ist ein eigener Treiber: enttäuschte Angleichungsversprechen (Mau), Benachteiligungsgefühl in Abwanderungsregionen (Salomo). Ob Anerkennung, Gerechtigkeit oder Kontrolle gekränkt ist, zeigt die Formulierung.",
       "optionen": [
         {
@@ -3938,21 +3938,21 @@ window.APP_DATA.kompass = {
       "id": "hm4",
       "bereich": "heimat",
       "typ": "multi",
-      "text": "Was hat sie selbst mit Weggehen und Bleiben erlebt?",
+      "text": "Was hat die Person selbst mit Weggehen und Bleiben erlebt?",
       "warum": "Abwanderung, Männerüberhang und Überalterung verbinden sich mit Benachteiligungsgefühl (Salomo). Ob die Person Gebliebene, Verlassene oder Zugezogene ist, zeigt, ob Anerkennung, Verlust oder fehlende Zugehörigkeit das Bedürfnis ist.",
       "optionen": [
         {
           "id": "hm4a",
-          "text": "Sie ist geblieben, während viele gegangen sind",
+          "text": "Die Person ist geblieben, während viele gegangen sind",
           "gewichte": {
             "identitaet-heimat": 2,
             "anerkennung": 1
           },
-          "hinweis": "Bleiben war ihre Entscheidung, und sie verteidigt sie. Würdige sie als Leistung, nicht als Versäumnis."
+          "hinweis": "Bleiben war die Entscheidung der Person, und sie verteidigt diese Entscheidung. Würdige das Bleiben als Leistung, nicht als Versäumnis."
         },
         {
           "id": "hm4b",
-          "text": "Ihre Kinder oder engsten Freunde sind weggezogen",
+          "text": "Die Kinder oder engsten Freunde der Person sind weggezogen",
           "gewichte": {
             "zugehoerigkeit": 2,
             "identitaet-heimat": 1
@@ -3961,7 +3961,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "hm4c",
-          "text": "Sie ist selbst weggegangen und zurückgekommen",
+          "text": "Die Person ist selbst weggegangen und zurückgekommen",
           "gewichte": {
             "identitaet-heimat": 1,
             "anerkennung": 1
@@ -3969,16 +3969,16 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "hm4d",
-          "text": "Sie ist zugezogen und fühlt sich nicht aufgenommen",
+          "text": "Die Person ist zugezogen und fühlt sich nicht aufgenommen",
           "gewichte": {
             "zugehoerigkeit": 2,
             "anerkennung": 1
           },
-          "hinweis": "Sie sucht Zugehörigkeit. Ein Verein oder ein Nachbarschaftsprojekt wirkt mehr als Gespräche."
+          "hinweis": "Die Person sucht Zugehörigkeit. Ein Verein oder ein Nachbarschaftsprojekt wirkt mehr als Gespräche."
         },
         {
           "id": "hm4e",
-          "text": "Sie lebt weit weg von dort, wo sie aufgewachsen ist",
+          "text": "Die Person lebt weit weg von dort, wo sie aufgewachsen ist",
           "gewichte": {
             "zugehoerigkeit": 1,
             "identitaet-heimat": 1
@@ -3986,7 +3986,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "hm4f",
-          "text": "Das spielt bei ihr keine Rolle",
+          "text": "Das spielt bei der Person keine Rolle",
           "gewichte": {}
         },
         {
@@ -4000,7 +4000,7 @@ window.APP_DATA.kompass = {
       "id": "hm5",
       "bereich": "heimat",
       "typ": "single",
-      "text": "Wie spricht sie vor allem über „früher“?",
+      "text": "Wie spricht die Person vor allem über „früher“?",
       "warum": "„Früher“ ist das Fenster in das verletzte Bedürfnis: Gemeinschaft, Ordnung oder Anerkennung. Unsichere Menschen suchen klare Gruppen und Regeln (Hogg). Nostalgie zeigt, was dein Angebot heute ersetzen muss.",
       "optionen": [
         {
@@ -4019,7 +4019,7 @@ window.APP_DATA.kompass = {
             "kontrolle-angst": 2,
             "identitaet-heimat": 1
           },
-          "hinweis": "Sie braucht Verlässlichkeit. Benenne, was gilt und bleibt, und halte eigene Zusagen peinlich genau ein."
+          "hinweis": "Die Person braucht Verlässlichkeit. Benenne, was gilt und bleibt, und halte eigene Zusagen peinlich genau ein."
         },
         {
           "id": "hm5c",
@@ -4039,7 +4039,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "hm5e",
-          "text": "Sie schaut eher nach vorn, früher ist kein Thema",
+          "text": "Die Person schaut eher nach vorn, früher ist kein Thema",
           "gewichte": {}
         },
         {
@@ -4053,7 +4053,7 @@ window.APP_DATA.kompass = {
       "id": "hm6",
       "bereich": "heimat",
       "typ": "multi",
-      "text": "Bezieht sie sich auf Erfahrungen von Umbruch und Entwertung, etwa nach 1990?",
+      "text": "Bezieht sich die Person auf Erfahrungen von Umbruch und Entwertung, etwa nach 1990?",
       "warum": "Enttäuschte Angleichungsversprechen und familiär tradierte Transformationserfahrung prägen die Parteibindung (Mau). Ob die Entwertung selbst erlebt, ererbt oder als Narrativ übernommen ist, bestimmt, ob du würdigst, nachfragst oder konkretisierst.",
       "optionen": [
         {
@@ -4063,7 +4063,7 @@ window.APP_DATA.kompass = {
             "anerkennung": 2,
             "gerechtigkeit-abgehaengt": 2
           },
-          "hinweis": "Entwertete Lebensleistung sitzt tief. Nicht relativieren, würdigen: Frag, was sie damals aufgebaut hat und was davon blieb."
+          "hinweis": "Entwertete Lebensleistung sitzt tief. Nicht relativieren, sondern würdigen: Frag, was die Person damals aufgebaut hat und was davon blieb."
         },
         {
           "id": "hm6b",
@@ -4072,7 +4072,7 @@ window.APP_DATA.kompass = {
             "identitaet-heimat": 2,
             "gerechtigkeit-abgehaengt": 1
           },
-          "hinweis": "Die Familiengeschichte ist ihr Fundament. Frag danach mit echtem Interesse, statt sie zu bewerten."
+          "hinweis": "Die Familiengeschichte ist das Fundament der Person. Frag danach mit echtem Interesse, statt zu bewerten."
         },
         {
           "id": "hm6c",
@@ -4085,7 +4085,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "hm6d",
-          "text": "Nein, das spielt bei ihr keine Rolle",
+          "text": "Nein, das spielt bei der Person keine Rolle",
           "gewichte": {}
         },
         {
@@ -4099,18 +4099,18 @@ window.APP_DATA.kompass = {
       "id": "hm7",
       "bereich": "heimat",
       "typ": "single",
-      "text": "Hat sie je versucht, vor Ort etwas zu verändern, und was ist daraus geworden?",
-      "warum": "Ob sie Wirksamkeit vor Ort erlebt, enttäuscht aufgegeben oder nie versucht hat, bestimmt das realistische Angebot: anknüpfen, Enttäuschung würdigen oder beim ersten Mal mitgehen. Erlebte Wirksamkeit ist das Gegenmittel zur Ohnmacht (Leipzig 2024).",
+      "text": "Hat die Person je versucht, vor Ort etwas zu verändern, und was ist daraus geworden?",
+      "warum": "Ob die Person Wirksamkeit vor Ort erlebt, enttäuscht aufgegeben oder nie versucht hat, bestimmt das realistische Angebot: anknüpfen, Enttäuschung würdigen oder beim ersten Mal mitgehen. Erlebte Wirksamkeit ist das Gegenmittel zur Ohnmacht (Leipzig 2024).",
       "optionen": [
         {
           "id": "hm7a",
           "text": "Ja, mit Erfolg",
           "gewichte": {},
-          "hinweis": "Sie kennt Selbstwirksamkeit. Knüpf daran an: Was wäre heute das nächste kleine Projekt?"
+          "hinweis": "Die Person kennt Selbstwirksamkeit. Knüpf daran an: Was wäre heute das nächste kleine Projekt?"
         },
         {
           "id": "hm7b",
-          "text": "Ja, ohne Erfolg, sie hat aufgegeben",
+          "text": "Ja, ohne Erfolg, die Person hat aufgegeben",
           "gewichte": {
             "protest-wut": 2,
             "kontrolle-angst": 1
@@ -4124,21 +4124,21 @@ window.APP_DATA.kompass = {
             "protest-wut": 2,
             "misstrauen": 1
           },
-          "hinweis": "Biete eine konkrete Beteiligung mit sichtbarer Folge: Ortsbeirat, Bürgerfragestunde, Petition, Verein. Begleite sie beim ersten Mal."
+          "hinweis": "Biete eine konkrete Beteiligung mit sichtbarer Folge: Ortsbeirat, Bürgerfragestunde, Petition, Verein. Begleite die Person beim ersten Mal."
         },
         {
           "id": "hm7d",
-          "text": "Nein, sie hatte nie Anlass oder Interesse",
+          "text": "Nein, die Person hatte nie Anlass oder Interesse",
           "gewichte": {}
         },
         {
           "id": "hm7e",
-          "text": "Sie engagiert sich inzwischen über die Partei vor Ort",
+          "text": "Die Person engagiert sich inzwischen über die Partei vor Ort",
           "gewichte": {
             "zugehoerigkeit": 2,
             "anerkennung": 1
           },
-          "hinweis": "Die Partei gibt ihr Wirksamkeit und Rolle, die andere nicht boten. Ein demokratisches Angebot muss genauso konkret sein, sonst bleibt es Worte."
+          "hinweis": "Die Partei gibt der Person Wirksamkeit und eine Rolle, die andere nicht boten. Ein demokratisches Angebot muss genauso konkret sein, sonst bleibt es bei Worten."
         },
         {
           "id": "hm7f",
@@ -4151,7 +4151,7 @@ window.APP_DATA.kompass = {
       "id": "bz1",
       "bereich": "beziehung-zu-dir",
       "typ": "single",
-      "text": "Wie war euer Kontakt in den letzten drei Monaten?",
+      "text": "Wie war der Kontakt zwischen dir und der Person in den letzten drei Monaten?",
       "warum": "Beziehungsqualität sagt in der Beratungsforschung das Ergebnis voraus (Flückiger 2018; DJI 2024): Ohne tragfähigen Kontakt greift keine Gesprächstechnik. Die Antwort entscheidet, ob du bei „Beziehung sichern“ oder beim Zuhören einsteigst.",
       "optionen": [
         {
@@ -4205,7 +4205,7 @@ window.APP_DATA.kompass = {
       "id": "bz2",
       "bereich": "beziehung-zu-dir",
       "typ": "single",
-      "text": "Weiß sie, dass dich ihre politische Haltung beschäftigt?",
+      "text": "Weiß die Person, dass dich ihre politische Haltung beschäftigt?",
       "warum": "Offenheit über die eigene Sorge ist Voraussetzung für Vertrauen; verdeckte Strategien scheitern am Transparenz-Test und kosten Beziehungskapital, wenn sie auffliegen (Susser et al. 2019; MBR). Die Antwort zeigt, ob du zuerst offen über deine Sorge reden musst.",
       "optionen": [
         {
@@ -4220,7 +4220,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bz2b",
-          "text": "Sie ahnt es, wir sprechen aber nicht darüber",
+          "text": "Die Person ahnt es, wir sprechen aber nicht darüber",
           "gewichte": {},
           "skalen": {
             "kapital": 2
@@ -4235,11 +4235,11 @@ window.APP_DATA.kompass = {
             "kapital": 1,
             "belastung": 1
           },
-          "hinweis": "Verdeckte Sorge wird irgendwann sichtbar und wirkt dann wie Taktik. Benenne sie lieber selbst, in Ruhe und als Ich-Botschaft."
+          "hinweis": "Verdeckte Sorge wird irgendwann sichtbar und wirkt dann wie Taktik. Benenne die Sorge lieber selbst, in Ruhe und als Ich-Botschaft."
         },
         {
           "id": "bz2d",
-          "text": "Ja, und sie erlebt es als Angriff oder Bevormundung",
+          "text": "Ja, und die Person erlebt es als Angriff oder Bevormundung",
           "gewichte": {
             "anerkennung": 1,
             "kontrolle-angst": 1
@@ -4248,11 +4248,11 @@ window.APP_DATA.kompass = {
             "kapital": 1,
             "offenheit": 1
           },
-          "hinweis": "Sie hört Sorge als Urteil. Frag um Erlaubnis, bevor du das Thema aufmachst, und sprich eher über dich als über sie."
+          "hinweis": "Die Person hört Sorge als Urteil. Frag um Erlaubnis, bevor du das Thema aufmachst, und sprich eher über dich als über die Person."
         },
         {
           "id": "bz2e",
-          "text": "Ja, aber es ist ihr sichtbar gleichgültig",
+          "text": "Ja, aber es ist der Person sichtbar gleichgültig",
           "gewichte": {},
           "skalen": {
             "kapital": 0
@@ -4270,7 +4270,7 @@ window.APP_DATA.kompass = {
       "id": "bz3",
       "bereich": "beziehung-zu-dir",
       "typ": "multi",
-      "text": "Was verbindet euch außerhalb von Politik?",
+      "text": "Was verbindet dich und die Person außerhalb von Politik?",
       "warum": "Beratungsstellen raten übereinstimmend, die Beziehung nicht auf das Thema zu reduzieren (bpb 2024, MBR). Was euch sonst verbindet, ist der Boden, auf dem Gespräche möglich bleiben, und bestimmt, welche Anlässe du nutzen kannst.",
       "optionen": [
         {
@@ -4288,7 +4288,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "kapital": 2
           },
-          "hinweis": "Routinen sind dein Anker: Sie tragen den Kontakt auch nach einem schwierigen Gespräch. Halte sie unabhängig vom Thema."
+          "hinweis": "Routinen sind dein Anker und tragen den Kontakt auch nach einem schwierigen Gespräch. Halte die Routinen unabhängig vom Thema."
         },
         {
           "id": "bz3c",
@@ -4297,7 +4297,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "kapital": 2
           },
-          "hinweis": "Gegenseitige Hilfe zeigt ihr: Du bist verlässlich. Das wiegt bei Misstrauen schwerer als jedes Argument."
+          "hinweis": "Gegenseitige Hilfe zeigt der Person: Du bist verlässlich. Das wiegt bei Misstrauen schwerer als jedes Argument."
         },
         {
           "id": "bz3d",
@@ -4331,22 +4331,22 @@ window.APP_DATA.kompass = {
       "id": "bz4",
       "bereich": "beziehung-zu-dir",
       "typ": "single",
-      "text": "Wenn du ihr etwas Persönliches erzählst, wie reagiert sie?",
-      "warum": "Nicht wertender Austausch persönlicher Erzählungen ist die einzige Gesprächsform mit belegter Monatswirkung (Kalla/Broockman 2020). Ob sie dir zuhört, zeigt, ob dieser Weg bei euch offen ist oder erst Zuhören aufgebaut werden muss.",
+      "text": "Wenn du der Person etwas Persönliches erzählst, wie reagiert sie?",
+      "warum": "Nicht wertender Austausch persönlicher Erzählungen ist die einzige Gesprächsform mit belegter Monatswirkung (Kalla/Broockman 2020). Ob die Person dir zuhört, zeigt, ob dieser Weg bei euch offen ist oder erst Zuhören aufgebaut werden muss.",
       "optionen": [
         {
           "id": "bz4a",
-          "text": "Hört zu, fragt nach, erinnert sich später daran",
+          "text": "Die Person hört zu, fragt nach und erinnert sich später daran",
           "gewichte": {},
           "skalen": {
             "kapital": 3,
             "offenheit": 2
           },
-          "hinweis": "Sie kann zuhören. Eigene Erlebnisse und Geschichten Betroffener zu erzählen hat bei ihr eine echte Chance."
+          "hinweis": "Die Person kann zuhören. Eigene Erlebnisse und Geschichten Betroffener zu erzählen hat hier eine echte Chance."
         },
         {
           "id": "bz4b",
-          "text": "Hört zu, lenkt aber schnell auf sich oder ihr Thema",
+          "text": "Die Person hört zu, lenkt aber schnell auf sich oder ihr Thema",
           "gewichte": {
             "anerkennung": 1
           },
@@ -4356,7 +4356,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bz4c",
-          "text": "Nimmt es auf, aber Politik kommt immer wieder dazwischen",
+          "text": "Die Person nimmt es auf, aber Politik kommt immer wieder dazwischen",
           "gewichte": {},
           "skalen": {
             "kapital": 1
@@ -4364,7 +4364,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bz4d",
-          "text": "Wirkt desinteressiert oder abwesend",
+          "text": "Die Person wirkt desinteressiert oder abwesend",
           "gewichte": {},
           "skalen": {
             "kapital": 0
@@ -4372,7 +4372,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bz4e",
-          "text": "Ich erzähle ihr kaum noch etwas Persönliches",
+          "text": "Ich erzähle der Person kaum noch etwas Persönliches",
           "gewichte": {},
           "skalen": {
             "kapital": 0,
@@ -4386,7 +4386,7 @@ window.APP_DATA.kompass = {
       "id": "bz5",
       "bereich": "beziehung-zu-dir",
       "typ": "multi",
-      "text": "Was schätzt sie an dir, soweit du es weißt?",
+      "text": "Was schätzt die Person an dir, soweit du es weißt?",
       "warum": "Was die Person an dir schätzt, ist dein Pfund: Vertrauen in dich als Person wirkt bei Misstrauen und Verschwörungsdenken mehr als jede Quelle (Lewandowsky/Cook 2020). Die Antwort legt fest, welchen Ton und welche Rolle du im Gespräch einnimmst.",
       "optionen": [
         {
@@ -4402,7 +4402,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bz5b",
-          "text": "Dass ich zu ihr halte, egal was andere sagen",
+          "text": "Dass ich zur Person halte, egal was andere sagen",
           "gewichte": {
             "zugehoerigkeit": 1
           },
@@ -4423,12 +4423,12 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bz5d",
-          "text": "Dass ich mich nicht in ihr Leben einmische",
+          "text": "Dass ich mich nicht in das Leben der Person einmische",
           "gewichte": {},
           "skalen": {
             "kapital": 1
           },
-          "hinweis": "Sie schätzt Abstand. Politik ansprechen wird als Einmischung erlebt; frag um Erlaubnis, bevor du das Thema aufmachst."
+          "hinweis": "Die Person schätzt Abstand. Politik anzusprechen wird als Einmischung erlebt; frag um Erlaubnis, bevor du das Thema aufmachst."
         },
         {
           "id": "bz5e",
@@ -4449,7 +4449,7 @@ window.APP_DATA.kompass = {
       "id": "bz6",
       "bereich": "beziehung-zu-dir",
       "typ": "single",
-      "text": "Wie geht ihr mit Konflikten um, die nichts mit Politik zu tun haben?",
+      "text": "Wie geht ihr, du und die Person, mit Konflikten um, die nichts mit Politik zu tun haben?",
       "warum": "Wie ihr Alltagsstreit löst, zeigt besser als jede Politikdebatte, ob ihr Dissens aushaltet. Beratungsstellen empfehlen, Pausen als Pausen zu benennen; ob das nötig ist, hängt von eurem Muster ab (bpb 2024; Nocun).",
       "optionen": [
         {
@@ -4459,7 +4459,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "kapital": 3
           },
-          "hinweis": "Ihr habt eine Streitkultur. Nutze sie: Dieselben Regeln, die bei Alltagsstreit helfen, gelten auch für Politik."
+          "hinweis": "Ihr habt eine Streitkultur, nutze sie: Dieselben Regeln, die bei Alltagsstreit helfen, gelten auch für Politik."
         },
         {
           "id": "bz6b",
@@ -4502,17 +4502,17 @@ window.APP_DATA.kompass = {
       "id": "bz7",
       "bereich": "beziehung-zu-dir",
       "typ": "single",
-      "text": "Hat sie sich dir in letzter Zeit mit einer Sorge oder einem Problem anvertraut?",
+      "text": "Hat sich die Person dir in letzter Zeit mit einer Sorge oder einem Problem anvertraut?",
       "warum": "Offenlegen von Persönlichem ist ein Beziehungsindikator (DJI 2024) und zugleich der direkte Weg zum Bedürfnis hinter der Position (3N-Modell). Die Antwort zeigt, ob du am Bedürfnis oder erst an der Beziehung arbeiten musst.",
       "optionen": [
         {
           "id": "bz7a",
-          "text": "Ja, mit etwas Persönlichem, das sie sonst nicht erzählt",
+          "text": "Ja, mit etwas Persönlichem, das die Person sonst nicht erzählt",
           "gewichte": {},
           "skalen": {
             "kapital": 3
           },
-          "hinweis": "Sie vertraut dir. Was sie dir anvertraut hat, ist oft das Bedürfnis hinter der Politik. Bleib dort, bevor du über Parteien sprichst."
+          "hinweis": "Die Person vertraut dir, und das Anvertraute ist oft das Bedürfnis hinter der Politik. Bleib dort, bevor du über Parteien sprichst."
         },
         {
           "id": "bz7b",
@@ -4527,7 +4527,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bz7c",
-          "text": "Nur über politische Sorgen, die sie ohnehin allen erzählt",
+          "text": "Nur über politische Sorgen, die die Person ohnehin allen erzählt",
           "gewichte": {
             "protest-wut": 1
           },
@@ -4537,7 +4537,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "bz7d",
-          "text": "Nein, sie zeigt mir keine Schwäche",
+          "text": "Nein, die Person zeigt mir keine Schwäche",
           "gewichte": {
             "anerkennung": 1
           },
@@ -4556,7 +4556,7 @@ window.APP_DATA.kompass = {
       "id": "ge1",
       "bereich": "gespraeche",
       "typ": "multi",
-      "text": "In welchen Situationen kommt es bei euch meist zu politischen Gesprächen?",
+      "text": "In welchen Situationen kommt es zwischen dir und der Person meist zu politischen Gesprächen?",
       "warum": "Das Setting entscheidet mehr als Argumente: Praxisstellen raten zu Gesprächen unter vier Augen und warnen vor Gruppe und Chat (MBR, KAST, bpb 2024). Die Antwort zeigt, ob du erst das Setting ändern musst.",
       "optionen": [
         {
@@ -4575,7 +4575,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "In der Gruppe verteidigt sie eine Position, keinen Gedanken. Verschiebe es auf ein Gespräch zu zweit: „Lass uns das später in Ruhe besprechen.“"
+          "hinweis": "In der Gruppe verteidigt die Person eine Position, keinen Gedanken. Verschiebe es auf ein Gespräch zu zweit: „Lass uns das später in Ruhe besprechen.“"
         },
         {
           "id": "ge1c",
@@ -4618,7 +4618,7 @@ window.APP_DATA.kompass = {
       "id": "ge2",
       "bereich": "gespraeche",
       "typ": "multi",
-      "text": "Was passiert typischerweise kurz bevor ein Gespräch kippt?",
+      "text": "Was passiert typischerweise, kurz bevor ein Gespräch mit der Person kippt?",
       "warum": "Reaktanz, nicht Backfire, ist der Mechanismus der Verhärtung: Gegenargumentieren, Ärger auf den Boten, Etiketten (Swire-Thompson 2020). Wer den eigenen Kipppunkt kennt, kann ihn im nächsten Gespräch gezielt vermeiden.",
       "optionen": [
         {
@@ -4641,7 +4641,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ge2c",
-          "text": "Sie springt von Parole zu Parole, ich komme nicht hinterher",
+          "text": "Die Person springt von Parole zu Parole, ich komme nicht hinterher",
           "gewichte": {
             "misstrauen": 1
           },
@@ -4652,14 +4652,14 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ge2d",
-          "text": "Sie fühlt sich persönlich angegriffen, obwohl ich die Sache meinte",
+          "text": "Die Person fühlt sich persönlich angegriffen, obwohl ich die Sache meinte",
           "gewichte": {
             "anerkennung": 2
           },
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Sie hört Kritik an der Partei als Kritik an sich. Trenne hörbar: „Ich meine nicht dich, ich meine diese Aussage.“"
+          "hinweis": "Die Person hört Kritik an der Partei als Kritik an sich. Trenne hörbar: „Ich meine nicht dich, ich meine diese Aussage.“"
         },
         {
           "id": "ge2e",
@@ -4692,12 +4692,12 @@ window.APP_DATA.kompass = {
       "id": "ge3",
       "bereich": "gespraeche",
       "typ": "multi",
-      "text": "Was hat sie in einem Gespräch schon einmal ruhiger werden lassen?",
-      "warum": "Nicht wertendes Zuhören und Erzählen senken Abwehr und Extremität (Itzchakov 2017; Kalla/Broockman 2020). Was bei ihr schon einmal gewirkt hat, ist der wiederholbare Zugang, den der Fahrplan an den Anfang stellt.",
+      "text": "Was hat die Person in einem Gespräch schon einmal ruhiger werden lassen?",
+      "warum": "Nicht wertendes Zuhören und Erzählen senken Abwehr und Extremität (Itzchakov 2017; Kalla/Broockman 2020). Was bei der Person schon einmal gewirkt hat, ist der wiederholbare Zugang, den der Fahrplan an den Anfang stellt.",
       "optionen": [
         {
           "id": "ge3a",
-          "text": "Dass ich ihr Erlebnis ernst genommen habe, ohne ihre Schlüsse zu teilen",
+          "text": "Dass ich das Erlebnis der Person ernst genommen habe, ohne ihre Schlüsse zu teilen",
           "gewichte": {},
           "skalen": {
             "offenheit": 2
@@ -4706,7 +4706,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ge3b",
-          "text": "Dass ich in eigenen Worten wiederholt habe, was sie meint",
+          "text": "Dass ich in eigenen Worten wiederholt habe, was die Person meint",
           "gewichte": {
             "anerkennung": 1
           },
@@ -4717,12 +4717,12 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ge3c",
-          "text": "Eine persönliche Geschichte von mir oder von jemandem, den sie kennt",
+          "text": "Eine persönliche Geschichte von mir oder von jemandem, den die Person kennt",
           "gewichte": {},
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Geschichten tragen bei ihr. Sammle Erlebnisse konkreter Menschen, die sie respektiert, und erzähle sie, statt zu argumentieren."
+          "hinweis": "Geschichten tragen bei der Person. Sammle Erlebnisse konkreter Menschen, die bei der Person Respekt genießen, und erzähle davon, statt zu argumentieren."
         },
         {
           "id": "ge3d",
@@ -4745,7 +4745,7 @@ window.APP_DATA.kompass = {
           "id": "ge3f",
           "text": "Weiß ich nicht, ich habe nie darauf geachtet",
           "gewichte": {},
-          "hinweis": "Achte beim nächsten Mal bewusst darauf, wann ihr Ton weicher wird. Das ist dein wichtigstes Werkzeug."
+          "hinweis": "Achte beim nächsten Mal bewusst darauf, wann der Ton der Person weicher wird. Das ist dein wichtigstes Werkzeug."
         }
       ]
     },
@@ -4753,7 +4753,7 @@ window.APP_DATA.kompass = {
       "id": "ge4",
       "bereich": "gespraeche",
       "typ": "single",
-      "text": "Wer vermeidet bei euch das Thema Politik, und warum?",
+      "text": "Wer vermeidet das Thema Politik, du oder die Person, und warum?",
       "warum": "Beratungsstellen raten: früh ansprechen, nicht schweigen, aber unter vier Augen (bpb 2024, MBR). Wer das Thema aus welchem Grund meidet, bestimmt, ob dein nächster Schritt ein Gesprächsangebot oder eine Entlastung ist.",
       "optionen": [
         {
@@ -4768,14 +4768,14 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ge4b",
-          "text": "Sie, sie blockt ab, sobald ich anfange",
+          "text": "Die Person, sie blockt ab, sobald ich anfange",
           "gewichte": {
             "kontrolle-angst": 1
           },
           "skalen": {
             "offenheit": 0
           },
-          "hinweis": "Sie schützt sich. Frag um Erlaubnis: „Darf ich dich etwas dazu fragen, ohne dass wir streiten?“ Ein Nein ist dann auch eine Antwort."
+          "hinweis": "Die Person schützt sich. Frag um Erlaubnis: „Darf ich dich etwas dazu fragen, ohne dass wir streiten?“ Ein Nein ist dann auch eine Antwort."
         },
         {
           "id": "ge4c",
@@ -4784,7 +4784,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Beidseitiges Vermeiden kostet nichts Akutes, aber verfestigt. Beginne nicht mit Politik, sondern mit dem, was sie gerade wirklich beschäftigt."
+          "hinweis": "Beidseitiges Vermeiden kostet nichts Akutes, verfestigt aber. Beginne nicht mit Politik, sondern mit dem, was die Person gerade wirklich beschäftigt."
         },
         {
           "id": "ge4d",
@@ -4812,14 +4812,14 @@ window.APP_DATA.kompass = {
       "id": "ge5",
       "bereich": "gespraeche",
       "typ": "multi",
-      "text": "Was hast du bisher schon versucht?",
+      "text": "Was hast du bei der Person bisher schon versucht?",
       "warum": "Was du schon probiert hast, bestimmt, was der Fahrplan überspringt oder korrigiert: Fakten allein wirken kaum, Druck und Spott schaden, Zuhören und Erzählen tragen (Walter 2020; O’Mahony 2023; Kalla/Broockman 2020).",
       "optionen": [
         {
           "id": "ge5a",
           "text": "Mit Fakten und Quellen widerlegen",
           "gewichte": {},
-          "hinweis": "Richtig war: nicht schweigen. Wirksamer: Fakten einmal nennen, dann zum Erlebnis wechseln und fragen, wie sie prüfen würde, ob etwas stimmt."
+          "hinweis": "Richtig war: nicht schweigen. Wirksamer: Fakten einmal nennen, dann zum Erlebnis wechseln und fragen, wie die Person prüfen würde, ob etwas stimmt."
         },
         {
           "id": "ge5b",
@@ -4828,7 +4828,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Du bist auf dem belegten Weg (Kalla/Broockman 2020). Nächster Schritt: eigene Erlebnisse erzählen und die Geschichte eines Betroffenen einbringen."
+          "hinweis": "Du bist auf dem belegten Weg (Kalla/Broockman 2020). Nächster Schritt: eigene Erlebnisse erzählen und die Geschichte von jemandem einbringen, der selbst betroffen ist."
         },
         {
           "id": "ge5c",
@@ -4850,7 +4850,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ge5e",
-          "text": "Andere Personen eingebunden, die sie respektiert",
+          "text": "Andere Menschen eingebunden, die die Person respektiert",
           "gewichte": {},
           "skalen": {
             "offenheit": 1
@@ -4878,43 +4878,43 @@ window.APP_DATA.kompass = {
       "id": "ge6",
       "bereich": "gespraeche",
       "typ": "single",
-      "text": "Wie unterscheidet sich das, was sie dir allein sagt, von dem, was sie vor anderen sagt?",
+      "text": "Wie unterscheidet sich das, was die Person dir allein sagt, von dem, was sie vor anderen sagt?",
       "warum": "Der Wechsel von Diskussion zu Loyalitätsbekundung ist ein Warnsignal für Verhärtung, geäußerte Ambivalenz ein Öffnungssignal (Priester/Petty 1996). Der Unterschied zeigt, welche Situation du suchen und welche du meiden solltest.",
       "optionen": [
         {
           "id": "ge6a",
-          "text": "Allein ist sie nachdenklicher, differenzierter, auch mal unsicher",
+          "text": "Allein ist die Person nachdenklicher, differenzierter, auch mal unsicher",
           "gewichte": {},
           "skalen": {
             "offenheit": 3
           },
-          "hinweis": "Ambivalenz ist der Moment, in dem Einfluss möglich ist. Lass das „ja, aber“ stehen, ohne es auszunutzen; frag, was sie zögern lässt."
+          "hinweis": "Ambivalenz ist der Moment, in dem Einfluss möglich ist. Lass das „ja, aber“ stehen, ohne es auszunutzen; frag, was die Person zögern lässt."
         },
         {
           "id": "ge6b",
-          "text": "Allein ist sie härter, vor anderen hält sie sich zurück",
+          "text": "Allein ist die Person härter, vor anderen hält sie sich zurück",
           "gewichte": {
             "misstrauen": 1
           },
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Sie zeigt dir ihre ungefilterte Sicht, das ist Vertrauen. Setze bei menschenverachtenden Aussagen trotzdem Grenzen, ruhig und begründet."
+          "hinweis": "Die Person zeigt dir ihre ungefilterte Sicht, das ist Vertrauen. Setze bei menschenverachtenden Aussagen trotzdem Grenzen, ruhig und begründet."
         },
         {
           "id": "ge6c",
-          "text": "Vor anderen ist sie lauter und bekennt sich betont zur Partei",
+          "text": "Vor anderen ist die Person lauter und bekennt sich betont zur Partei",
           "gewichte": {
             "zugehoerigkeit": 2
           },
           "skalen": {
             "offenheit": 1
           },
-          "hinweis": "Öffentliches Bekennen ist Loyalität zur Gruppe, nicht Überzeugung. Diskutiere nie in der Runde; dort kann sie nur verlieren oder lauter werden."
+          "hinweis": "Öffentliches Bekennen ist Loyalität zur Gruppe, nicht Überzeugung. Diskutiere nie in der Runde; dort kann die Person nur verlieren oder lauter werden."
         },
         {
           "id": "ge6d",
-          "text": "Kein Unterschied, sie sagt überall dasselbe",
+          "text": "Kein Unterschied, die Person sagt überall dasselbe",
           "gewichte": {},
           "skalen": {
             "offenheit": 1
@@ -4922,7 +4922,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ge6e",
-          "text": "Ich erlebe sie nur in einer der beiden Situationen",
+          "text": "Ich erlebe die Person nur in einer der beiden Situationen",
           "gewichte": {}
         }
       ]
@@ -4931,7 +4931,7 @@ window.APP_DATA.kompass = {
       "id": "ge7",
       "bereich": "gespraeche",
       "typ": "multi",
-      "text": "Gibt es Punkte, bei denen ihr euch einig seid, auch wenn ihr die Lösung anders seht?",
+      "text": "Gibt es Punkte, bei denen ihr euch einig seid, du und die Person, auch wenn ihr die Lösung anders seht?",
       "warum": "Gespräche, die bei geteilten Sorgen beginnen, senken Abwehr und machen Dissens tragbar (Kalla/Broockman 2020; Motivational Interviewing). Wo ihr euch einig seid, entscheidet, womit du anfängst, bevor ihr über Unterschiede sprecht.",
       "optionen": [
         {
@@ -4941,7 +4941,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Beginne jedes Gespräch mit dem geteilten Problem und benenne erst dann, wo ihr euch trennt. So muss sie nicht die ganze Haltung verteidigen."
+          "hinweis": "Beginne jedes Gespräch mit dem geteilten Problem und benenne erst dann, wo ihr euch trennt. So muss die Person nicht die ganze Haltung verteidigen."
         },
         {
           "id": "ge7b",
@@ -4976,7 +4976,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "offenheit": 2
           },
-          "hinweis": "Argumentiere in diesen gemeinsamen Werten, nicht in deinen eigenen, und frag, ob sie auch für die Menschen gelten, die sie ablehnt."
+          "hinweis": "Argumentiere in diesen gemeinsamen Werten, nicht in deinen eigenen, und frag, ob die Werte auch für die Menschen gelten, die die Person ablehnt."
         },
         {
           "id": "ge7e",
@@ -4991,7 +4991,7 @@ window.APP_DATA.kompass = {
           "id": "ge7f",
           "text": "Haben wir nie gesucht",
           "gewichte": {},
-          "hinweis": "Frag sie direkt: „Was müsste sich aus deiner Sicht ändern?“ Oft findet ihr dort mehr Gemeinsames, als ihr dachtet."
+          "hinweis": "Frag die Person direkt: „Was müsste sich aus deiner Sicht ändern?“ Oft findet ihr dort mehr Gemeinsames, als ihr dachtet."
         }
       ]
     },
@@ -4999,12 +4999,12 @@ window.APP_DATA.kompass = {
       "id": "ak1",
       "bereich": "aktivitaet",
       "typ": "multi",
-      "text": "Was davon hast du in den letzten zwölf Monaten bei ihr beobachtet?",
+      "text": "Was davon hast du in den letzten zwölf Monaten bei der Person beobachtet?",
       "warum": "Das Zwiebelmodell trennt Sympathisanten, Unterstützer, Aktivisten und Elite; je weiter innen, desto mehr ist Zugehörigkeit statt Inhalt der Halteanker (Pfeiffer 2024; Spissinger). Die Stufe entscheidet, ob du allein weiterkommst oder Fachberatung brauchst.",
       "optionen": [
         {
           "id": "ak1a",
-          "text": "Sie war bei Veranstaltungen, Demos oder Stammtischen der Partei",
+          "text": "Die Person war bei Veranstaltungen, Demos oder Stammtischen der Partei",
           "gewichte": {
             "zugehoerigkeit": 2,
             "protest-wut": 1
@@ -5012,22 +5012,22 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ak1b",
-          "text": "Sie ist Mitglied oder hat gespendet",
+          "text": "Die Person ist Mitglied oder hat gespendet",
           "gewichte": {
             "zugehoerigkeit": 2
           }
         },
         {
           "id": "ak1c",
-          "text": "Sie hilft mit: Flyer, Plakate, Infostand, Fahrdienst",
+          "text": "Die Person hilft mit: Flyer, Plakate, Infostand, Fahrdienst",
           "gewichte": {
             "zugehoerigkeit": 3
           },
-          "hinweis": "Praktisches Mitmachen bindet über Aufgaben, nicht über das Programm. Frag, was ihr die Aufgabe gibt, und ob es das auch woanders gäbe."
+          "hinweis": "Praktisches Mitmachen bindet über Aufgaben, nicht über das Programm. Frag, was der Person die Aufgabe gibt und ob es das auch woanders gäbe."
         },
         {
           "id": "ak1d",
-          "text": "Sie hat ein Amt, eine Kandidatur oder eine feste Rolle",
+          "text": "Die Person hat ein Amt, eine Kandidatur oder eine feste Rolle",
           "gewichte": {
             "zugehoerigkeit": 3,
             "anerkennung": 2
@@ -5036,7 +5036,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ak1e",
-          "text": "Sie war bei Demos oder Aktionen, die nicht von der Partei kamen",
+          "text": "Die Person war bei Demos oder Aktionen, die nicht von der Partei kamen",
           "gewichte": {
             "protest-wut": 2,
             "zugehoerigkeit": 1
@@ -5053,7 +5053,7 @@ window.APP_DATA.kompass = {
       "id": "ak2",
       "bereich": "aktivitaet",
       "typ": "multi",
-      "text": "Wie sichtbar zeigt sie ihre Haltung nach außen?",
+      "text": "Wie sichtbar zeigt die Person ihre Haltung nach außen?",
       "warum": "Symbole, Kleidung und Musik sind in der Ausstiegsarbeit Beobachtungskriterien für Szeneeinbindung (DJI-Fallabschlusskriterien). Sichtbarkeit zeigt, wie sehr die Haltung zur Identität geworden ist, und ob Fachberatung sinnvoll ist.",
       "optionen": [
         {
@@ -5079,16 +5079,16 @@ window.APP_DATA.kompass = {
             "zugehoerigkeit": 2,
             "identitaet-heimat": 1
           },
-          "hinweis": "Rechte Musik ist Einstiegsmedium und Gemeinschaftsritual; ihr Verschwinden zählt zu den Distanzierungskriterien des DJI. Achte auf Veränderungen in beide Richtungen."
+          "hinweis": "Rechte Musik ist Einstiegsmedium und Gemeinschaftsritual; verschwindet die Musik, zählt das zu den Distanzierungskriterien des DJI. Achte auf Veränderungen in beide Richtungen."
         },
         {
           "id": "ak2d",
-          "text": "Sie trägt es offen vor sich her, auch im Beruf oder im Verein",
+          "text": "Die Person trägt es offen vor sich her, auch im Beruf oder im Verein",
           "gewichte": {
             "protest-wut": 1,
             "anerkennung": 1
           },
-          "hinweis": "Offenes Bekennen im Beruf kann Folgen haben, die sie als Verfolgung deutet und die enger an die Gruppe binden. Sprich Konsequenzen sachlich an, nicht drohend."
+          "hinweis": "Offenes Bekennen im Beruf kann Folgen haben, die die Person als Verfolgung deutet und die enger an die Gruppe binden. Sprich Konsequenzen sachlich an, nicht drohend."
         },
         {
           "id": "ak2e",
@@ -5108,35 +5108,35 @@ window.APP_DATA.kompass = {
       "id": "ak3",
       "bereich": "aktivitaet",
       "typ": "single",
-      "text": "Wie sieht ihre Online-Aktivität aus, soweit du sie siehst?",
+      "text": "Wie sieht die Online-Aktivität der Person aus, soweit du sie siehst?",
       "warum": "Online-Verhalten reicht von Konsum bis Organisation; mit jedem Schritt wächst das Netzwerk, das die Erzählung bestätigt (3N-Modell). Die Stufe bestimmt, ob Weiterleitungen ein Kontaktangebot sind oder ob Beratung nötig ist.",
       "optionen": [
         {
           "id": "ak3a",
-          "text": "Sie liest und schaut, teilt aber kaum",
+          "text": "Die Person liest und schaut, teilt aber kaum",
           "gewichte": {}
         },
         {
           "id": "ak3b",
-          "text": "Sie leitet regelmäßig Inhalte weiter, auch an mich",
+          "text": "Die Person leitet regelmäßig Inhalte weiter, auch an mich",
           "gewichte": {
             "zugehoerigkeit": 1,
             "protest-wut": 1
           },
-          "hinweis": "Weiterleitungen sind oft Kontaktangebote, keine Argumente. Reagiere nicht auf den Inhalt, sondern auf sie: „Was hat dich daran berührt?“"
+          "hinweis": "Weiterleitungen sind oft Kontaktangebote, keine Argumente. Reagiere nicht auf den Inhalt, sondern auf die Person: „Was hat dich daran berührt?“"
         },
         {
           "id": "ak3c",
-          "text": "Sie kommentiert, streitet oder postet selbst",
+          "text": "Die Person kommentiert, streitet oder postet selbst",
           "gewichte": {
             "protest-wut": 2,
             "anerkennung": 1
           },
-          "hinweis": "Online-Streit gibt ihr Wirkung und Anerkennung. Das Bedürfnis ist real; frag, wo sie das auch offline bekäme."
+          "hinweis": "Online-Streit gibt der Person Wirkung und Anerkennung. Das Bedürfnis ist real; frag, wo es das auch offline gäbe."
         },
         {
           "id": "ak3d",
-          "text": "Sie ist in Gruppen aktiv, die sich auch offline treffen",
+          "text": "Die Person ist in Gruppen aktiv, die sich auch offline treffen",
           "gewichte": {
             "zugehoerigkeit": 3
           },
@@ -5144,12 +5144,12 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ak3e",
-          "text": "Sie betreibt einen eigenen Kanal oder moderiert Gruppen",
+          "text": "Die Person betreibt einen eigenen Kanal oder moderiert Gruppen",
           "gewichte": {
             "zugehoerigkeit": 2,
             "anerkennung": 2
           },
-          "hinweis": "Mit eigener Reichweite hat sie Status und Verpflichtung gegenüber Followern; Ausstieg hieße Statusverlust. Professionelle Beratung einbeziehen."
+          "hinweis": "Mit eigener Reichweite hat die Person Status und eine Verpflichtung gegenüber Followern; Ausstieg hieße Statusverlust. Professionelle Beratung einbeziehen."
         },
         {
           "id": "ak3f",
@@ -5162,17 +5162,17 @@ window.APP_DATA.kompass = {
       "id": "ak4",
       "bereich": "aktivitaet",
       "typ": "single",
-      "text": "Versucht sie, andere zu überzeugen oder für die Partei zu gewinnen?",
+      "text": "Versucht die Person, andere zu überzeugen oder für die Partei zu gewinnen?",
       "warum": "Werben ist das Kriterium für Basisaktivismus im Zwiebelmodell; wer andere gewinnt, bindet sich selbst tiefer (Pfeiffer 2024). Bei Werbung unter Minderjährigen braucht es Schule und Fachberatung (RuF 2024).",
       "optionen": [
         {
           "id": "ak4a",
-          "text": "Nein, sie redet über ihre Sicht, wirbt aber nicht",
+          "text": "Nein, die Person redet über ihre Sicht, wirbt aber nicht",
           "gewichte": {}
         },
         {
           "id": "ak4b",
-          "text": "Sie versucht es bei Familie und Freunden, eher beiläufig",
+          "text": "Die Person versucht es bei Familie und Freunden, eher beiläufig",
           "gewichte": {
             "protest-wut": 1,
             "zugehoerigkeit": 1
@@ -5180,7 +5180,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ak4c",
-          "text": "Sie wirbt gezielt, bringt Leute mit, verteilt Material",
+          "text": "Die Person wirbt gezielt, bringt Leute mit, verteilt Material",
           "gewichte": {
             "zugehoerigkeit": 3,
             "anerkennung": 1
@@ -5189,7 +5189,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ak4d",
-          "text": "Sie wirbt vor allem bei Jugendlichen oder Kindern",
+          "text": "Die Person wirbt vor allem bei Jugendlichen oder Kindern",
           "gewichte": {
             "zugehoerigkeit": 2
           },
@@ -5197,12 +5197,12 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ak4e",
-          "text": "Sie hat es aufgegeben, weil niemand zuhört",
+          "text": "Die Person hat es aufgegeben, weil niemand zuhört",
           "gewichte": {
             "protest-wut": 1,
             "anerkennung": 1
           },
-          "hinweis": "Aufgegebenes Werben zeigt Enttäuschung, auch mit der eigenen Seite. Ein Moment für Fragen nach dem, was sie sich erhofft hatte."
+          "hinweis": "Aufgegebenes Werben zeigt Enttäuschung, auch über die eigene Seite. Ein Moment für Fragen nach dem, was sich die Person erhofft hatte."
         },
         {
           "id": "ak4f",
@@ -5215,24 +5215,24 @@ window.APP_DATA.kompass = {
       "id": "ak5",
       "bereich": "aktivitaet",
       "typ": "single",
-      "text": "Hat sie persönlichen Kontakt zu Funktionären oder bekannten Köpfen der Szene?",
+      "text": "Hat die Person persönlichen Kontakt zu Funktionären oder bekannten Köpfen der Szene?",
       "warum": "Das Netzwerk bestätigt die Erzählung; radikalisierte Freund:innen erhöhen das Risiko mehr als Familie (Kruglanski; Jasko et al.). Die Nähe zu Kadern oder außerparteilichen Gruppen entscheidet, ob du allein oder mit Fachberatung handeln solltest.",
       "optionen": [
         {
           "id": "ak5a",
-          "text": "Nein, sie kennt niemanden persönlich",
+          "text": "Nein, die Person kennt niemanden persönlich",
           "gewichte": {}
         },
         {
           "id": "ak5b",
-          "text": "Sie kennt Leute vom Ortsverband oder Stammtisch",
+          "text": "Die Person kennt Leute vom Ortsverband oder Stammtisch",
           "gewichte": {
             "zugehoerigkeit": 2
           }
         },
         {
           "id": "ak5c",
-          "text": "Sie ist mit Funktionären befreundet oder trifft sie privat",
+          "text": "Die Person ist mit Funktionären befreundet oder trifft sie privat",
           "gewichte": {
             "zugehoerigkeit": 3,
             "anerkennung": 1
@@ -5241,7 +5241,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ak5d",
-          "text": "Sie hat Kontakt zu Gruppen außerhalb der Partei, etwa Kameradschaften oder Reichsbürger-Kreisen",
+          "text": "Die Person hat Kontakt zu Gruppen außerhalb der Partei, etwa Kameradschaften oder Reichsbürger-Kreisen",
           "gewichte": {
             "zugehoerigkeit": 2,
             "misstrauen": 1
@@ -5262,7 +5262,7 @@ window.APP_DATA.kompass = {
       "id": "ak6",
       "bereich": "aktivitaet",
       "typ": "single",
-      "text": "Wie viel Zeit und Geld fließen in die Sache, verglichen mit früher?",
+      "text": "Wie viel Zeit und Geld steckt die Person in die Sache, verglichen mit früher?",
       "warum": "Zeit- und Geldeinsatz zeigt die Gewichtung im Leben; weniger Szene-Konsum und Aktivitäten außerhalb sind DJI-Verlaufsindikatoren. Ob es zunimmt oder abnimmt, verändert dein Ziel: Brücke halten oder Alternative anbieten.",
       "optionen": [
         {
@@ -5276,11 +5276,11 @@ window.APP_DATA.kompass = {
           "gewichte": {
             "zugehoerigkeit": 2
           },
-          "hinweis": "Wenn alte Hobbys weichen, verschiebt sich ihr Netzwerk. Halte die alten Aktivitäten am Leben und lade gezielt dazu ein."
+          "hinweis": "Wenn alte Hobbys weichen, verschiebt sich das Netzwerk der Person. Halte die alten Aktivitäten am Leben und lade gezielt dazu ein."
         },
         {
           "id": "ak6c",
-          "text": "Es ist ihr Lebensmittelpunkt geworden",
+          "text": "Es ist zum Lebensmittelpunkt der Person geworden",
           "gewichte": {
             "zugehoerigkeit": 3
           },
@@ -5303,8 +5303,8 @@ window.APP_DATA.kompass = {
       "id": "ak7",
       "bereich": "aktivitaet",
       "typ": "single",
-      "text": "Hatte ihre Haltung schon spürbare Folgen für sie, etwa im Job, im Verein oder in der Familie?",
-      "warum": "Sanktionen können Verfolgungserzählungen bestätigen oder Ambivalenz auslösen; verlorene Außenkontakte sind der stärkste Schub in die Szene (Bjørgo; Jensen et al.). Wie sie Folgen deutet, zeigt, ob du Brücken oder Fragen priorisierst.",
+      "text": "Hatte die Haltung der Person schon spürbare Folgen für sie, etwa im Job, im Verein oder in der Familie?",
+      "warum": "Sanktionen können Verfolgungserzählungen bestätigen oder Ambivalenz auslösen; verlorene Außenkontakte sind der stärkste Schub in die Szene (Bjørgo; Jensen et al.). Wie die Person Folgen deutet, zeigt, ob du Brücken oder Fragen priorisierst.",
       "optionen": [
         {
           "id": "ak7a",
@@ -5313,7 +5313,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ak7b",
-          "text": "Ja, und sie deutet es als Beweis, dass man verfolgt wird",
+          "text": "Ja, und die Person deutet es als Beweis, dass man verfolgt wird",
           "gewichte": {
             "misstrauen": 2,
             "protest-wut": 1
@@ -5321,11 +5321,11 @@ window.APP_DATA.kompass = {
           "skalen": {
             "verschwoerung": 1
           },
-          "hinweis": "Folgen, die als Verfolgung gelesen werden, binden enger an die Gruppe. Widersprich der Deutung nicht frontal; frag, was sie sich von den Menschen gewünscht hätte."
+          "hinweis": "Folgen, die als Verfolgung gelesen werden, binden enger an die Gruppe. Widersprich der Deutung nicht frontal; frag, was sich die Person von den Menschen gewünscht hätte."
         },
         {
           "id": "ak7c",
-          "text": "Ja, und es hat sie nachdenklich gemacht",
+          "text": "Ja, und es hat die Person nachdenklich gemacht",
           "gewichte": {},
           "skalen": {
             "offenheit": 2
@@ -5334,7 +5334,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "ak7d",
-          "text": "Ja, sie hat Kontakte oder einen Verein verloren und ist jetzt mehr in der Szene",
+          "text": "Ja, die Person hat Kontakte oder einen Verein verloren und ist jetzt mehr in der Szene",
           "gewichte": {
             "zugehoerigkeit": 3
           },
@@ -5351,12 +5351,12 @@ window.APP_DATA.kompass = {
       "id": "du1",
       "bereich": "du-selbst",
       "typ": "single",
-      "text": "Was wäre für dich in einem halben Jahr ein echter Erfolg?",
+      "text": "Was wäre für dich in einem halben Jahr ein echter Erfolg mit der Person?",
       "warum": "Realistische Ziele schützen vor Erschöpfung: Niemand wird umgedreht, realistisch sind Zweifel, Beziehungserhalt und kleine Verschiebungen über Monate (Kalla/Broockman 2020; Rothkegel 2021). Dein Ziel bestimmt, woran der Fahrplan Fortschritt misst.",
       "optionen": [
         {
           "id": "du1a",
-          "text": "Dass sie die Partei nicht mehr unterstützt",
+          "text": "Dass die Person die Partei nicht mehr unterstützt",
           "gewichte": {},
           "skalen": {
             "belastung": 2
@@ -5374,7 +5374,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "du1c",
-          "text": "Dass sie einmal einen Zweifel äußert oder nachfragt",
+          "text": "Dass die Person einmal einen Zweifel äußert oder nachfragt",
           "gewichte": {},
           "skalen": {
             "belastung": 0
@@ -5383,7 +5383,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "du1d",
-          "text": "Dass sie Kontakte außerhalb der Szene behält oder neu findet",
+          "text": "Dass die Person Kontakte außerhalb der Szene behält oder neu findet",
           "gewichte": {},
           "skalen": {
             "belastung": 0
@@ -5397,7 +5397,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "belastung": 3
           },
-          "hinweis": "Ein Ende zu erwägen ist legitim; Selbstschutz geht vor. Sprich das zuerst mit einer Angehörigenberatung durch, sie hilft, Pause und Abbruch zu unterscheiden."
+          "hinweis": "Ein Ende zu erwägen ist legitim; Selbstschutz geht vor. Sprich das zuerst mit einer Angehörigenberatung durch; dort lernst du, Pause und Abbruch zu unterscheiden."
         },
         {
           "id": "du1f",
@@ -5406,7 +5406,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "belastung": 1
           },
-          "hinweis": "Ohne Ziel misst du Erfolg an ihren Reaktionen, und die enttäuschen. Wähle ein kleines, beobachtbares Ziel aus dem Fahrplan, bevor du weitermachst."
+          "hinweis": "Ohne Ziel misst du Erfolg an den Reaktionen der Person, und die enttäuschen. Wähle ein kleines, beobachtbares Ziel aus dem Fahrplan, bevor du weitermachst."
         }
       ]
     },
@@ -5414,7 +5414,7 @@ window.APP_DATA.kompass = {
       "id": "du2",
       "bereich": "du-selbst",
       "typ": "multi",
-      "text": "Was an ihrem Verhalten trifft dich selbst am stärksten?",
+      "text": "Was am Verhalten der Person trifft dich selbst am stärksten?",
       "warum": "Eigene Auslöser zu kennen ist Voraussetzung, um im Gespräch nicht selbst in Reaktanz zu fallen; Mitgefühlserschöpfung ist bei Angehörigen und Beratenden belegt (Rothkegel 2021). Die Antwort legt fest, welche Leitplanke du vorab brauchst.",
       "optionen": [
         {
@@ -5428,7 +5428,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "du2b",
-          "text": "Dass sie mich oder meine Arbeit abwertet",
+          "text": "Dass die Person mich oder meine Arbeit abwertet",
           "gewichte": {},
           "skalen": {
             "belastung": 2
@@ -5437,21 +5437,21 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "du2c",
-          "text": "Dass sie Dinge sagt, die sie früher nie gesagt hätte",
+          "text": "Dass die Person Dinge sagt, die sie früher nie gesagt hätte",
           "gewichte": {},
           "skalen": {
             "belastung": 2
           },
-          "hinweis": "Du trauerst um die Person, die sie war. Das ist normal und braucht einen Ort: Angehörigengruppen und Beratung sind genau dafür da."
+          "hinweis": "Du trauerst um den Menschen, der die Person früher war. Das ist normal und braucht einen Ort: Angehörigengruppen und Beratung sind genau dafür da."
         },
         {
           "id": "du2d",
-          "text": "Dass sie mir nicht zuhört, egal was ich sage",
+          "text": "Dass die Person mir nicht zuhört, egal was ich sage",
           "gewichte": {},
           "skalen": {
             "belastung": 1
           },
-          "hinweis": "Nicht gehört zu werden erschöpft. Prüfe, ob du selbst zuerst zuhörst; oft öffnet erst das ihr Ohr."
+          "hinweis": "Nicht gehört zu werden erschöpft. Prüfe, ob du selbst zuerst zuhörst; oft öffnet erst das die Ohren der Person."
         },
         {
           "id": "du2e",
@@ -5476,7 +5476,7 @@ window.APP_DATA.kompass = {
       "id": "du3",
       "bereich": "du-selbst",
       "typ": "single",
-      "text": "Wie geht es dir nach einem Gespräch mit ihr meistens?",
+      "text": "Wie geht es dir nach einem Gespräch mit der Person meistens?",
       "warum": "Die Belastung der nutzenden Person entscheidet, ob der Fahrplan beim Gespräch oder beim Selbstschutz beginnt (Umsteigepunkt eigene Erschöpfung). Erschöpfung und Vermeidung sind belegte Risiken für Angehörige (Rothkegel 2021; Nocun).",
       "optionen": [
         {
@@ -5520,7 +5520,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "belastung": 2
           },
-          "hinweis": "Schuldgefühle zeigen überhöhte Erwartungen an dich. Du bist verantwortlich für dein Verhalten, nicht für ihre Haltung."
+          "hinweis": "Schuldgefühle zeigen überhöhte Erwartungen an dich. Du bist verantwortlich für dein Verhalten, nicht für die Haltung der Person."
         }
       ]
     },
@@ -5528,7 +5528,7 @@ window.APP_DATA.kompass = {
       "id": "du4",
       "bereich": "du-selbst",
       "typ": "multi",
-      "text": "Mit wem kannst du über diese Situation offen sprechen?",
+      "text": "Mit wem kannst du offen über die Situation mit der Person sprechen?",
       "warum": "Nicht allein bleiben ist der erste Rat jeder Angehörigenberatung (RuF 2024); Supervision und kollegialer Austausch schützen vor Erschöpfung (Rothkegel 2021). Fehlt ein Netz, gehört Unterstützung suchen vor jedes Gespräch.",
       "optionen": [
         {
@@ -5550,7 +5550,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "du4c",
-          "text": "Mit einer Beratungsstelle oder einer Fachperson",
+          "text": "Mit einer Beratungsstelle oder einer Fachkraft",
           "gewichte": {},
           "skalen": {
             "belastung": 0
@@ -5568,12 +5568,12 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "du4e",
-          "text": "Mit niemandem, ich will sie nicht bloßstellen",
+          "text": "Mit niemandem, ich will die Person nicht bloßstellen",
           "gewichte": {},
           "skalen": {
             "belastung": 2
           },
-          "hinweis": "Beratung ist vertraulich, du musst keine Namen nennen. Dich zu stützen verrät sie nicht."
+          "hinweis": "Beratung ist vertraulich, du musst keine Namen nennen. Dich zu stützen verrät die Person nicht."
         },
         {
           "id": "du4f",
@@ -5582,7 +5582,7 @@ window.APP_DATA.kompass = {
           "skalen": {
             "belastung": 2
           },
-          "hinweis": "Such dir mindestens eine Person oder eine Beratungsstelle. Wer allein bleibt, überfordert sich, und das merkt auch die Person."
+          "hinweis": "Such dir mindestens einen Menschen oder eine Beratungsstelle. Wer allein bleibt, überfordert sich, und das merkt auch die Person."
         }
       ]
     },
@@ -5590,26 +5590,26 @@ window.APP_DATA.kompass = {
       "id": "du5",
       "bereich": "du-selbst",
       "typ": "single",
-      "text": "Wo liegt für dich die Grenze, an der du ein Gespräch beendest oder den Kontakt pausierst?",
+      "text": "Wo liegt für dich die Grenze, an der du ein Gespräch mit der Person beendest oder den Kontakt pausierst?",
       "warum": "Grenzen setzen, begründen und nur verbieten, was man durchsetzen kann, ist der einhellige Praxiskonsens (bpb 2024, MBR). Ob du eine ausgesprochene, haltbare Grenze hast, bestimmt den nächsten Schritt im Fahrplan.",
       "optionen": [
         {
           "id": "du5a",
-          "text": "Bei menschenverachtenden Aussagen, und das habe ich ihr gesagt",
+          "text": "Bei menschenverachtenden Aussagen, und das habe ich der Person gesagt",
           "gewichte": {},
           "skalen": {
             "belastung": 0
           },
-          "hinweis": "Benannte, durchsetzbare Grenzen sind der Praxiskonsens. Halte sie jedes Mal ein, sonst verlieren sie ihren Wert."
+          "hinweis": "Benannte, durchsetzbare Grenzen sind der Praxiskonsens. Halte jede Grenze jedes Mal ein, sonst verliert sie ihren Wert."
         },
         {
           "id": "du5b",
-          "text": "Ich habe eine Grenze, aber sie kennt sie nicht",
+          "text": "Ich habe eine Grenze, aber die Person kennt sie nicht",
           "gewichte": {},
           "skalen": {
             "belastung": 1
           },
-          "hinweis": "Eine unausgesprochene Grenze wirkt wie Laune. Sag sie in Ruhe und begründe sie, bevor sie das nächste Mal gebraucht wird."
+          "hinweis": "Eine unausgesprochene Grenze wirkt wie Laune. Sprich die Grenze in Ruhe aus und begründe sie, bevor sie das nächste Mal gebraucht wird."
         },
         {
           "id": "du5c",
@@ -5652,7 +5652,7 @@ window.APP_DATA.kompass = {
       "id": "du6",
       "bereich": "du-selbst",
       "typ": "single",
-      "text": "Wie klar ist dir selbst, was du denkst und wo du stehst?",
+      "text": "Wie klar ist dir selbst, was du denkst und wo du stehst, bevor du mit der Person sprichst?",
       "warum": "Überwältigungsverbot und Transparenz-Test verlangen, die eigene Haltung offen zu vertreten, ohne zu belehren (Pohl 2015; Susser et al. 2019). Ob du deine Position kurz und ehrlich sagen kannst, entscheidet, ob du sie zeigst oder erst klärst.",
       "optionen": [
         {
@@ -5666,7 +5666,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "du6b",
-          "text": "Klar in der Sache, aber ich kenne ihre Argumente nicht gut",
+          "text": "Klar in der Sache, aber ich kenne die Argumente der Person nicht gut",
           "gewichte": {},
           "skalen": {
             "belastung": 1
@@ -5675,7 +5675,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "du6c",
-          "text": "Ich finde manches, was sie sagt, selbst nachvollziehbar",
+          "text": "Ich finde manches, was die Person sagt, selbst nachvollziehbar",
           "gewichte": {},
           "skalen": {
             "belastung": 1
@@ -5684,7 +5684,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "du6d",
-          "text": "Ich bin unsicher und will nicht als Besserwisser dastehen",
+          "text": "Ich bin unsicher und will nicht besserwisserisch wirken",
           "gewichte": {},
           "skalen": {
             "belastung": 1
@@ -5693,7 +5693,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "du6e",
-          "text": "Mir geht es weniger um Politik als um sie als Mensch",
+          "text": "Mir geht es weniger um Politik als um die Person selbst",
           "gewichte": {},
           "skalen": {
             "belastung": 0
@@ -5706,12 +5706,12 @@ window.APP_DATA.kompass = {
       "id": "du7",
       "bereich": "du-selbst",
       "typ": "single",
-      "text": "In welcher Rolle bist du ihr gegenüber unterwegs?",
+      "text": "In welcher Rolle bist du der Person gegenüber unterwegs?",
       "warum": "Rolle und Auftrag bestimmen Einfluss, Grenzen und Pflichten: Eltern Minderjähriger haben erzieherische Verantwortung, Fachkräfte Supervision und Datenschutz, Freund:innen den größten Zugeffekt (RuF 2024; Jasko et al.; BAG Ausstieg).",
       "optionen": [
         {
           "id": "du7a",
-          "text": "Elternteil einer minderjährigen Person",
+          "text": "Elternteil, und die Person ist minderjährig",
           "gewichte": {},
           "skalen": {
             "belastung": 1
@@ -5720,7 +5720,7 @@ window.APP_DATA.kompass = {
         },
         {
           "id": "du7b",
-          "text": "Elternteil, Kind oder Geschwister einer erwachsenen Person",
+          "text": "Elternteil, Kind oder Geschwister, und die Person ist erwachsen",
           "gewichte": {},
           "skalen": {
             "belastung": 1
@@ -5782,31 +5782,31 @@ window.APP_DATA.kompass = {
       "optionen": [
         {
           "id": "sympathie",
-          "text": "Sie sympathisiert und teilt Inhalte, mehr nicht",
+          "text": "Die Person sympathisiert und teilt Inhalte, mehr nicht",
           "gewichte": {}
         },
         {
           "id": "wahl",
-          "text": "Sie wählt die Partei und verteidigt sie",
+          "text": "Die Person wählt die Partei und verteidigt sie",
           "gewichte": {}
         },
         {
           "id": "mitglied",
-          "text": "Sie ist Mitglied oder regelmäßig bei Veranstaltungen",
+          "text": "Die Person ist Mitglied oder regelmäßig bei Veranstaltungen",
           "gewichte": {
             "zugehoerigkeit": 1
           }
         },
         {
           "id": "aktiv",
-          "text": "Sie engagiert sich aktiv, wirbt, organisiert",
+          "text": "Die Person engagiert sich aktiv, wirbt, organisiert",
           "gewichte": {
             "zugehoerigkeit": 2
           }
         },
         {
           "id": "kader",
-          "text": "Sie hat eine Funktion oder gehört zum inneren Kreis",
+          "text": "Die Person hat eine Funktion oder gehört zum inneren Kreis",
           "gewichte": {
             "zugehoerigkeit": 2,
             "anerkennung": 1
@@ -5818,7 +5818,7 @@ window.APP_DATA.kompass = {
       "id": "beziehung",
       "bereich": "ausgangslage",
       "typ": "single",
-      "text": "Wie nah steht ihr euch?",
+      "text": "Wie nah steht ihr euch, du und die Person?",
       "optionen": [
         {
           "id": "eng",
@@ -5841,21 +5841,21 @@ window.APP_DATA.kompass = {
       "id": "risiko",
       "bereich": "ausgangslage",
       "typ": "multi",
-      "text": "Gibt es Warnzeichen?",
+      "text": "Gibt es Warnzeichen bei der Person?",
       "optionen": [
         {
           "id": "gewalt",
-          "text": "Sie rechtfertigt Gewalt oder droht damit",
+          "text": "Die Person rechtfertigt Gewalt oder droht damit",
           "gewichte": {}
         },
         {
           "id": "waffen",
-          "text": "Sie besitzt Waffen oder spricht über Bewaffnung",
+          "text": "Die Person besitzt Waffen oder spricht über Bewaffnung",
           "gewichte": {}
         },
         {
           "id": "rueckzug",
-          "text": "Sie zieht sich komplett zurück und bricht alle Kontakte ab",
+          "text": "Die Person zieht sich komplett zurück und bricht alle Kontakte ab",
           "gewichte": {}
         },
         {
@@ -5874,7 +5874,7 @@ window.APP_DATA.kompass = {
       "id": "kraft",
       "bereich": "ausgangslage",
       "typ": "single",
-      "text": "Wie viel kannst du selbst gerade geben?",
+      "text": "Wie viel Zeit und Kraft kannst du gerade für die Person aufbringen?",
       "optionen": [
         {
           "id": "kraft-viel",
@@ -5902,7 +5902,7 @@ window.APP_DATA.kompass = {
       "id": "anerkennung",
       "name": "Anerkennung und Bedeutung",
       "beduerfnis": "Gesehen werden, die eigene Leistung gewürdigt wissen und eine Rolle haben, die zählt.",
-      "beschreibung": "Menschen, die sich als unsichtbar oder abgestempelt erleben, finden in der Partei und ihrem Umfeld etwas, das sonst fehlt: Jemand hört zu und nimmt sie ernst. Nach dem 3N-Modell von Kruglanski ist die Suche nach Bedeutsamkeit ein zentraler Motor der Hinwendung (Meta-Analysen 2024, Evidenz mittel). AfD-Wählende stufen ihren Status unabhängig vom Einkommen niedriger ein (Hilmer et al. 2017). Das Etikett Nazi trifft dieses Bedürfnis frontal und schließt Türen (Dusso und Perkins 2023).",
+      "beschreibung": "Menschen, die sich als unsichtbar oder abgestempelt erleben, finden in der Partei und ihrem Umfeld etwas, das sonst fehlt: Jemand hört zu und nimmt sie ernst. Nach dem 3N-Modell von Kruglanski ist die Suche nach Bedeutsamkeit ein zentraler Motor der Hinwendung (Meta-Analysen 2024, Evidenz mittel). AfD-Wählende stufen ihren Status unabhängig vom Einkommen niedriger ein (Hilmer et al. 2017). Das Etikett „Nazi“ trifft dieses Bedürfnis frontal und schließt Türen (Dusso und Perkins 2023).",
       "zugang": [
         "Frag nach dem, was die Person geleistet hat und leistet, und würdige es konkret, nicht pauschal.",
         "Gib ihr eine echte Rolle: eine Aufgabe im Verein, in der Nachbarschaft, in der Familie, die ohne sie nicht läuft.",
@@ -5982,7 +5982,7 @@ window.APP_DATA.kompass = {
       "id": "misstrauen",
       "name": "Misstrauen und Verschwörungsdenken",
       "beduerfnis": "Nicht getäuscht werden, ehrliche Antworten bekommen und die Welt verstehen können.",
-      "beschreibung": "Verschwörungsglauben hängt mit erlebter Machtlosigkeit zusammen und ist bei Menschen stärker, die sich politisch ohne Einfluss fühlen (Imhoff et al. 2022, 26 Länder). Geringes politisches Vertrauen plus Souveränitätspopulismus sagt AfD-Wahlbereitschaft voraus (JSPP 2022). Faktenchecks allein ändern eine Mentalität nicht; nachträgliche Gegenargumente wirken schwach, Spott und Labels erhöhen den Glauben teils (O'Mahony et al. 2023). Was hilft: Vertrauen in dich als Person, Reflexion eigener Vorbehalte und glaubwürdige Botschafter, etwa Aussteiger.",
+      "beschreibung": "Verschwörungsglauben hängt mit erlebter Machtlosigkeit zusammen und ist bei Menschen stärker, die sich politisch ohne Einfluss fühlen (Imhoff et al. 2022, 26 Länder). Geringes politisches Vertrauen plus Souveränitätspopulismus sagt AfD-Wahlbereitschaft voraus (JSPP 2022). Faktenchecks allein ändern eine Mentalität nicht; nachträgliche Gegenargumente wirken schwach, Spott und Labels erhöhen den Glauben teils (O’Mahony et al. 2023). Was hilft: Vertrauen in dich als Person, Reflexion eigener Vorbehalte und glaubwürdige Botschafter:innen, etwa Aussteiger:innen.",
       "zugang": [
         "Baue erst Vertrauen in dich auf. Die Person soll erleben, dass du ehrlich bist, auch wenn du anders denkst.",
         "Frag nach dem Moment, an dem das Misstrauen begann, und würdige die Erfahrung dahinter.",
@@ -6170,47 +6170,47 @@ window.APP_DATA.kompass = {
     {
       "id": "weltbild",
       "name": "Weltbild und Demokratie",
-      "beschreibung": "Wie sie über Wahlen, Institutionen, Kompromisse und Gewalt denkt."
+      "beschreibung": "Wie die Person über Wahlen, Institutionen, Kompromisse und Gewalt denkt."
     },
     {
       "id": "beduerfnisse",
       "name": "Bedürfnisse",
-      "beschreibung": "Was ihr fehlt und was die Partei ihr gibt."
+      "beschreibung": "Was der Person fehlt und was die Partei ihr gibt."
     },
     {
       "id": "gefuehle",
       "name": "Gefühle",
-      "beschreibung": "Wut, Angst, Scham, Stolz: woran du sie erkennst und was sie auslöst."
+      "beschreibung": "Wut, Angst, Scham, Stolz: woran du diese Gefühle bei der Person erkennst und was sie auslöst."
     },
     {
       "id": "quellen",
       "name": "Informationsquellen",
-      "beschreibung": "Woher ihre Sicht kommt und wie sie mit Quellen umgeht."
+      "beschreibung": "Woher die Sicht der Person kommt und wie sie mit Quellen umgeht."
     },
     {
       "id": "widerspruch",
       "name": "Umgang mit Widerspruch",
-      "beschreibung": "Wie sie auf Belege, Nachfragen und Zustimmung reagiert."
+      "beschreibung": "Wie die Person auf Belege, Nachfragen und Zustimmung reagiert."
     },
     {
       "id": "verschwoerung",
       "name": "Verschwörungsdenken",
-      "beschreibung": "Ob sie geheime Steuerung hinter den Dingen vermutet."
+      "beschreibung": "Ob die Person geheime Steuerung hinter den Dingen vermutet."
     },
     {
       "id": "netzwerk",
       "name": "Umfeld und Netzwerk",
-      "beschreibung": "Mit wem sie ihre Zeit verbringt und wer sie noch erreicht."
+      "beschreibung": "Mit wem die Person ihre Zeit verbringt und wer sie noch erreicht."
     },
     {
       "id": "biografie",
       "name": "Biografie und Lebenslage",
-      "beschreibung": "Arbeit, Geld, Verluste und Umbrüche."
+      "beschreibung": "Arbeit, Geld, Verluste und Umbrüche im Leben der Person."
     },
     {
       "id": "heimat",
       "name": "Identität und Heimat",
-      "beschreibung": "Bindung an Ort, Region und Tradition."
+      "beschreibung": "Bindung der Person an Ort, Region und Tradition."
     },
     {
       "id": "beziehung-zu-dir",
@@ -6225,7 +6225,7 @@ window.APP_DATA.kompass = {
     {
       "id": "aktivitaet",
       "name": "Einbindung und Aktivität",
-      "beschreibung": "Was sie konkret tut: Veranstaltungen, Symbole, Werben, Funktionen."
+      "beschreibung": "Was die Person konkret tut: Veranstaltungen, Symbole, Werben, Funktionen."
     },
     {
       "id": "du-selbst",
@@ -6247,17 +6247,17 @@ window.APP_DATA.kompass = {
         {
           "bis": 33,
           "name": "Verschlossen",
-          "text": "Die Person wehrt Widerspruch ab. Beginne ausschließlich mit Zuhören und Beziehung. Fragen und Zweifel kommen erst, wenn sie von sich aus mehr erzählt."
+          "text": "Die Person wehrt Widerspruch ab. Beginne ausschließlich mit Zuhören und Beziehung. Fragen und Zweifel kommen erst, wenn die Person von sich aus mehr erzählt."
         },
         {
           "bis": 66,
           "name": "Teilweise offen",
-          "text": "Sie hört zu, bleibt aber bei sich. Stelle Fragen nach eigenen Erlebnissen und lass einen Zweifel stehen, ohne nachzusetzen."
+          "text": "Die Person hört zu, bleibt aber bei sich. Stelle Fragen nach eigenen Erlebnissen und lass einen Zweifel stehen, ohne nachzusetzen."
         },
         {
           "bis": 100,
           "name": "Offen",
-          "text": "Sie fragt nach und hält Unsicherheit aus. Du kannst früh zu Fragen, gemeinsamer Quellenprüfung und Alternativen übergehen."
+          "text": "Die Person fragt nach und hält Unsicherheit aus. Du kannst früh zu Fragen, gemeinsamer Quellenprüfung und Alternativen übergehen."
         }
       ]
     },
@@ -6286,7 +6286,7 @@ window.APP_DATA.kompass = {
     {
       "id": "verschwoerung",
       "name": "Verschwörungsnähe",
-      "beschreibung": "Wie geschlossen ihr Weltbild ist.",
+      "beschreibung": "Wie geschlossen das Weltbild der Person ist.",
       "baender": [
         {
           "bis": 33,
@@ -6296,7 +6296,7 @@ window.APP_DATA.kompass = {
         {
           "bis": 66,
           "name": "Einzelne Erzählungen",
-          "text": "Widerlege nicht einzelne Behauptungen. Sprich über das Bedürfnis nach Durchblick und Kontrolle, das sie befriedigen."
+          "text": "Widerlege nicht einzelne Behauptungen. Sprich über das Bedürfnis nach Durchblick und Kontrolle, das diese Erzählungen befriedigen."
         },
         {
           "bis": 100,
@@ -6318,7 +6318,7 @@ window.APP_DATA.kompass = {
         {
           "bis": 66,
           "name": "Spürbar belastet",
-          "text": "Hol dir eine Person, mit der du nach Gesprächen reden kannst, und setze dir klare Zeiten."
+          "text": "Hol dir jemanden, mit dem du nach Gesprächen reden kannst, und setze dir klare Zeiten."
         },
         {
           "bis": 100,
