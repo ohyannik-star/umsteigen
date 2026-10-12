@@ -2,6 +2,10 @@
 
 Die App ist eine installierbare Web-App. Sie braucht keinen App Store und keine Entwicklerkonten. Sie liegt als Ordner `docs/` bereit und muss nur auf eine Web-Adresse gelegt werden. Danach kann jede Person sie in Safari oder Chrome öffnen, auf den Home-Bildschirm legen und wie eine App nutzen, auch offline. Alle Daten bleiben auf dem Gerät.
 
+## Stand: schon veröffentlicht
+
+Die App läuft unter **https://ohyannik-star.github.io/umsteigen/** aus dem Repository https://github.com/ohyannik-star/umsteigen (Ordner `docs/`). Die Schritte unter 1 sind damit erledigt; für Updates gilt Abschnitt 3.
+
 ## 1. Veröffentlichen (einmalig, etwa 10 Minuten)
 
 ### Weg A: GitHub Pages (kostenlos, dauerhaft, mit Verlauf)
@@ -40,7 +44,7 @@ Android: Adresse in Chrome öffnen, Menü mit den drei Punkten, **App installier
 Neue Inhalte oder Funktionen kommen so zu deiner Freundin:
 
 1. Im Projekt `node app/build.js` ausführen. Das erzeugt den Ordner `docs/` neu, mit einer neuen Versionsnummer.
-2. Den Inhalt von `docs/` wieder hochladen (GitHub: **Add file**, **Upload files**, vorhandene Dateien werden ersetzt; Netlify: erneut ziehen).
+2. Hochladen: im Projektordner `git add -A`, dann `git commit -m "Update"` und `git push`. Oder im Browser auf github.com im Ordner docs über **Add file**, **Upload files** die neuen Dateien hineinziehen; vorhandene werden ersetzt.
 3. Beim nächsten Öffnen lädt die App im Hintergrund die neue Version und zeigt unten „Neue Version verfügbar. Jetzt laden". Ein Tipp genügt.
 
 ## 4. Daten sichern und zwischen Geräten übertragen
