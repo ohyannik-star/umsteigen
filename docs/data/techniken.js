@@ -3,23 +3,23 @@ window.APP_DATA.techniken = [
   {
     id: "deep-canvassing",
     name: "Deep Canvassing",
-    kurz: "Ein zehnminütiges, nicht wertendes Gespräch, in dem beide Seiten persönliche Erfahrungen austauschen, statt Argumente zu tauschen.",
+    kurz: "Ein zehnminütiges Gespräch ohne Wertung, in dem beide Seiten persönliche Erfahrungen teilen, statt Argumente auszutauschen.",
     evidenz: "stark",
     ebene: "beide",
-    beschreibung: "Deep Canvassing wurde in drei vorregistrierten Feldexperimenten mit 230 Gesprächsführenden und 6.869 Wählerinnen und Wählern geprüft. Gespräche, in denen beide Seiten eigene Erfahrungen erzählten, senkten ausgrenzende Einstellungen gegenüber Migrant:innen und trans Personen für mindestens vier Monate. Identische Gespräche nur mit Argumenten hatten keinen Effekt. Die Effekte sind klein (d etwa 0,04 bis 0,08), aber stabil und hielten Gegenwerbung stand. Grenzen: Alle Studien stammen aus den USA, bei Abtreibung gab es keinen Effekt, deutsche Projekte sind bislang nicht evaluiert, und Haustürwahlkampf wirkt in Europa generell schwächer.",
+    beschreibung: "Deep Canvassing, das tiefergehende Haustürgespräch, wurde in drei vorregistrierten Feldexperimenten mit 230 Gesprächsführenden und 6.869 Wählerinnen und Wählern geprüft. Gespräche, in denen beide Seiten von eigenen Erfahrungen erzählten, senkten ausgrenzende Einstellungen gegenüber Migrant:innen und trans Personen für mindestens vier Monate. Identische Gespräche, in denen nur Argumente ausgetauscht wurden, blieben wirkungslos. Die Effekte sind klein (d etwa 0,04 bis 0,08), aber stabil, und sie hielten auch Gegenwerbung stand. Die Befunde haben jedoch Grenzen. Alle Studien stammen aus den USA, beim Thema Abtreibung gab es keinen Effekt, deutsche Projekte sind bislang nicht evaluiert, und Haustürwahlkampf wirkt in Europa generell schwächer.",
     so_gehts: [
-      "Frag nach der Haltung der Person auf einer Skala von 0 bis 10 und nimm die Antwort ohne Bewertung an.",
-      "Bitte um eine Geschichte: Wann hat die Person selbst erlebt, dass jemand ungerecht behandelt wurde oder Hilfe brauchte?",
+      "Frag die Person, wo sie auf einer Skala von 0 bis 10 steht, und nimm die Antwort ohne Bewertung an.",
+      "Bitte um eine Geschichte, etwa so: Wann hat die Person selbst erlebt, dass jemand ungerecht behandelt wurde oder Hilfe brauchte?",
       "Hör zu, ohne zu unterbrechen, und spiegle, was du gehört hast.",
       "Erzähl eine eigene, echte Erfahrung oder die einer betroffenen Person, die zum Thema passt.",
-      "Frag, ob die Geschichten etwas an der Sicht der Person verändern, und frag am Ende noch einmal nach der Skala.",
-      "Bedank dich und lass das Gespräch offen enden; kein Appell, kein Schlusswort."
+      "Frag, ob die Geschichten etwas an der Sicht der Person verändern, und erkundige dich am Ende noch einmal nach der Skala.",
+      "Bedank dich und lass das Gespräch offen enden, ohne Appell und ohne Schlusswort."
     ],
-    beispiel: "Du: Auf einer Skala von 0 bis 10, wie sehr stimmst du zu, dass Geflüchtete hier willkommen sein sollten? Person: Vielleicht eine 3. Es kommen einfach zu viele. Du: Okay, danke für die Ehrlichkeit. Gab es mal eine Zeit, in der du selbst irgendwo neu warst und niemanden kanntest? Person: Als ich nach der Wende in den Westen gezogen bin. Da haben mich manche angeschaut, als wär ich blöd. Du: Wie war das für dich? Person: Scheiße ehrlich gesagt. Du: Darf ich dir erzählen, wie es einer Kollegin von mir aus Syrien gerade geht?",
+    beispiel: "Du: „Auf einer Skala von 0 bis 10: Wie sehr stimmst du zu, dass Geflüchtete hier willkommen sein sollten?“ Person: „Vielleicht eine 3. Es kommen einfach zu viele.“ Du: „Okay, danke für die Ehrlichkeit. Gab es mal eine Zeit, in der du selbst irgendwo neu warst und niemanden kanntest?“ Person: „Als ich nach der Wende in den Westen gezogen bin. Da haben mich manche angeschaut, als wär ich blöd.“ Du: „Wie war das für dich?“ Person: „Scheiße, ehrlich gesagt.“ Du: „Darf ich dir erzählen, wie es einer Kollegin von mir aus Syrien gerade geht?“",
     nicht: [
-      "Argumente und Fakten statt Geschichten austauschen; genau diese Variante hatte im Experiment Nulleffekt.",
-      "Die Geschichte der Person bewerten oder korrigieren, bevor sie fertig erzählt hat.",
-      "Deine Geschichte erfinden oder zuspitzen; Unechtheit wird gespürt.",
+      "Argumente und Fakten statt Geschichten austauschen; genau diese Variante blieb im Experiment ohne Wirkung.",
+      "Die Geschichte der Person bewerten oder korrigieren, bevor sie zu Ende erzählt hat.",
+      "Deine Geschichte erfinden oder zuspitzen; das Gegenüber spürt, wenn etwas nicht echt ist.",
       "Ergebnisse aus den USA eins zu eins auf Deutschland übertragen und große Effekte erwarten."
     ],
     quellen: [
@@ -31,24 +31,24 @@ window.APP_DATA.techniken = [
   {
     id: "motivational-interviewing",
     name: "Motivierende Gesprächsführung",
-    kurz: "Eine Haltung, die Ambivalenz erforscht und den Wunsch nach Veränderung aus der Person selbst herausholt, statt ihn hineinzureden.",
+    kurz: "Eine Haltung, die Ambivalenz erkundet und den Wunsch nach Veränderung aus der Person selbst hervorholt, statt ihn ihr einzureden.",
     evidenz: "mittel",
     ebene: "individuum",
-    beschreibung: "Motivierende Gesprächsführung (MI) stammt aus der Suchtberatung. Eine Meta-Analyse über 119 Studien zeigt kleine, aber dauerhafte Effekte (g = 0,28). Für Deradikalisierung ist MI konzeptionell gut begründet und wird von der BAG Ausstieg zum Einstieg als Grundhaltung der Distanzierungsarbeit genutzt: offene Fragen, Ambivalenzwaage, Change Talk verstärken, Verzicht auf den Reflex, sofort richtigzustellen. Kontrollierte Studien mit Extremist:innen fehlen jedoch vollständig. Die Evidenzstufe gilt also für MI allgemein; die Übertragung ist plausibel, aber unbelegt.",
+    beschreibung: "Motivierende Gesprächsführung (englisch Motivational Interviewing, kurz MI) stammt aus der Suchtberatung. Eine Meta-Analyse über 119 Studien zeigt kleine, aber dauerhafte Effekte (g = 0,28). Für die Deradikalisierung ist MI konzeptionell gut begründet; die BAG Ausstieg zum Einstieg nutzt die Methode als Grundhaltung der Distanzierungsarbeit, mit offenen Fragen, einer Ambivalenzwaage, dem Verstärken von Veränderungsäußerungen (Change Talk) und dem Verzicht auf den Reflex, sofort richtigzustellen. Kontrollierte Studien mit Extremist:innen fehlen jedoch vollständig. Die Evidenzstufe gilt also für MI allgemein; die Übertragung ist plausibel, aber nicht belegt.",
     so_gehts: [
-      "Stell offene Fragen, die mit Was, Wie oder Wann beginnen, nicht mit Warum.",
-      "Spiegle Gesagtes in eigenen Worten und lass die Person korrigieren.",
-      "Erkunde beide Seiten der Waage: Was gibt dir die Gruppe oder Haltung, und was kostet sie dich?",
+      "Stell offene Fragen, die mit „Was“, „Wie“ oder „Wann“ beginnen, nicht mit „Warum“.",
+      "Gib das Gesagte in eigenen Worten wieder und lass dich von der Person korrigieren.",
+      "Erkunde beide Seiten der Waage: „Was gibt dir die Gruppe oder die Haltung, und was kostet sie dich?“",
       "Greif Sätze auf, in denen die Person selbst Zweifel oder Wünsche äußert, und frag nach.",
-      "Halte den Richtigstell-Reflex zurück; wenn du widersprechen willst, frag stattdessen.",
-      "Fass am Ende zusammen, was die Person gesagt hat, inklusive ihrer eigenen Zweifel."
+      "Halte den Reflex zurück, sofort richtigzustellen; wenn du widersprechen willst, stell stattdessen eine Frage.",
+      "Fass am Ende zusammen, was die Person gesagt hat, einschließlich ihrer eigenen Zweifel."
     ],
-    beispiel: "Person: Die Partei ist die Einzige, die mal Klartext redet. Du: Klartext ist dir wichtig. Was hat dir die Zeit dort bisher gebracht? Person: Endlich Leute, die mich ernst nehmen. Nur meine Schwester redet seitdem kaum noch mit mir. Du: Also auf der einen Seite endlich ernst genommen, auf der anderen Seite fehlt dir deine Schwester. Wie geht es dir damit? Person: Ehrlich? Scheiße. Du: Was müsste passieren, damit ihr wieder redet?",
+    beispiel: "Person: „Die Partei ist die Einzige, die mal Klartext redet.“ Du: „Klartext ist dir wichtig. Was hat dir die Zeit dort bisher gebracht?“ Person: „Endlich Leute, die mich ernst nehmen. Nur meine Schwester redet seitdem kaum noch mit mir.“ Du: „Auf der einen Seite fühlst du dich also endlich ernst genommen, auf der anderen Seite fehlt dir deine Schwester. Wie geht es dir damit?“ Person: „Ehrlich? Scheiße.“ Du: „Was müsste passieren, damit ihr wieder miteinander redet?“",
     nicht: [
       "Den Wunsch nach Veränderung selbst formulieren und der Person in den Mund legen.",
       "MI als Trick einsetzen; die Haltung funktioniert nur, wenn du die Ambivalenz der Person wirklich aushältst.",
-      "Erwarten, dass eine einzelne Sitzung etwas bewegt; MI ist auf viele Gespräche angelegt.",
-      "Bei Gefährdung oder festem Szeneeinstieg allein weitermachen statt Beratung einzubeziehen."
+      "Von einer einzelnen Sitzung Wirkung erwarten; MI ist auf viele Gespräche angelegt.",
+      "Bei Gefährdung oder festem Einstieg in die Szene allein weitermachen, statt eine Beratungsstelle einzubeziehen."
     ],
     quellen: [
       { titel: "Lundahl et al. (2010): Meta-Analyse Motivational Interviewing", url: "https://digitalcommons.usu.edu/sswa_facpubs/199", jahr: "2010" },
@@ -59,23 +59,23 @@ window.APP_DATA.techniken = [
   {
     id: "aktives-zuhoeren",
     name: "Aktives, nicht wertendes Zuhören",
-    kurz: "Volle Aufmerksamkeit, Nachfragen und Spiegeln, ohne zu bewerten; das senkt Abwehr und macht Haltungen weniger extrem.",
+    kurz: "Volle Aufmerksamkeit, Nachfragen und Spiegeln ohne Bewertung; das senkt die Abwehr und macht Haltungen weniger extrem.",
     evidenz: "mittel",
     ebene: "individuum",
-    beschreibung: "In vier Experimenten von Itzchakov und Kolleg:innen reduzierte empathisches, nicht wertendes Zuhören die soziale Angst der sprechenden Person, dadurch ihre Abwehr und dadurch die Extremität ihrer Einstellungen. Eine kleine Meta-Analyse (N = 952) fand d = 0,32 auf Vorurteile und d = 1,19 auf Selbsteinsicht. Yeomans et al. zeigen, dass Gesprächsbereitschaft (Anerkennen, Abschwächen, Ich-Formulierungen) ansteckend ist und Botschaften überzeugender macht. Einschränkung: Fast alle Befunde stammen aus einer Arbeitsgruppe und aus Laborsettings, nicht aus dem Familienstreit.",
+    beschreibung: "In vier Experimenten von Itzchakov und Kolleg:innen verringerte einfühlsames, nicht wertendes Zuhören die soziale Angst der sprechenden Person, damit ihre Abwehr und in der Folge die Extremität ihrer Einstellungen. Eine kleine Meta-Analyse (N = 952) fand d = 0,32 bei Vorurteilen und d = 1,19 bei Selbsteinsicht. Yeomans et al. zeigen, dass Gesprächsbereitschaft (Anerkennen, Abschwächen, Ich-Formulierungen) ansteckend ist und Botschaften überzeugender macht. Einschränkend gilt, dass fast alle Befunde aus einer einzigen Arbeitsgruppe und aus dem Labor stammen, nicht aus dem Familienstreit.",
     so_gehts: [
-      "Schaff eine Situation unter vier Augen, ohne Handy, ohne Zuschauer.",
+      "Schaff eine Situation unter vier Augen, ohne Handy und ohne Zuschauer.",
       "Lass die Person ausreden, auch wenn es dir schwerfällt; zähl innerlich bis drei, bevor du antwortest.",
-      "Spiegle den Kern: Wenn ich dich richtig verstehe, ärgert dich vor allem, dass ... Stimmt das?",
-      "Frag nach dem Gefühl hinter der Aussage, nicht nach der Richtigkeit.",
+      "Spiegle den Kern: „Wenn ich dich richtig verstehe, ärgert dich vor allem, dass … Stimmt das?“",
+      "Frag nach dem Gefühl hinter der Aussage, nicht danach, ob sie stimmt.",
       "Erkenne an, was du nachvollziehen kannst, bevor du etwas anderes sagst.",
-      "Nutze Ich-Formulierungen statt Du-Vorwürfe."
+      "Sprich in Ich-Formulierungen statt in Du-Vorwürfen."
     ],
-    beispiel: "Person: Hier kümmert sich keiner mehr um uns, nur noch um die, die neu kommen. Du: Du hast das Gefühl, dass du nicht mehr zählst. Person: Genau. Seit die Fabrik zu ist, interessiert sich niemand. Du: Das klingt nach einer ziemlichen Enttäuschung, nach so vielen Jahren dort. Person: Fünfundzwanzig Jahre. Du: Erzähl mal, wie das damals war, als es zugemacht hat.",
+    beispiel: "Person: „Hier kümmert sich keiner mehr um uns, nur noch um die, die neu kommen.“ Du: „Du hast das Gefühl, dass du nicht mehr zählst.“ Person: „Genau. Seit die Fabrik zu ist, interessiert sich niemand mehr.“ Du: „Das klingt nach einer ziemlichen Enttäuschung, nach so vielen Jahren dort.“ Person: „Fünfundzwanzig Jahre.“ Du: „Erzähl mal, wie das damals war, als die Fabrik dichtgemacht hat.“",
     nicht: [
       "Zuhören, um die Lücke für das eigene Gegenargument zu finden; die Person merkt das.",
-      "Spiegeln mit Wertung: Du meinst also, alle Ausländer sind schuld.",
-      "In der Gruppe oder im Familienchat zuhören wollen; dort geht es um Gesichtwahren, nicht um Verstehen.",
+      "Mit Wertung spiegeln: „Du meinst also, alle Ausländer sind schuld.“",
+      "In der Gruppe oder im Familienchat zuhören wollen; dort geht es darum, das Gesicht zu wahren, nicht darum, zu verstehen.",
       "Zuhören mit Zustimmung verwechseln; du kannst verstehen, ohne beizupflichten."
     ],
     quellen: [
@@ -87,23 +87,23 @@ window.APP_DATA.techniken = [
   {
     id: "street-epistemology",
     name: "Street Epistemology",
-    kurz: "Sokratische Fragen danach, wie sicher sich die Person ist und wie sie zu dieser Sicherheit kommt; nie nach dem Was, immer nach dem Wie.",
+    kurz: "Sokratische Fragen danach, wie sicher sich die Person ist und wie sie zu dieser Sicherheit kommt; es geht nie um das Was, immer um das Wie.",
     evidenz: "schwach",
     ebene: "individuum",
-    beschreibung: "Street Epistemology fragt nicht, ob eine Überzeugung stimmt, sondern wie zuverlässig der Weg ist, auf dem die Person zu ihr gekommen ist. Meyer et al. (2024, N etwa 2.036) testeten isolierte Elemente: Sie senkten Verschwörungsglauben kurzfristig, am stärksten wirkte die Reflexion eigener Vorbehalte. Bei den überzeugtesten Gläubigen gab es keinen Effekt, Follow-ups fehlen, und vollständige Gespräche wurden nie getestet. Nützlich als Fragehaltung, nicht als bewiesenes Verfahren.",
+    beschreibung: "Street Epistemology, sinngemäß „Erkenntnistheorie auf der Straße“, fragt nicht, ob eine Überzeugung stimmt, sondern wie zuverlässig der Weg ist, auf dem die Person zu ihr gekommen ist. Meyer et al. (2024, N etwa 2.036) testeten einzelne Elemente der Methode. Diese senkten den Verschwörungsglauben kurzfristig; am stärksten wirkte das Nachdenken über eigene Vorbehalte. Bei den am festesten Überzeugten gab es keinen Effekt, Nachuntersuchungen fehlen, und vollständige Gespräche wurden nie getestet. Die Methode taugt als Fragehaltung, nicht als bewiesenes Verfahren.",
     so_gehts: [
-      "Lass die Person ihre Überzeugung in einem Satz formulieren und wiederhole ihn, bis sie sagt: Ja, genau das.",
-      "Frag nach der Sicherheit auf einer Skala von 0 bis 100.",
-      "Frag nach der wichtigsten Grundlage: Was hat dich am meisten überzeugt?",
+      "Lass die Person ihre Überzeugung in einem Satz formulieren und wiederhole ihn, bis sie sagt: „Ja, genau das.“",
+      "Frag, wie sicher sich die Person auf einer Skala von 0 bis 100 ist.",
+      "Frag nach der wichtigsten Grundlage: „Was hat dich am meisten überzeugt?“",
       "Frag, ob diese Grundlage auch jemanden zu einer falschen Überzeugung führen könnte.",
-      "Frag nach Vorbehalten: Gab es mal etwas, das dich an dieser Erklärung hat zweifeln lassen?",
-      "Beende mit Dank, ohne Fazit; die Person soll weiterdenken, nicht verlieren."
+      "Frag nach Vorbehalten: „Gab es mal etwas, das dich an dieser Erklärung hat zweifeln lassen?“",
+      "Beende das Gespräch mit einem Dank und ohne Fazit; die Person soll weiterdenken, nicht verlieren."
     ],
-    beispiel: "Person: Die Medien werden von oben gesteuert, das weiß doch jeder. Du: Wie sicher bist du dir, 0 bis 100? Person: 90. Du: Was ist das Wichtigste, das dich so sicher macht? Person: Die berichten alle das Gleiche. Du: Wenn mehrere Leute das Gleiche berichten, könnte das auch andere Gründe haben als Steuerung? Person: Vielleicht, wenn es halt stimmt. Du: Gab es schon mal einen Moment, in dem du an der Steuerung gezweifelt hast?",
+    beispiel: "Person: „Die Medien werden von oben gesteuert, das weiß doch jeder.“ Du: „Wie sicher bist du dir, von 0 bis 100?“ Person: „90.“ Du: „Was ist das Wichtigste, das dich so sicher macht?“ Person: „Die berichten alle das Gleiche.“ Du: „Wenn mehrere Leute das Gleiche berichten, könnte das auch andere Gründe haben als Steuerung?“ Person: „Vielleicht, wenn es halt stimmt.“ Du: „Gab es schon mal einen Moment, in dem du daran gezweifelt hast?“",
     nicht: [
       "Fragen als Falle stellen, um die Person vor anderen bloßzustellen.",
-      "Bei fest Überzeugten große Effekte erwarten; die Studie fand dort nichts.",
-      "Die Methode als Ersatz für Beziehung nutzen; ohne Vertrauen wirkt sie wie ein Verhör."
+      "Bei fest Überzeugten große Effekte erwarten; die Studie fand dort keine Wirkung.",
+      "Die Methode als Ersatz für Beziehung nutzen; ohne Vertrauen wirken die Fragen wie ein Verhör."
     ],
     quellen: [
       { titel: "Meyer et al. (2024): Using an AI-powered street epistemologist chatbot and reflection tasks, HKS Misinformation Review", url: "https://misinforeview.hks.harvard.edu/article/using-an-ai-powered-street-epistemologist-chatbot-and-reflection-tasks-to-diminish-conspiracy-theory-beliefs/", jahr: "2024" }
@@ -115,17 +115,17 @@ window.APP_DATA.techniken = [
     kurz: "Ein Anliegen in den Werten formulieren, die dem Gegenüber wichtig sind, etwa Loyalität, Sicherheit oder Ordnung statt Gleichheit.",
     evidenz: "umstritten",
     ebene: "beide",
-    beschreibung: "Feinberg und Willer (2015) zeigten, dass Argumente überzeugender wirken, wenn sie an die moralischen Werte des Gegenübers anknüpfen. Doch eine präregistrierte Replikation zum Klima scheiterte, und Stagnaro, Pink, Rand und Willer (2023, N = 2.009) fanden keinen Effekt auf den Glauben an Falschnachrichten. Broockman, Kalla und Levine (2021) fanden bei personalisiertem Reframing im Gespräch große Effekte auf Handlungsbereitschaft, aber nur schwache auf Einstellungen. Fazit: Werte des Gegenübers ernst nehmen ist eine Haltung, die sich lohnt; als Überzeugungstrick ist die Methode nicht belastbar.",
+    beschreibung: "Moral Reframing heißt, ein Anliegen moralisch neu zu rahmen. Feinberg und Willer (2015) zeigten, dass Argumente überzeugender wirken, wenn sie an die moralischen Werte des Gegenübers anknüpfen. Doch eine präregistrierte Replikation (Wiederholungsstudie) zum Thema Klima scheiterte, und Stagnaro, Pink, Rand und Willer (2023, N = 2.009) fanden keinen Effekt auf den Glauben an Falschnachrichten. Broockman, Kalla und Levine (2021) stellten bei personalisiertem Reframing im Gespräch große Effekte auf die Handlungsbereitschaft fest, aber nur schwache auf Einstellungen. Die Werte des Gegenübers ernst zu nehmen, ist also eine Haltung, die sich lohnt; als Überzeugungstrick ist die Methode nicht belastbar.",
     so_gehts: [
       "Hör heraus, welche Werte die Person antreiben: Sicherheit, Zusammenhalt, Fleiß, Heimat, Gerechtigkeit.",
       "Prüf ehrlich, ob dein Anliegen aus diesen Werten heraus Sinn ergibt; wenn nicht, lass es.",
       "Formulier dein Anliegen in der Sprache dieser Werte, ohne deine eigene Position zu verstecken.",
       "Frag nach, ob die Person das so sieht, statt zu behaupten, dass es so ist."
     ],
-    beispiel: "Person: Die Flüchtlinge kosten uns ein Vermögen, und wir hier gehen leer aus. Du: Dir ist wichtig, dass die Leute hier nicht vergessen werden. Mir auch. Wenn ich mir anschaue, wer in unserem Pflegeheim arbeitet, dann sind das inzwischen auch viele, die vor zehn Jahren hergekommen sind. Ohne die wäre die Station zu. Person: Das ist was anderes, die arbeiten ja. Du: Was müsste aus deiner Sicht passieren, damit mehr arbeiten können?",
+    beispiel: "Person: „Die Flüchtlinge kosten uns ein Vermögen, und wir hier gehen leer aus.“ Du: „Dir ist wichtig, dass die Leute hier nicht vergessen werden. Mir auch. Wenn ich mir anschaue, wer in unserem Pflegeheim arbeitet, dann sind das inzwischen auch viele, die vor zehn Jahren hergekommen sind. Ohne die wäre die Station zu.“ Person: „Das ist was anderes, die arbeiten ja.“ Du: „Was müsste aus deiner Sicht passieren, damit mehr von ihnen arbeiten können?“",
     nicht: [
       "Werte vortäuschen, die du nicht teilst; das fliegt auf und kostet Vertrauen.",
-      "Reframing als Hauptstrategie planen; die Replikationen sind gescheitert.",
+      "Reframing zur Hauptstrategie machen; die Replikationen sind gescheitert.",
       "Den eigenen Standpunkt verschleiern, um besser anzukommen."
     ],
     quellen: [
@@ -138,22 +138,22 @@ window.APP_DATA.techniken = [
   {
     id: "perspektivwechsel-erzaehlung",
     name: "Perspective-Getting: Geschichten statt Appelle",
-    kurz: "Die Erfahrung einer betroffenen Person hören oder weitergeben wirkt; die Aufforderung, sich in andere hineinzuversetzen, wirkt nicht.",
+    kurz: "Die Erfahrung einer betroffenen Person zu hören oder weiterzugeben wirkt; die Aufforderung, sich in andere hineinzuversetzen, wirkt nicht.",
     evidenz: "stark",
     ebene: "beide",
-    beschreibung: "Kalla und Broockman isolierten 2021 den Wirkfaktor der Canvassing-Gespräche: Die Geschichte einer betroffenen Person zu hören (Perspective-Getting) senkte Vorurteile dauerhaft. Aufforderungen zur Perspektivübernahme (Stell dir vor, du wärst ...) brachten nichts zusätzlich. Catapano, Tormala und Rucker (2019, N = 2.734) zeigen sogar, dass solche Aufforderungen die Offenheit senken, wenn die Werte der anderen Seite als fremd erlebt werden. Praxisfolge: Erzählen und erzählen lassen, nicht auffordern. Grenzen: Die Geschichten müssen echt sein, und der Effekt ist klein.",
+    beschreibung: "Kalla und Broockman haben 2021 herausgearbeitet, was in den Haustürgesprächen tatsächlich wirkt. Die Geschichte einer betroffenen Person zu hören (Perspective-Getting, also eine Perspektive erzählt zu bekommen) senkte Vorurteile dauerhaft. Aufforderungen zur Perspektivübernahme („Stell dir vor, du wärst …“) brachten darüber hinaus nichts. Catapano, Tormala und Rucker (2019, N = 2.734) zeigen sogar, dass solche Aufforderungen die Offenheit senken, wenn die Werte der anderen Seite als fremd erlebt werden. Für die Praxis heißt das: erzählen und erzählen lassen, nicht auffordern. Die Geschichten müssen allerdings echt sein, und der Effekt ist klein.",
     so_gehts: [
       "Sammle zwei oder drei echte Geschichten aus deinem Umfeld, die du erzählen darfst.",
-      "Frag um Erlaubnis: Darf ich dir erzählen, was meine Kollegin letzten Monat erlebt hat?",
-      "Erzähl konkret, mit Namen oder Rolle, Ort und einem Detail, ohne Moral am Ende.",
+      "Frag um Erlaubnis: „Darf ich dir erzählen, was meine Kollegin letzten Monat erlebt hat?“",
+      "Erzähl konkret, mit Namen oder Rolle, Ort und einem Detail, und ohne Moral am Ende.",
       "Frag die Person nach ihrer eigenen Erfahrung mit dem Thema und hör zu.",
-      "Verzichte auf Sätze wie Stell dir mal vor, du wärst in der Lage."
+      "Verzichte auf Sätze wie „Stell dir mal vor, du wärst in der Lage.“"
     ],
-    beispiel: "Person: Die wollen sich doch gar nicht integrieren. Du: Darf ich dir von Amir erzählen, dem Vater aus Lenas Klasse? Person: Meinetwegen. Du: Der hat letztes Jahr den Elternabend organisiert, weil sich sonst keiner gemeldet hat. Und als unser Auto nicht ansprang, stand er mit Starthilfekabel da, bevor ich gefragt hatte. Person: Gibt sicher auch solche. Du: Hast du selbst mal jemanden kennengelernt, der hergekommen ist?",
+    beispiel: "Person: „Die wollen sich doch gar nicht integrieren.“ Du: „Darf ich dir von Amir erzählen, dem Vater aus Lenas Klasse?“ Person: „Meinetwegen.“ Du: „Der hat letztes Jahr den Elternabend organisiert, weil sich sonst keiner gemeldet hat. Und als unser Auto nicht ansprang, stand er mit dem Starthilfekabel da, bevor ich überhaupt gefragt hatte.“ Person: „Gibt sicher auch solche.“ Du: „Hast du selbst mal jemanden kennengelernt, der hergekommen ist?“",
     nicht: [
-      "Die Person auffordern, sich in Geflüchtete hineinzuversetzen; das senkt Offenheit bei fremd erlebten Werten.",
+      "Die Person auffordern, sich in Geflüchtete hineinzuversetzen; das senkt die Offenheit, wenn deren Werte als fremd erlebt werden.",
       "Geschichten erfinden oder zuspitzen.",
-      "Nach der Geschichte sofort die Lehre ziehen; lass sie wirken."
+      "Nach der Geschichte sofort die Lehre ziehen, statt die Erzählung wirken zu lassen."
     ],
     quellen: [
       { titel: "Kalla & Broockman (2021/23): Which Narrative Strategies Durably Reduce Prejudice?, AJPS", url: "https://isps.yale.edu/research/publications/isps21-45", jahr: "2021" },
@@ -166,20 +166,20 @@ window.APP_DATA.techniken = [
     kurz: "Offene, neutrale Nachfragen zu Quelle, Bedeutung und Herkunft einer Parole, statt mit Gegenfakten zu kontern.",
     evidenz: "mittel",
     ebene: "individuum",
-    beschreibung: "Fakten allein bewegen wenig: Die Meta-Analyse von Walter et al. (30 Studien, N = 20.963) findet für Fact-Checks d = 0,29, bei Vorüberzeugung, Ideologie und Wahlkampfbezug fast null. Nyhan zeigt, dass Fehlwahrnehmungen über Jahre bleiben, weil sie an Gruppenidentität hängen. Beratungsstellen wie KAST und MBR Berlin empfehlen deshalb Rückfragen: Wie kommst du darauf? Wer ist mit die genau gemeint? Das Vorgehen ist Praxiskonsens und deckt sich mit den Befunden zu Zuhören und Street Epistemology, wurde aber nicht eigenständig experimentell geprüft.",
+    beschreibung: "Fakten allein bewegen wenig. Die Meta-Analyse von Walter et al. (30 Studien, N = 20.963) findet für Faktenchecks d = 0,29; bei Vorüberzeugung, Ideologie und Wahlkampfbezug liegt der Effekt nahe null. Nyhan zeigt, dass Fehlwahrnehmungen über Jahre bestehen bleiben, weil sie an der Gruppenidentität hängen. Beratungsstellen wie KAST und MBR Berlin empfehlen deshalb Rückfragen wie „Wie kommst du darauf?“ oder „Wer ist mit ‚die‘ genau gemeint?“. Das Vorgehen ist Praxiskonsens und deckt sich mit den Befunden zu Zuhören und Street Epistemology, wurde aber nicht eigenständig experimentell geprüft.",
     so_gehts: [
-      "Nimm die Parole ernst und frag: Wie kommst du darauf?",
-      "Frag nach Konkretem: Wer genau ist die? Welche Fälle meinst du?",
-      "Frag nach der Quelle und was diese Quelle zur Expertin macht.",
-      "Bleib bei einem Punkt; wenn die Person zum nächsten Thema springt, sag: Lass uns bei dem einen bleiben.",
-      "Teile am Ende deine Sicht in einem Satz, ohne Belehrung."
+      "Nimm die Parole ernst und frag: „Wie kommst du darauf?“",
+      "Frag nach Konkretem: „Wer genau ist ‚die‘? Welche Fälle meinst du?“",
+      "Frag nach der Quelle und danach, was diese Quelle zur Expertin macht.",
+      "Bleib bei einem Punkt; wenn die Person zum nächsten Thema springt, sag: „Lass uns erst mal bei dem einen bleiben.“",
+      "Sag am Ende in einem Satz, wie du es siehst, ohne zu belehren."
     ],
-    beispiel: "Person: Die kriegen alle mehr Geld als unsere Rentner. Du: Wo hast du das her? Person: Stand bei Facebook, von einem, der sich auskennt. Du: Was macht den zum Experten? Person: Keine Ahnung, hat halt viele Follower. Du: Und wen meinst du mit die, alle Geflüchteten? Person: Na, die meisten halt. Du: Ich hab mir die Zahlen mal angeschaut, kann ich dir gern zeigen, wenn du magst.",
+    beispiel: "Person: „Die kriegen alle mehr Geld als unsere Rentner.“ Du: „Wo hast du das her?“ Person: „Stand bei Facebook, von einem, der sich auskennt.“ Du: „Was macht den zum Experten?“ Person: „Keine Ahnung, hat halt viele Follower.“ Du: „Und wen meinst du mit ‚die‘, alle Geflüchteten?“ Person: „Na, die meisten halt.“ Du: „Ich hab mir die Zahlen mal angeschaut. Die kann ich dir gern zeigen, wenn du magst.“",
     nicht: [
-      "Einen Link nach dem anderen schicken; Linkflut wirkt wie Belehrung.",
+      "Einen Link nach dem anderen schicken; eine Flut von Links wirkt wie Belehrung.",
       "Fragen im Verhörton stellen; der Ton entscheidet.",
       "Mehrere Parolen gleichzeitig abarbeiten wollen.",
-      "Die Person als Schwurbler oder dumm abstempeln."
+      "Die Person als Schwurbler oder als dumm abstempeln."
     ],
     quellen: [
       { titel: "Walter, Cohen, Holbert & Morag (2020): Fact-Checking: A Meta-Analysis, Political Communication", url: "https://cris.haifa.ac.il/en/publications/fact-checking-a-meta-analysis-of-what-works-and-for-whom/", jahr: "2020" },
@@ -191,21 +191,21 @@ window.APP_DATA.techniken = [
   {
     id: "debunking-sandwich",
     name: "Richtigstellen ohne Backfire",
-    kurz: "Fakt, einmal der Mythos mit Warnung, dann der Trugschluss, dann wieder der Fakt; Widersprechen ist sicher, trägt aber allein nicht.",
+    kurz: "Erst der Fakt, dann einmal der Mythos mit Warnung, darauf der Trugschluss und zum Schluss wieder der Fakt; Widersprechen schadet nicht, reicht allein aber nicht aus.",
     evidenz: "stark",
     ebene: "beide",
-    beschreibung: "Die Angst, Korrekturen würden Irrglauben verstärken, ist unbegründet: Wood und Porter testeten 52 Themen an über 10.000 Personen und fanden keinen Backfire; Nyhan räumt ein, dass sein Befund von 2010 überinterpretiert wurde; Swire-Thompson et al. nennen Backfire kein robustes Phänomen. Das Debunking Handbook 2020 von 22 Autor:innen empfiehlt die Sandwich-Struktur. Grenze: Korrekturen verbessern Genauigkeit meist nur etwas, die Wirkung verfällt, und Wahlabsicht oder Kandidatenbewertung ändern sich nicht. Richtigstellen ist Hygiene, kein Hebel.",
+    beschreibung: "Die Angst, Korrekturen würden einen Irrglauben noch verstärken (der sogenannte Backfire-Effekt), ist unbegründet. Wood und Porter testeten 52 Themen an über 10.000 Personen und fanden keinen solchen Effekt; Nyhan räumt ein, dass sein Befund von 2010 überinterpretiert wurde; Swire-Thompson et al. halten Backfire nicht für ein robustes Phänomen. Das Debunking Handbook 2020, verfasst von 22 Autor:innen, empfiehlt die Sandwich-Struktur. Allerdings verbessern Korrekturen die Genauigkeit meist nur etwas, die Wirkung verfällt, und Wahlabsicht oder Kandidatenbewertung ändern sich nicht. Richtigstellen ist Hygiene, kein Hebel.",
     so_gehts: [
       "Beginn mit dem Fakt, kurz und einfach.",
-      "Nenn den Mythos einmal, mit Warnung: Oft wird behauptet, dass ...",
+      "Nenn den Mythos ein einziges Mal und warne vor: „Oft wird behauptet, dass …“",
       "Erklär, warum der Mythos entsteht oder welcher Trugschluss dahintersteckt.",
       "Schließ mit dem Fakt und einer Alternativerklärung, die die Lücke füllt.",
-      "Mach es einmal und lass es dann gut sein; Wiederholung in Dauerschleife nervt."
+      "Mach das einmal und lass es dann gut sein; Wiederholung in Dauerschleife nervt."
     ],
-    beispiel: "Du: Die Kriminalität in unserem Landkreis ist in den letzten fünf Jahren gesunken, das steht in der Polizeistatistik. Oft hört man, sie sei explodiert. Das kommt daher, dass einzelne Fälle in sozialen Medien ständig geteilt werden und sich dadurch häufiger anfühlen. Die Statistik zählt aber alle Fälle, und die Zahl geht runter. Person: Dann fühlt es sich trotzdem anders an. Du: Ja, und darüber würde ich gern reden: Was macht dir konkret Sorge?",
+    beispiel: "Du: „Die Kriminalität in unserem Landkreis ist in den letzten fünf Jahren gesunken, das steht in der Polizeistatistik. Oft hört man, sie sei explodiert. Das kommt daher, dass einzelne Fälle in sozialen Medien ständig geteilt werden und sich dadurch häufiger anfühlen. Die Statistik zählt aber alle Fälle, und die Zahl geht runter.“ Person: „Trotzdem fühlt es sich anders an.“ Du: „Ja, und darüber würde ich gern reden. Was macht dir konkret Sorge?“",
     nicht: [
       "Den Mythos mehrfach wiederholen oder ihn in der Überschrift stehen lassen.",
-      "Mit Richtigstellen allein auf einen Sinneswandel hoffen.",
+      "Allein vom Richtigstellen einen Sinneswandel erhoffen.",
       "Die Person abwerten, weil sie dem Mythos geglaubt hat."
     ],
     quellen: [
@@ -221,20 +221,20 @@ window.APP_DATA.techniken = [
     kurz: "Manipulationstechniken vorab erklären, damit Menschen Sündenbock-Rhetorik, falsche Dichotomien und Emotionalisierung selbst erkennen.",
     evidenz: "stark",
     ebene: "masse",
-    beschreibung: "Eine Meta-Analyse von 42 Studien (etwa 42.500 Personen) zeigt, dass Inokulation die Glaubwürdigkeit von Falschinformation senkt (d = -0,36). Roozenbeek et al. verbesserten mit 90-Sekunden-Videos in einem YouTube-Feldtest mit 22.632 Personen die Erkennung von Manipulationstechniken um rund fünf Prozentpunkte, parteiübergreifend. Bei Verschwörungsglauben erreicht Inokulation in Laborstudien d von 0,9 bis 1,3, deutlich mehr als nachträgliche Gegenargumente. Grenzen: Effekte verfallen ohne Auffrischung in Wochen bis Monaten, gemessen wird Erkennung, nicht Parteineigung, die Hauptstudien sind von Jigsaw mitfinanziert, und ob Inokulation allgemeine Medienskepsis fördert, ist umstritten.",
+    beschreibung: "Prebunking funktioniert wie eine Impfung, fachlich Inokulation genannt. Wer Manipulationstechniken vorab kennenlernt, ist später widerstandsfähiger dagegen. Eine Meta-Analyse von 42 Studien (etwa 42.500 Personen) zeigt, dass Inokulation die Glaubwürdigkeit von Falschinformationen senkt (d = -0,36). Roozenbeek et al. verbesserten mit 90-Sekunden-Videos in einem YouTube-Feldtest mit 22.632 Personen die Erkennung von Manipulationstechniken um rund fünf Prozentpunkte, und zwar über Parteigrenzen hinweg. Bei Verschwörungsglauben erreicht Inokulation in Laborstudien d von 0,9 bis 1,3, deutlich mehr als nachträgliche Gegenargumente. Die Grenzen: Ohne Auffrischung verfallen die Effekte in Wochen bis Monaten, gemessen wird das Erkennen von Techniken, nicht die Parteineigung, die Hauptstudien sind von Jigsaw mitfinanziert, und ob Inokulation eine allgemeine Medienskepsis fördert, ist umstritten.",
     so_gehts: [
-      "Wähl zwei bis drei Techniken, die vor Ort wirklich kursieren, etwa Sündenbock, Dekontextualisierung, falsche Dichotomie.",
-      "Warn kurz vor: Du wirst Beiträge sehen, die so gebaut sind.",
+      "Wähl zwei bis drei Techniken aus, die vor Ort wirklich kursieren, etwa Sündenbock, Dekontextualisierung (etwas aus dem Zusammenhang reißen) oder falsche Dichotomie (nur zwei Möglichkeiten zulassen).",
+      "Warn kurz vor: „Du wirst Beiträge sehen, die so gebaut sind.“",
       "Zeig die Technik an einem harmlosen oder parteineutralen Beispiel, nicht am Lieblingsthema der Zielgruppe.",
-      "Lass die Technik selbst entlarven, etwa mit einer kurzen Übung oder einem Quiz.",
-      "Wiederhol die Auffrischung alle paar Wochen über Schulen, Vereine, Lokalmedien.",
-      "Miss Erkennung vorher und nachher, nicht nur Reichweite."
+      "Lass die Teilnehmenden die Technik selbst entlarven, etwa in einer kurzen Übung oder einem Quiz.",
+      "Frisch das Wissen alle paar Wochen auf, über Schulen, Vereine und Lokalmedien.",
+      "Miss vorher und nachher, ob die Techniken erkannt werden, nicht nur die Reichweite."
     ],
-    beispiel: "Im Sportverein zeigt die Jugendleiterin vor dem Training einen 90-Sekunden-Clip: Achtung, du wirst Beiträge sehen, die für jedes Problem eine einzige Gruppe verantwortlich machen. Das nennt man Sündenbock. Dann läuft ein Beispiel über die angebliche Schuld von Radfahrern am Stau. Die Jugendlichen lachen, einer sagt: Das ist wie bei dem Video über die Ausländer und die Wohnungen. Genau darum geht es.",
+    beispiel: "Im Sportverein zeigt die Jugendleiterin vor dem Training einen 90-Sekunden-Clip: „Achtung, du wirst Beiträge sehen, die für jedes Problem eine einzige Gruppe verantwortlich machen. Das nennt man Sündenbock.“ Dann läuft ein Beispiel über die angebliche Schuld der Radfahrer am Stau. Die Jugendlichen lachen, und einer sagt: „Das ist wie bei dem Video über die Ausländer und die Wohnungen.“ Genau darum geht es.",
     nicht: [
-      "Eine einmalige Welle fahren und auf Dauerwirkung hoffen.",
-      "Parteinahe Beispiele nutzen; das wirkt als Angriff und löst Abwehr aus.",
-      "Technik-Erkennung mit Einstellungswandel verwechseln.",
+      "Eine einmalige Aktion starten und auf Dauerwirkung hoffen.",
+      "Parteinahe Beispiele nutzen; das wirkt wie ein Angriff und löst Abwehr aus.",
+      "Das Erkennen von Techniken mit einem Einstellungswandel verwechseln.",
       "Prebunking so anlegen, dass am Ende allen Medien misstraut wird."
     ],
     quellen: [
@@ -251,20 +251,20 @@ window.APP_DATA.techniken = [
     kurz: "Persönlicher, moderierter Austausch mit Andersdenkenden senkt Abneigung und Stereotype, verändert aber Positionen kaum.",
     evidenz: "mittel",
     ebene: "masse",
-    beschreibung: "Paluck, Green und Green fanden in 27 randomisierten Kontaktstudien einen Effekt von 0,39 SD, bei ethnischen Vorurteilen 0,25 SD, in präregistrierten Studien nahe null; keine Studie betraf Erwachsene über 25. Für Deutschland zeigt die Auswertung von Deutschland spricht (Fang, Heuser und Stötzer 2025): Ein zweistündiges Gespräch mit Andersdenkenden senkt affektive Polarisierung und Stereotype und erhöht Vertrauen, politische Positionen bleiben; Gespräche unter Gleichgesinnten radikalisieren. Santoro und Broockman fanden, dass Effekte nach drei Monaten weitgehend verschwinden. Entfeindung ist ein eigenes, erreichbares Ziel und Voraussetzung für alles Weitere.",
+    beschreibung: "Paluck, Green und Green fanden in 27 randomisierten Kontaktstudien einen Effekt von 0,39 SD, bei ethnischen Vorurteilen 0,25 SD und in präregistrierten Studien nahe null; keine der Studien betraf Erwachsene über 25. Für Deutschland zeigt die Auswertung von „Deutschland spricht“ (Fang, Heuser und Stötzer 2025), dass ein zweistündiges Gespräch mit Andersdenkenden die affektive Polarisierung, also die gegenseitige Abneigung, und Stereotype senkt und Vertrauen erhöht, während politische Positionen bleiben; Gespräche unter Gleichgesinnten radikalisieren dagegen. Santoro und Broockman fanden, dass die Effekte nach drei Monaten weitgehend verschwunden sind. Entfeindung ist ein eigenes, erreichbares Ziel und die Voraussetzung für alles Weitere.",
     so_gehts: [
-      "Bring Menschen zusammen, die sich sonst nicht begegnen: über Vereine, Feuerwehr, Elternabend, Nachbarschaftsfest.",
-      "Sorg für Moderation und gemeinsame Aufgabe statt Podiumsdebatte.",
-      "Mische Gruppen bewusst; homogene Runden polarisieren.",
-      "Beginn mit Alltag und gemeinsamen Problemen, nicht mit dem strittigsten Thema.",
-      "Wiederhol Begegnungen; ein einmaliges Treffen verpufft nach Wochen."
+      "Bring Menschen zusammen, die sich sonst nicht begegnen, etwa über Vereine, Feuerwehr, Elternabende oder Nachbarschaftsfeste.",
+      "Sorg für Moderation und eine gemeinsame Aufgabe statt einer Podiumsdebatte.",
+      "Misch die Gruppen bewusst; homogene Runden polarisieren.",
+      "Beginn mit dem Alltag und gemeinsamen Problemen, nicht mit dem strittigsten Thema.",
+      "Wiederhol die Begegnungen; ein einmaliges Treffen verpufft nach wenigen Wochen."
     ],
-    beispiel: "Beim Dorffest sitzt der Ortsvorsteher mit zwei Familien aus der Unterkunft und drei Männern vom Stammtisch an einem Tisch, Aufgabe: Grillplan für nächstes Jahr. Nach einer Stunde sagt einer vom Stammtisch: Mit dem Kerl kann man ja reden, der hat auch Ahnung von Motoren. Seine Meinung zur Migrationspolitik hat sich nicht geändert. Aber er grüßt jetzt, und das ist der Anfang.",
+    beispiel: "Beim Dorffest sitzt der Ortsvorsteher mit zwei Familien aus der Unterkunft und drei Männern vom Stammtisch an einem Tisch. Die Aufgabe lautet, den Grillplan für nächstes Jahr zu machen. Nach einer Stunde sagt einer vom Stammtisch: „Mit dem Kerl kann man ja reden, der hat auch Ahnung von Motoren.“ Seine Meinung zur Migrationspolitik hat sich nicht geändert. Aber er grüßt jetzt, und das ist der Anfang.",
     nicht: [
-      "Erwarten, dass Begegnung Positionen ändert; sie ändert Gefühle und Bilder.",
-      "Homogene Runden oder unmoderierte Foren veranstalten; sie polarisieren.",
-      "Begegnung als Belehrungsveranstaltung tarnen.",
-      "Betroffene Personen als Anschauungsmaterial vorführen."
+      "Erwarten, dass Begegnung Positionen ändert; was sich ändert, sind Gefühle und Bilder.",
+      "Homogene Runden oder unmoderierte Foren veranstalten; beides polarisiert.",
+      "Eine Belehrungsveranstaltung als Begegnung tarnen.",
+      "Betroffene als Anschauungsmaterial vorführen."
     ],
     quellen: [
       { titel: "Paluck, Green & Green (2019): The contact hypothesis re-evaluated, Behavioural Public Policy", url: "https://www.cambridge.org/core/journals/behavioural-public-policy/article/contact-hypothesis-reevaluated/142C913E7FA9E121277B29E994124EC5", jahr: "2019" },
@@ -275,20 +275,20 @@ window.APP_DATA.techniken = [
   {
     id: "soziale-normen",
     name: "Soziale Normen sichtbar machen",
-    kurz: "Die eigene Haltung und das eigene Handeln zeigen, ohne zu belehren; sichtbare Normen naher Menschen und des Ortes wirken.",
+    kurz: "Die eigene Haltung und das eigene Handeln zeigen, ohne zu belehren; sichtbare Normen nahestehender Menschen und des Ortes wirken.",
     evidenz: "mittel",
     ebene: "beide",
-    beschreibung: "Winter, Pummerer, Hornsey und Sassenberg zeigten in fünf deutschen Studien (N über 1.200): Wenn nahe Personen eine Norm sichtbar vertreten, verschwindet der negative Zusammenhang zwischen Verschwörungsmentalität und Handlungsabsicht. Álvarez-Benjumea und Winter belegen für Deutschland, dass sichtbare Anti-Hass-Normen Hassrede senken; nach den Anschlägen 2016 stieg Hass gegen Geflüchtete nur dort, wo keine Norm etabliert war. Bursztyn et al. zeigen den Gegeneffekt: Ein öffentliches Signal kann fremdenfeindliche Äußerungen enthemmen. Befunde sind teils korrelativ. Wichtig: Normen zeigen heißt nicht Nachbarn beschämen; Restigmatisierung einer normalisierten Partei wirkt nicht und kann Akzeptanz sogar erhöhen (Balcells et al.).",
+    beschreibung: "Winter, Pummerer, Hornsey und Sassenberg zeigten in fünf deutschen Studien (N über 1.200), dass der negative Zusammenhang zwischen Verschwörungsmentalität und Handlungsabsicht verschwindet, wenn nahestehende Personen eine Norm sichtbar vertreten. Álvarez-Benjumea und Winter belegen für Deutschland, dass sichtbare Normen gegen Hass die Hassrede senken; nach den Anschlägen 2016 nahm der Hass gegen Geflüchtete nur dort zu, wo keine solche Norm etabliert war. Bursztyn et al. zeigen den Gegeneffekt, nämlich dass ein öffentliches Signal fremdenfeindliche Äußerungen enthemmen kann. Die Befunde sind teils korrelativ. Wichtig ist, dass Normen zeigen nicht heißt, Nachbarn zu beschämen; eine normalisierte Partei erneut zu stigmatisieren wirkt nicht und kann die Akzeptanz sogar erhöhen (Balcells et al.).",
     so_gehts: [
-      "Sag ruhig und ohne Vorwurf, wie du es siehst und was du tust: Ich sehe das anders und handle auch anders.",
-      "Zeig die Norm durch Handeln, etwa beim Nachbarschaftsfest, im Verein, beim Elternabend.",
-      "Bildet breite lokale Bündnisse, die Haltung zeigen, mit Gesichtern aus dem Ort.",
+      "Sag ruhig und ohne Vorwurf, wie du es siehst und was du tust: „Ich sehe das anders und handle auch anders.“",
+      "Zeig die Norm durch dein Handeln, etwa beim Nachbarschaftsfest, im Verein oder beim Elternabend.",
+      "Bilde breite lokale Bündnisse, die Haltung zeigen, mit bekannten Gesichtern aus dem Ort.",
       "Schweig nicht bei rechten Parolen; Schweigen wird als Zustimmung gelesen.",
-      "Richte die Haltung gegen Aussagen und Partei, nie gegen die Wählenden als Personen."
+      "Richte deine Haltung gegen Aussagen und Partei, nie gegen die Wählenden als Personen."
     ],
-    beispiel: "Beim Vereinsabend sagt jemand: Die Partei hat wenigstens den Mut, die Ausländer rauszuschmeißen. Du: Da bin ich raus, das sehe ich komplett anders. Für mich gehören Fatma und ihre Kinder hierher, Punkt. Aber über die Beitragserhöhung können wir gern streiten. Pause. Ein anderer: Seh ich auch so wie du. Der Ton am Tisch ist danach ein anderer.",
+    beispiel: "Beim Vereinsabend sagt jemand: „Die Partei hat wenigstens den Mut, die Ausländer rauszuschmeißen.“ Du: „Da bin ich raus, das sehe ich komplett anders. Für mich gehören Fatma und ihre Kinder hierher, Punkt. Aber über die Beitragserhöhung können wir gern streiten.“ Pause. Ein anderer: „Seh ich genauso wie du.“ Der Ton am Tisch ist danach ein anderer.",
     nicht: [
-      "Menschen beschämen oder moralisch überlegen auftreten; das erzeugt Reaktanz.",
+      "Menschen beschämen oder moralisch überlegen auftreten; das erzeugt Reaktanz, also Trotz.",
       "Eine normalisierte Partei erneut stigmatisieren wollen; das ist eine Einbahnstraße.",
       "Die Norm nur in der eigenen Blase zeigen, wo sie ohnehin gilt."
     ],

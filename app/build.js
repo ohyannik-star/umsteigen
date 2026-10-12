@@ -51,18 +51,15 @@ const extraHead = [
 const hosted = `<script>window.UMSTEIGEN_HOSTED = true; window.UMSTEIGEN_VERSION = '${version}';</script>`;
 const swScript = `<script>
 if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
-  navigator.serviceWorker.register('sw.js').then(function (reg) {
-    reg.addEventListener('updatefound', function () {
-      var nw = reg.installing; if (!nw) return;
-      nw.addEventListener('statechange', function () {
-        if (nw.state === 'installed' && navigator.serviceWorker.controller) {
-          var t = document.createElement('div'); t.className = 'toast';
-          t.innerHTML = 'Neue Version verfügbar. <button type="button" style="font:inherit;color:inherit;background:none;border:0;padding:0;text-decoration:underline;cursor:pointer" onclick="location.reload()">Jetzt laden</button>';
-          document.body.appendChild(t);
-        }
-      });
-    });
-  }).catch(function () {});
+  (function () {
+    var hadController = !!navigator.serviceWorker.controller, pending = false;
+    function idle() { var a = document.activeElement; return !(a && (a.tagName === 'TEXTAREA' || (a.tagName === 'INPUT' && a.type === 'text'))); }
+    function applyUpdate() { if (pending && idle()) { pending = false; location.reload(); } }
+    window.addEventListener('hashchange', function () { setTimeout(applyUpdate, 50); });
+    document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') applyUpdate(); });
+    navigator.serviceWorker.addEventListener('controllerchange', function () { if (!hadController) { hadController = true; return; } pending = true; applyUpdate(); });
+    navigator.serviceWorker.register('sw.js').then(function (reg) { setInterval(function () { reg.update().catch(function () {}); }, 15 * 60 * 1000); }).catch(function () {});
+  })();
 }
 </script>`;
 const pwa = page.replace('<script src="app.js"></script>', hosted + '\n<script src="app.js"></script>\n' + swScript);
