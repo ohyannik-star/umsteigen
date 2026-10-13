@@ -16605,6 +16605,7 @@ document.addEventListener('click', function (e) {
   else if (a === 'arch-del-no') { state.confirmDel = null; render(); }
   else if (a === 'arch-del-yes') { var ad = archGet(); ad.eintraege = ad.eintraege.filter(function (x) { return x.id !== d.id; }); ad.pins = ad.pins.filter(function (x) { return x !== d.id; }); archSet(ad); state.confirmDel = null; render(); toast('Eintrag gelöscht'); }
   else if (a === 'copy-text') { copyText(d.text || ''); }
+  else if (a === 'check-update') { if (window.umsteigenUpdate) window.umsteigenUpdate(); else toast('Diese Version prüft nicht automatisch. Seite neu laden.'); }
   else if (a === 'kamp-edit') { state.kampEdit = true; render(); }
   else if (a === 'kamp-cancel') { state.kampEdit = false; render(); }
   else if (a === 'kamp-reset') { store.del('kampagne'); state.kampEdit = false; render(); }
@@ -16661,6 +16662,7 @@ document.addEventListener('submit', function (e) {
   }
 });
 
+var verEl = $('#ver'); if (verEl && HOSTED && window.UMSTEIGEN_VERSION) verEl.innerHTML = ' Version ' + esc(window.UMSTEIGEN_VERSION) + ' · <button class="link" style="font-size:inherit;padding:0" data-act="check-update">Nach Updates suchen</button>';
 var initial = location.hash.replace('#', '');
 if (ROUTES.some(function (x) { return x[0] === initial; })) state.route = initial;
 render();

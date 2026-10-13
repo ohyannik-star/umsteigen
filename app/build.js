@@ -16,7 +16,7 @@ const site = path.join(root, 'docs');
 fs.rmSync(site, { recursive: true, force: true });
 fs.mkdirSync(path.join(site, 'data'), { recursive: true });
 const d = new Date(), pad = n => String(n).padStart(2, '0');
-const version = d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + '-' + pad(d.getHours()) + pad(d.getMinutes());
+const version = d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + '-' + pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds());
 const files = ['app.js'].concat(fs.readdirSync(path.join(app, 'data')).filter(f => f.endsWith('.js')).map(f => 'data/' + f));
 files.forEach(f => fs.copyFileSync(path.join(app, f), path.join(site, f)));
 require('./make-icons.js').write(site);
@@ -52,13 +52,20 @@ const hosted = `<script>window.UMSTEIGEN_HOSTED = true; window.UMSTEIGEN_VERSION
 const swScript = `<script>
 if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
   (function () {
-    var hadController = !!navigator.serviceWorker.controller, pending = false;
+    var VERSION = '${version}', hadController = !!navigator.serviceWorker.controller, pending = false, regRef = null;
+    function note(text, ms) { var t = document.createElement('div'); t.className = 'toast'; t.textContent = text; document.body.appendChild(t); if (ms) setTimeout(function () { t.remove(); }, ms); return t; }
     function idle() { var a = document.activeElement; return !(a && (a.tagName === 'TEXTAREA' || (a.tagName === 'INPUT' && a.type === 'text'))); }
-    function applyUpdate() { if (pending && idle()) { pending = false; location.reload(); } }
+    function applyUpdate() { if (pending && idle()) { pending = false; try { sessionStorage.setItem('umsteigen:updated', '1'); } catch (e) {} location.reload(); } }
+    try { if (sessionStorage.getItem('umsteigen:updated')) { sessionStorage.removeItem('umsteigen:updated'); note('Aktualisiert auf Version ' + VERSION, 3500); } } catch (e) {}
     window.addEventListener('hashchange', function () { setTimeout(applyUpdate, 50); });
-    document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') applyUpdate(); });
+    document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') { applyUpdate(); if (regRef) regRef.update().catch(function () {}); } });
     navigator.serviceWorker.addEventListener('controllerchange', function () { if (!hadController) { hadController = true; return; } pending = true; applyUpdate(); });
-    navigator.serviceWorker.register('sw.js').then(function (reg) { setInterval(function () { reg.update().catch(function () {}); }, 15 * 60 * 1000); }).catch(function () {});
+    window.umsteigenUpdate = function () {
+      if (!regRef) { note('Update-Prüfung nicht möglich.', 2500); return; }
+      var t = note('Suche nach Updates …');
+      regRef.update().then(function () { setTimeout(function () { t.remove(); if (!pending && !regRef.installing && !regRef.waiting) note('Du hast die neueste Version: ' + VERSION, 3000); }, 2500); }).catch(function () { t.textContent = 'Keine Verbindung. Später noch einmal versuchen.'; setTimeout(function () { t.remove(); }, 3000); });
+    };
+    navigator.serviceWorker.register('sw.js').then(function (reg) { regRef = reg; setInterval(function () { reg.update().catch(function () {}); }, 15 * 60 * 1000); }).catch(function () {});
   })();
 }
 </script>`;
