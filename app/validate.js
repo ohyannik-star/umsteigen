@@ -6,7 +6,7 @@ const files = ['linien', 'techniken', 'kompass', 'szenarien', 'kampagne', 'leitp
 const errors = [], warns = [];
 for (const f of files) {
   const p = path.join(dir, f + '.js');
-  if (!fs.existsSync(p)) { errors.push('fehlt: ' + f + '.js'); continue; }
+  if (!fs.existsSync(p)) { if (f === 'argumente') { warns.push('argumente.js fehlt noch'); continue; } errors.push('fehlt: ' + f + '.js'); continue; }
   try { vm.runInContext(fs.readFileSync(p, 'utf8'), ctx, { filename: f + '.js' }); } catch (e) { errors.push(f + '.js: ' + e.message); }
 }
 const D = ctx.window.APP_DATA || {};

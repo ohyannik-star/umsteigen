@@ -200,3 +200,35 @@ Segmente: 5–7. Bausteine: 12–18. Phasen: 4–5. Kennzahlen: 6–8. Planer-Fr
   zeithorizont: "Realistischer Text, 3–5 Sätze."
 }
 ```
+
+## 9. `argumente.js` – Antworten-Playbook (`APP_DATA.argumente`, Objekt)
+
+```js
+{
+  kategorien: [ { id: "migration", name: "Migration und Sicherheit" } ],
+  argumente: [
+    {
+      id: "medien-luegen",
+      kategorie: "medien",
+      titel: "Die Medien lügen doch alle.",              // so, wie die Person es sagt
+      varianten: ["Lügenpresse", "Alles gesteuert"],   // 2–4 weitere Formulierungen
+      dahinter: "1–2 Sätze: Bedürfnis oder Gefühl hinter dem Satz.",
+      tonalitaet: "1–2 Sätze: Haltung und Ton, der hier trägt.",
+      nogo: ["Wort oder Satz, der alles kaputt macht"],   // 3–6
+      schritte: [                                         // genau diese 5 Phasen in dieser Reihenfolge
+        { phase: "Anerkennen", sagen: ["wörtlicher Satz", "wörtlicher Satz"] },
+        { phase: "Nachfragen", sagen: ["…"] },
+        { phase: "Erlebnis", sagen: ["…"] },
+        { phase: "Zweifel", sagen: ["…"] },
+        { phase: "Überleitung", sagen: ["…"] }
+      ],
+      wenn_dann: [ { wenn: "Die Person sagt oder tut …", dann: "Dann sag: „…“ oder: Dann …" } ],   // 3–5
+      fakten: [ { aussage: "kurz und prüfbar", quelle: { titel, url, jahr }, so_nutzen: "1–2 Sätze: wie einbringen, ohne Faktenduell" } ], // 2–4, verifiziert
+      fallstricke: ["…"],                                 // 2–3
+      techniken: ["technik-id"]                           // 1–3 aus techniken.js
+    }
+  ],
+  verhalten: [ { id: "laut", verhalten: "Die Person wird laut.", dahinter: "…", dann: ["Handlung"], sagen: ["wörtlicher Satz"], nicht: ["…"] } ],   // 10–12
+  studien_lesen: [ { id, titel, text: "3–5 Sätze", beispiel: "1–3 Sätze" } ]   // 6–8
+}
+```

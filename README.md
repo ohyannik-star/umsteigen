@@ -25,6 +25,9 @@ Eine Web-App für Engagierte, die Menschen aus dem Umfeld verfassungsfeindlicher
 1. **Netzplan**: fünf Linien (Gespräch, Gemeinde und Nachbarschaft, Öffentlichkeit und Kampagne, Schule und Jugend, Professionelle Begleitung und Ausstieg) mit Stationen, Abzweigen und Umsteigepunkten.
 2. **Kompass**: 102 Fragen in 15 Richtungen zu beobachtbarem Verhalten, jede mit Begründung. Ergebnis: Profil über sieben Antriebe, vier Skalen (Gesprächsoffenheit, Beziehungskapital, Verschwörungsnähe, eigene Belastung), erste Schritte, Einstiegsstation. Fragen liegen in `app/data/kompass.js`; neue Fragen als Teildatei mit `node app/validate-kompass.js` prüfen und mit `node app/merge-kompass.js` zusammenführen.
 3. **Trainer**: Szenarien mit Antwortoptionen und Rückmeldung.
+3a. **Antworten**: Playbook zu typischen Argumenten (Tonalität, No-go-Wörter, wörtliche Sätze in fünf Schritten, Wenn-dann-Regeln, belegte Fakten), Verhaltensregeln für schwierige Reaktionen, Hilfe zum Lesen von Studien. Inhalte in `app/data/argumente.js`; Teildateien mit `node app/validate-argumente.js` prüfen und mit `node app/merge-argumente.js` zusammenführen.
+3b. **Mein Fall** (Kompass-Ergebnis): Deine innere Einstellung, die Einstellung der Person, die Argumente der Person, deine Antworten bislang, Empfehlungen, Archiv.
+3c. **Archiv**: gespeicherte Sätze, Fakten, Links und eigene Notizen mit Suche und drei Rettungssätzen für den Blackout.
 4. **Kampagne**: Planer, Zielgruppen, Bausteine mit Evidenzstufe, Phasen, Kennzahlen.
 5. **Wissen**: Techniken mit Vorgehen, Beispiel, Grenzen, Quellen.
 6. **Leitplanken**: Ethik, Recht, Gefahrenzeichen, Selbstschutz, Datenschutz, Anlaufstellen.

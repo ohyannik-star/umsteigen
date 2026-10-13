@@ -11,6 +11,7 @@ var KAMPAGNE = D.kampagne || null;
 var LEIT = D.leitplanken || null;
 var HILFE = Array.isArray(D.hilfe) ? D.hilfe : [];
 var MESSUNG = D.messung || null;
+var ARG = D.argumente && D.argumente.argumente ? D.argumente : null;
 var LINE_COLORS = ['#0a5fa7', '#c2410c', '#15803d', '#7c3aed', '#be185d', '#0e7490', '#b45309'];
 var EBENE = { individuum: 'Einzelperson', masse: 'Viele Menschen', beide: 'Beide Ebenen' };
 
@@ -79,6 +80,8 @@ var ICONS = {
   kampagne: '<path d="M3 10v4a1 1 0 0 0 1 1h3l6 4V5L7 9H4a1 1 0 0 0-1 1z"/><path d="M16.5 9a4.5 4.5 0 0 1 0 6"/>',
   wissen: '<path d="M4 4.5h5.5A2.5 2.5 0 0 1 12 7v13a2 2 0 0 0-2-2H4z"/><path d="M20 4.5h-5.5A2.5 2.5 0 0 0 12 7v13a2 2 0 0 1 2-2h6z"/>',
   leitplanken: '<path d="M12 3 20 6v6c0 4.8-3.4 8.3-8 9-4.6-.7-8-4.2-8-9V6z"/><path d="m9 12 2 2 4-4"/>',
+  antworten: '<path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
+  archiv: '<path d="M3 5h18v4H3z"/><path d="M5 9v10h14V9"/><path d="M10 13h4"/>',
   tagebuch: '<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 8h6M9 12h6M9 16h3"/>'
 };
 function icon(k) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONS[k] || '') + '</svg>'; }
@@ -112,7 +115,7 @@ function heroArt() {
 /* ---------- Zustand und Routing ---------- */
 var ROUTES = [
   ['start', 'Start'], ['netz', 'Netzplan'], ['kompass', 'Kompass'], ['trainer', 'Trainer'],
-  ['kampagne', 'Kampagne'], ['wissen', 'Wissen'], ['leitplanken', 'Leitplanken'], ['tagebuch', 'Tagebuch']
+  ['antworten', 'Antworten'], ['archiv', 'Archiv'], ['kampagne', 'Kampagne'], ['wissen', 'Wissen'], ['leitplanken', 'Leitplanken'], ['tagebuch', 'Tagebuch']
 ];
 var state = {
   route: 'start', linie: null, station: null, technik: null, filterEbene: 'alle',
@@ -317,7 +320,8 @@ function kSchritte(res) {
   if (bO) out.push({ t: 'Tempo: ' + bO.name, x: bO.text, go: 'trainer' });
   return out.slice(0, 4);
 }
-function kompassResult(res) {
+function kompassResult(res) { return fallHub(res); }
+function kompassResultAlt(res) {
   var risks = (res.risiko || []).map(function (id) { var r = findIn(KOMPASS.risiko, id); return r ? '<div class="note bad"><strong>' + esc(r.text) + '</strong><p>' + esc(r.aktion) + '</p></div>' : ''; }).join('');
   var stufe = findIn(KOMPASS.stufen, res.stufe), bez = findIn(KOMPASS.beziehung, res.beziehung);
   var maxScore = Math.max.apply(null, (res.top || []).map(function (k) { return res.scores[k]; }).concat([1]));
@@ -572,10 +576,131 @@ function stationOptions(lid, sid) {
   return '<option value="">– keine –</option>' + (l ? l.stationen.map(function (s) { return '<option value="' + esc(s.id) + '"' + (sid === s.id ? ' selected' : '') + '>' + esc(s.name) + '</option>'; }).join('') : '');
 }
 
-var VIEWS = { start: vStart, netz: vNetz, kompass: vKompass, trainer: vTrainer, kampagne: vKampagne, wissen: vWissen, leitplanken: vLeitplanken, tagebuch: vTagebuch };
+/* ---------- Antworten-Playbook, Archiv, Mein Fall ---------- */
+function fallGet() { var f = store.get('fall', null); return f && f.argumente ? f : { argumente: [], antworten: {} }; }
+function fallSet(f) { store.set('fall', f); }
+function archGet() { var a = store.get('archiv', null); return a && a.eintraege ? a : { eintraege: [], pins: [] }; }
+function archSet(a) { store.set('archiv', a); }
+function archAdd(e) {
+  var a = archGet();
+  if (a.eintraege.some(function (x) { return x.text === e.text; })) { toast('Steht schon im Archiv'); return; }
+  e.id = uid(); e.datum = today(); a.eintraege.unshift(e); archSet(a); toast('Im Archiv gespeichert');
+}
+function archBtn(typ, text, herkunft, url, quelle) {
+  return '<button type="button" class="chip btn-chip arch" data-act="arch-add" data-typ="' + esc(typ) + '" data-text="' + esc(text) + '" data-herkunft="' + esc(herkunft || '') + '"' + (url ? ' data-url="' + esc(url) + '"' : '') + (quelle ? ' data-quelle="' + esc(quelle) + '"' : '') + ' title="Ins Archiv speichern">+ Archiv</button>';
+}
+function argById(id) { return ARG ? findIn(ARG.argumente, id) : null; }
+function katName(id) { var k = ARG ? findIn(ARG.kategorien, id) : null; return k ? k.name : id; }
+function sagenRows(list, herkunft) { return (list || []).map(function (s) { return '<div class="say"><span class="say-t">„' + esc(s) + '“</span>' + archBtn('satz', s, herkunft) + '</div>'; }).join(''); }
+function faktRows(list, herkunft) {
+  return (list || []).map(function (f) {
+    var q = f.quelle || {};
+    return '<div class="fakt"><p><strong>' + esc(f.aussage) + '</strong></p><p class="small muted">' + esc(f.so_nutzen) + '</p><div class="row">' + (q.titel ? '<span class="small">' + (q.url ? '<a href="' + esc(q.url) + '" target="_blank" rel="noopener">' + esc(q.titel) + '</a>' : esc(q.titel)) + (q.jahr ? ' (' + esc(q.jahr) + ')' : '') + '</span>' : '') + archBtn('fakt', f.aussage, herkunft, q.url, q.titel) + '</div></div>';
+  }).join('');
+}
+function playbook(a, kompakt) {
+  var h = a.titel;
+  var schritte = (a.schritte || []).map(function (s, i) { return '<div class="phase"><div class="phase-n">' + (i + 1) + '</div><div class="phase-b"><h4>' + esc(s.phase) + '</h4>' + sagenRows(kompakt ? s.sagen.slice(0, 1) : s.sagen, h) + '</div></div>'; }).join('');
+  var wd = (a.wenn_dann || []).slice(0, kompakt ? 2 : 99).map(function (w) { return '<div class="wd"><div class="wd-w"><span class="tag">Wenn</span><p>' + esc(w.wenn) + '</p></div><div class="wd-d"><span class="tag">Dann</span><p>' + esc(w.dann) + '</p>' + archBtn('satz', w.dann, h) + '</div></div>'; }).join('');
+  var inFall = fallGet().argumente.indexOf(a.id) >= 0;
+  return '<div class="stack-lg pb">' +
+    '<div class="station-detail"><div class="note"><strong>Was dahintersteckt</strong>' + paras(a.dahinter) + '</div><div class="note good"><strong>Tonalität</strong>' + paras(a.tonalitaet) + '</div></div>' +
+    '<div class="note bad"><strong>No-go</strong><div class="row">' + (a.nogo || []).map(function (x) { return chip(x); }).join('') + '</div></div>' +
+    '<section><h3>Was du sagen kannst, Schritt für Schritt</h3><div class="phases">' + schritte + '</div></section>' +
+    (wd ? '<section><h3>Wenn die Person so reagiert</h3><div class="stack">' + wd + '</div></section>' : '') +
+    (!kompakt && a.fakten && a.fakten.length ? '<section><h3>Fakten, die tragen</h3><p class="small muted">Erst das Erlebnis anerkennen, dann höchstens ein Fakt, dann zurück zur Beziehung.</p><div class="grid">' + faktRows(a.fakten, h) + '</div></section>' : '') +
+    (!kompakt && a.fallstricke && a.fallstricke.length ? '<div class="note warn"><strong>Fallstricke</strong>' + ul(a.fallstricke) + '</div>' : '') +
+    '<div class="row">' + (a.techniken && a.techniken.length ? '<span class="small muted">Techniken:</span>' + technikChips(a.techniken) : '') + '<span style="margin-left:auto"></span><button class="btn sm' + (inFall ? '' : ' primary') + '" data-act="fall-arg" data-id="' + esc(a.id) + '">' + (inFall ? 'Aus meinem Fall entfernen' : 'Die Person sagt das: zu meinem Fall') + '</button>' + (kompakt ? '<button class="btn sm" data-go="antworten" data-arg="' + esc(a.id) + '">Ganzes Playbook</button>' : '') + '</div>' +
+  '</div>';
+}
+function vAntworten() {
+  if (!ARG) return missing('Antworten');
+  var tabs = [['argumente', 'Argumente'], ['verhalten', 'Verhalten'], ['studien', 'Studien lesen']];
+  var nav = '<div class="seg" role="tablist">' + tabs.map(function (t) { return '<button type="button" role="tab" aria-pressed="' + (state.antTab === t[0]) + '" data-act="ant-tab" data-tab="' + t[0] + '">' + t[1] + '</button>'; }).join('') + '</div>';
+  var body = '';
+  if (state.antTab === 'verhalten') {
+    body = '<div class="faq">' + (ARG.verhalten || []).map(function (v) { return '<details class="acc"><summary>' + esc(v.verhalten) + '</summary><div class="body stack"><p class="muted">' + esc(v.dahinter) + '</p><div class="station-detail"><div><h4>So verhältst du dich</h4>' + ol(v.dann) + '</div><div class="note bad"><strong>Macht es schlimmer</strong>' + ul(v.nicht) + '</div></div><div><h4>Was du sagen kannst</h4>' + sagenRows(v.sagen, v.verhalten) + '</div></div></details>'; }).join('') + '</div>';
+  } else if (state.antTab === 'studien') {
+    body = '<p class="muted" style="max-width:62ch">Zahlen sind in diesen Gesprächen selten das Problem, ihre Deutung schon. Diese Regeln helfen dir, eine Zahl gemeinsam mit der Person zu prüfen, statt sie ihr entgegenzuhalten.</p><div class="faq">' + (ARG.studien_lesen || []).map(function (s) { return '<details class="acc"><summary>' + esc(s.titel) + '</summary><div class="body stack">' + paras(s.text) + '<div class="quote">' + esc(s.beispiel) + '</div></div></details>'; }).join('') + '</div>';
+  } else {
+    var q = (state.argQ || '').toLowerCase();
+    var kats = [['alle', 'Alle']].concat((ARG.kategorien || []).map(function (k) { return [k.id, k.name]; }));
+    var list = (ARG.argumente || []).filter(function (a) { return (state.argKat === 'alle' || !state.argKat || a.kategorie === state.argKat) && (!q || (a.titel + ' ' + (a.varianten || []).join(' ')).toLowerCase().indexOf(q) >= 0); });
+    var sel = state.arg ? argById(state.arg) : null;
+    body = '<div class="row"><input type="text" id="arg-q" placeholder="Argument suchen, zum Beispiel „Medien“" value="' + esc(state.argQ || '') + '" style="max-width:360px"></div>' + seg('argKat', kats) +
+      (sel ? '<section class="panel stack"><div class="row"><span class="tag">' + esc(katName(sel.kategorie)) + '</span><button class="link" style="margin-left:auto" data-act="arg-open" data-id="">Schließen</button></div><h2>„' + esc(sel.titel) + '“</h2><div class="row">' + (sel.varianten || []).map(function (v) { return chip(v); }).join('') + '</div>' + playbook(sel, false) + '</section>' : '') +
+      '<div class="grid">' + list.map(function (a) { var on = fallGet().argumente.indexOf(a.id) >= 0; return '<div class="card card-link stack" role="button" tabindex="0" data-act="arg-open" data-id="' + esc(a.id) + '"><div class="row"><span class="tag">' + esc(katName(a.kategorie)) + '</span>' + (on ? chip('Mein Fall') : '') + '</div><strong>„' + esc(a.titel) + '“</strong><p class="small muted">' + esc((a.varianten || []).join(' · ')) + '</p></div>'; }).join('') + '</div>' + (list.length ? '' : '<div class="empty">Kein Argument passt zur Suche.</div>');
+  }
+  return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Playbook</div><h1>Antworten</h1><p>Wenn die Person das sagt, dann sag das. Für jedes Argument: was dahintersteckt, welcher Ton trägt, welche Wörter alles kaputt machen, wörtliche Sätze vom Anerkennen bis zum Zweifel, Wenn-dann-Regeln und belegte Fakten. Jeden Satz kannst du ins Archiv legen.</p></div>' + nav + body + '</div>';
+}
+var RETTUNG = ['Erzähl mir mehr. Wie bist du darauf gekommen?', 'Ich merke, das ist dir wichtig. Ich sehe es anders, aber ich will verstehen, warum du das so siehst.', 'Lass uns kurz Pause machen. Ich will das hier nicht kaputtreden, du bist mir wichtiger als das Thema.'];
+function vArchiv() {
+  var a = archGet(), q = (state.archQ || '').toLowerCase();
+  var pins = a.pins.map(function (id) { return findIn(a.eintraege, id); }).filter(Boolean);
+  var rettung = (pins.length ? pins.map(function (e) { return e.text; }) : []).concat(RETTUNG).slice(0, 3);
+  var list = a.eintraege.filter(function (e) { return !q || (e.text + ' ' + (e.herkunft || '') + ' ' + (e.quelle || '')).toLowerCase().indexOf(q) >= 0; });
+  var TYP = { satz: 'Satz', fakt: 'Fakt', link: 'Link', notiz: 'Notiz' };
+  var items = list.map(function (e) {
+    var pinned = a.pins.indexOf(e.id) >= 0;
+    var del = state.confirmDel === e.id ? '<span class="row"><span class="small">Löschen?</span><button class="btn sm danger" data-act="arch-del-yes" data-id="' + esc(e.id) + '">Ja</button><button class="btn sm" data-act="arch-del-no">Nein</button></span>' : '<button class="btn sm" data-act="arch-del" data-id="' + esc(e.id) + '">Löschen</button>';
+    return '<div class="card stack"><div class="row">' + chip(TYP[e.typ] || e.typ) + (e.herkunft ? '<span class="small muted">' + esc(e.herkunft) + '</span>' : '') + '<span class="small muted" style="margin-left:auto">' + esc(e.datum || '') + '</span></div><p>' + esc(e.text) + '</p>' + (e.quelle || e.url ? '<p class="small">' + (e.url ? '<a href="' + esc(e.url) + '" target="_blank" rel="noopener">' + esc(e.quelle || e.url) + '</a>' : esc(e.quelle)) + '</p>' : '') + '<div class="row"><button class="btn sm' + (pinned ? ' primary' : '') + '" data-act="arch-pin" data-id="' + esc(e.id) + '">' + (pinned ? 'Rettungssatz' : 'Als Rettungssatz') + '</button><button class="btn sm" data-act="copy-text" data-text="' + esc(e.text) + '">Kopieren</button><span style="margin-left:auto">' + del + '</span></div></div>';
+  }).join('');
+  return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Dein Archiv</div><h1>Archiv</h1><p>Sätze, Fakten und Links aus der App sowie eigene Notizen, zur Vorbereitung und als Gedankenstütze, wenn im Gespräch der Kopf leer wird. Bleibt nur auf deinem Gerät und ist in der Sicherung enthalten.</p></div>' +
+    '<section class="bubble"><div class="who">Blackout? Drei Sätze, die immer gehen</div>' + rettung.map(function (s, i) { return '<p class="rett">' + (i + 1) + '. „' + esc(s) + '“</p>'; }).join('') + '<p class="small" style="opacity:.7;margin-top:10px">Markiere eigene Einträge als Rettungssatz, dann stehen sie hier.</p></section>' +
+    '<form class="panel form-grid" data-form="archiv"><label class="fld">Art<select name="typ" id="ar-typ"><option value="notiz">Notiz</option><option value="satz">Satz</option><option value="fakt">Fakt</option><option value="link">Link</option></select></label><label class="fld">Woher<input type="text" name="herkunft" id="ar-herkunft" placeholder="zum Beispiel: eigenes Gespräch, Artikel"></label><label class="fld wide">Text<textarea name="text" id="ar-text" required placeholder="Ein Satz, ein Fakt, ein Gedanke"></textarea></label><label class="fld">Link<input type="text" name="url" id="ar-url" placeholder="https://…"></label><label class="fld">Quelle<input type="text" name="quelle" id="ar-quelle" placeholder="Titel der Quelle"></label><div class="wide row"><button class="btn primary" type="submit">Speichern</button></div></form>' +
+    '<section class="stack"><div class="row"><h2>Einträge</h2><input type="text" id="arch-q" placeholder="Suchen" value="' + esc(state.archQ || '') + '" style="max-width:260px;margin-left:auto"></div>' + (items || '<div class="empty">Noch nichts gespeichert. Im Playbook unter „Antworten“ steht an jedem Satz „+ Archiv“.</div>') + '</section></div>';
+}
+function fallHub(res) {
+  var f = fallGet(), tab = state.fallTab || 'einstellung';
+  var tabs = [['einstellung', 'Deine innere Einstellung'], ['person', 'Die Einstellung der Person'], ['argumente', 'Die Argumente der Person'], ['antworten', 'Deine Antworten bislang'], ['empfehlungen', 'Empfehlungen'], ['archiv', 'Archiv']];
+  var nav = '<div class="knav">' + tabs.map(function (t, i) { return '<button type="button" class="' + (tab === t[0] ? 'cur' : '') + '" data-act="fall-tab" data-tab="' + t[0] + '"><span class="n">' + (i + 1) + '</span><span class="t">' + t[1] + '</span></button>'; }).join('') + '</div>';
+  var risks = (res.risiko || []).map(function (id) { var r = findIn(KOMPASS.risiko, id); return r ? '<div class="note bad"><strong>' + esc(r.text) + '</strong><p>' + esc(r.aktion) + '</p></div>' : ''; }).join('');
+  var skala = function (id) { var s = findIn(KOMPASS.skalen, id), v = res.skalen ? res.skalen[id] : null, b = s && kBand(s, v); return (v == null || !b) ? '' : '<div class="card scale"><div class="eyebrow">' + esc(s.name) + '</div><div class="scale-head"><strong>' + esc(b.name) + '</strong><span class="muted small">' + v + ' %</span></div><div class="bar-t"><i style="width:' + v + '%"></i></div><p class="small" style="margin-top:8px">' + esc(b.text) + '</p></div>'; };
+  var hinweiseAus = function (bereiche) { var out = []; KOMPASS.fragen.forEach(function (q) { if (bereiche.indexOf(q.bereich) < 0) return; var a = (res.answers || {})[q.id] || []; q.optionen.forEach(function (o) { if (a.indexOf(o.id) >= 0 && o.hinweis && out.indexOf(o.hinweis) < 0) out.push(o.hinweis); }); }); return out; };
+  var body = '';
+  if (tab === 'einstellung') {
+    var hw = hinweiseAus(['du-selbst', 'beziehung-zu-dir', 'gespraeche']);
+    body = '<p class="muted" style="max-width:62ch">Deine Haltung ist der Teil, den du steuern kannst. Hier steht, was deine Antworten über deine Lage sagen und worauf du achten solltest.</p><div class="grid">' + skala('belastung') + skala('kapital') + '</div>' + (hw.length ? '<section><h3>Aus deinen Antworten</h3><ul class="hints">' + hw.map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('') + '</ul></section>' : '') + (LEIT && LEIT.selbstschutz ? '<section><h3>Selbstschutz</h3><div class="grid">' + LEIT.selbstschutz.slice(0, 3).map(function (x) { return '<div class="card"><strong>' + esc(x.titel) + '</strong><p class="small muted">' + esc(x.text) + '</p></div>'; }).join('') + '</div><div class="row" style="margin-top:10px"><button class="link" data-go="leitplanken">Alle Leitplanken ›</button></div></section>' : '');
+  } else if (tab === 'person') {
+    var stufe = findIn(KOMPASS.stufen, res.stufe), bez = findIn(KOMPASS.beziehung, res.beziehung);
+    var allMax = Math.max.apply(null, KOMPASS.treiber.map(function (t) { return res.scores[t.id] || 0; }).concat([1]));
+    var profil = '<div class="card"><div class="eyebrow">Profil über alle Antriebe</div><div class="bars">' + KOMPASS.treiber.slice().sort(function (a, b) { return (res.scores[b.id] || 0) - (res.scores[a.id] || 0); }).map(function (t) { var v = res.scores[t.id] || 0; return '<div class="bar' + ((res.top || []).indexOf(t.id) >= 0 ? ' top' : '') + '"><span class="bar-l">' + esc(t.name) + '</span><span class="bar-t"><i style="width:' + Math.round(100 * v / allMax) + '%"></i></span><span class="bar-v">' + v + '</span></div>'; }).join('') + '</div></div>';
+    var treiber = (res.top || []).map(function (id) { var t = findIn(KOMPASS.treiber, id); if (!t) return ''; var sl = t.start ? lineById(t.start.linie) : null, ss = sl ? stationOf(sl, t.start.station) : null; return '<section class="panel stack"><div><div class="eyebrow">Antrieb</div><h2>' + esc(t.name) + '</h2><p class="muted"><em>Legitimes Bedürfnis dahinter: ' + esc(t.beduerfnis) + '</em></p></div><p>' + esc(t.beschreibung) + '</p><div class="station-detail"><div class="note good"><strong>Was hilft</strong>' + ul(t.zugang) + '</div><div class="note bad"><strong>Was schadet</strong>' + ul(t.vermeiden) + '</div></div><div class="row">' + (ss ? stationBtn(sl, ss, 'Einstiegsstation') : '') + technikChips(t.techniken) + '</div></section>'; }).join('');
+    body = '<div class="grid">' + (stufe ? '<div class="card"><div class="eyebrow">Einbindung</div><strong>' + esc(stufe.name) + '</strong><p class="small">' + esc(stufe.hinweis) + '</p></div>' : '') + (bez ? '<div class="card"><div class="eyebrow">Beziehung</div><strong>' + esc(bez.name) + '</strong><p class="small">' + esc(bez.hinweis) + '</p></div>' : '') + skala('offenheit') + skala('verschwoerung') + profil + '</div>' + treiber;
+  } else if (tab === 'argumente') {
+    if (!ARG) body = missing('Antworten');
+    else body = '<p class="muted" style="max-width:62ch">Welche Sätze sagt die Person tatsächlich? Markiere sie. Daraus entstehen deine Empfehlungen und die Liste, in der du deine bisherigen Antworten festhältst.</p>' + (ARG.kategorien || []).map(function (k) { var as = ARG.argumente.filter(function (a) { return a.kategorie === k.id; }); if (!as.length) return ''; return '<div class="group"><div class="group-title">' + esc(k.name) + '</div><div class="list">' + as.map(function (a) { return '<label class="opt"><input class="vh" type="checkbox" data-fall-arg="' + esc(a.id) + '" id="fa-' + esc(a.id) + '"' + (f.argumente.indexOf(a.id) >= 0 ? ' checked' : '') + '><i class="ck" aria-hidden="true"></i><span>„' + esc(a.titel) + '“</span></label>'; }).join('') + '</div></div>'; }).join('') + '<div class="row"><button class="link" data-go="antworten">Alle Argumente mit Playbook ansehen ›</button></div>';
+  } else if (tab === 'antworten') {
+    var sel = f.argumente.map(argById).filter(Boolean);
+    body = sel.length ? sel.map(function (a) {
+      var list = (f.antworten[a.id] || []).map(function (e) { var cls = e.lief === 'gut' ? 'good' : e.lief === 'schlecht' ? 'bad' : 'warn'; return '<div class="note ' + cls + '"><strong>' + esc(e.datum) + ' · lief ' + esc(e.lief) + '</strong><p>' + esc(e.text) + '</p></div>'; }).join('');
+      return '<section class="panel stack"><h3>„' + esc(a.titel) + '“</h3>' + (list || '<p class="muted small">Noch keine Antwort notiert.</p>') + '<form class="form-grid" data-form="fall-antwort" data-arg="' + esc(a.id) + '"><label class="fld wide">Was hast du bisher darauf geantwortet?<textarea name="text" id="fa-text-' + esc(a.id) + '" required></textarea></label><label class="fld">Wie lief es?<select name="lief" id="fa-lief-' + esc(a.id) + '"><option value="gut">Gut, die Person blieb im Gespräch</option><option value="ok">Unentschieden</option><option value="schlecht">Schlecht, es eskalierte oder endete</option></select></label><div class="row" style="align-self:end"><button class="btn sm primary" type="submit">Notieren</button></div></form></section>';
+    }).join('') : '<div class="empty">Markiere zuerst unter „Die Argumente der Person“, welche Sätze die Person sagt.</div>';
+  } else if (tab === 'empfehlungen') {
+    var sO = findIn(KOMPASS.skalen, 'offenheit'), bO = sO && kBand(sO, res.skalen && res.skalen.offenheit);
+    var sel2 = f.argumente.map(argById).filter(Boolean);
+    var schritte = kSchritte(res);
+    body = (bO ? '<div class="note"><strong>Tempo: ' + esc(bO.name) + '</strong><p>' + esc(bO.text) + '</p></div>' : '') +
+      (schritte.length ? '<section><h3>Deine ersten Schritte</h3><div class="steps">' + schritte.map(function (s) { return '<div role="button" tabindex="0" data-go="' + esc(s.go) + '"' + (s.linie ? ' data-linie="' + esc(s.linie) + '" data-station="' + esc(s.station) + '"' : '') + (s.technik ? ' data-technik="' + esc(s.technik) + '"' : '') + ' style="cursor:pointer"><strong>' + esc(s.t) + '</strong><p class="small muted" style="margin-top:4px">' + esc(s.x) + '</p></div>'; }).join('') + '</div></section>' : '') +
+      (sel2.length ? sel2.map(function (a) { return '<section class="panel stack"><div class="row"><span class="tag">' + esc(katName(a.kategorie)) + '</span></div><h2>Wenn die Person sagt: „' + esc(a.titel) + '“</h2>' + playbook(a, true) + '</section>'; }).join('') : '<div class="note warn"><strong>Noch keine Argumente markiert</strong><p>Unter „Die Argumente der Person“ markierst du, welche Sätze die Person sagt. Dann stehen hier für jeden Satz Ton, No-go-Wörter, wörtliche Antworten und Wenn-dann-Regeln.</p></div>') +
+      (res.hinweise && res.hinweise.length ? '<section><h3>Was deine Antworten noch zeigen</h3><ul class="hints">' + res.hinweise.map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('') + '</ul></section>' : '');
+  } else {
+    var ar = archGet();
+    body = '<div class="grid"><div class="card"><div class="eyebrow">Gespeichert</div><strong>' + ar.eintraege.length + ' Einträge</strong><p class="small muted">Sätze, Fakten, Links und Notizen</p></div><div class="card"><div class="eyebrow">Rettungssätze</div><strong>' + ar.pins.length + ' von 3</strong><p class="small muted">Für den Blackout im Gespräch</p></div></div><div class="row"><button class="btn primary" data-go="archiv">Zum Archiv</button></div>';
+  }
+  var duenn = (res.abdeckung || []).filter(function (x) { return x.von && x.n < x.von / 2; });
+  return '<div class="stack-lg">' +
+    '<div class="page-head"><div class="eyebrow">Mein Fall · Kompass vom ' + esc(res.datum) + ' · ' + res.beantwortet + ' von ' + KOMPASS.fragen.length + ' Fragen</div><h1>Mein Fall</h1><p>' + esc(KOMPASS.hinweis) + '</p>' + (duenn.length ? '<p class="small muted">Dünn beantwortet: ' + esc(duenn.map(function (x) { return x.name; }).join(', ')) + '. <button class="link" data-act="kompass-edit">Antworten ergänzen ›</button></p>' : '') + '</div>' +
+    risks + nav + body +
+    '<div class="row"><button class="btn" data-act="share-kompass">Fahrplan teilen</button><button class="btn" data-act="copy-kompass">Als Text kopieren</button><button class="btn" data-act="kompass-edit">Antworten ändern</button><button class="btn" data-act="kompass-reset">Neu beginnen</button></div></div>';
+}
+
+var VIEWS = { start: vStart, antworten: vAntworten, archiv: vArchiv, netz: vNetz, kompass: vKompass, trainer: vTrainer, kampagne: vKampagne, wissen: vWissen, leitplanken: vLeitplanken, tagebuch: vTagebuch };
 var AFTER = {
   netz: function () { var el = $('.stop.sel'); if (el && state.station) el.scrollIntoView({ block: 'start' }); },
   kompass: function () { updateProgress(); },
+  antworten: function () { bindSearch('arg-q', 'argQ'); if (state.arg && state.argScroll) { var h = $('.panel h2'); if (h) h.scrollIntoView({ block: 'start' }); state.argScroll = false; } },
+  archiv: function () { bindSearch('arch-q', 'archQ'); },
   kampagne: function () { if (state.phaseScroll) { var el = $('.stop.sel'); if (el) el.scrollIntoView({ block: 'start' }); state.phaseScroll = false; } },
   wissen: function () { if (state.technik) { var el = $('#t-' + state.technik); if (el) el.scrollIntoView({ block: 'start' }); state.technik = null; } },
   tagebuch: function () { var ls = $('#tb-linie'); if (ls) ls.addEventListener('change', function () { $('#tb-station').innerHTML = stationOptions(ls.value, ''); }); state.prefill = null; }
@@ -591,6 +716,7 @@ document.addEventListener('click', function (e) {
     var patch = {};
     if (d.linie != null) { patch.linie = d.linie || null; patch.station = d.station || null; }
     if (d.technik) patch.technik = d.technik;
+    if (d.arg) { patch.arg = d.arg; patch.argScroll = true; patch.antTab = 'argumente'; }
     if (d.prefill) { var p = d.prefill.split('|'); patch.prefill = { linie: p[0], station: p[1] }; }
     go(d.go, patch); return;
   }
@@ -608,6 +734,16 @@ document.addEventListener('click', function (e) {
   else if (a === 'trainer-exit') { state.trainer = null; render(); }
   else if (a === 'kamp-tab') { state.kampTab = d.tab; render(); }
   else if (a === 'phase') { state.phase = d.id; state.phaseScroll = !!d.id; render(); }
+  else if (a === 'ant-tab') { state.antTab = d.tab; render(); }
+  else if (a === 'arg-open') { state.arg = d.id || null; render(); if (d.id) { var ao = $('.panel h2'); if (ao) ao.scrollIntoView({ block: 'start' }); } }
+  else if (a === 'fall-arg') { var ff = fallGet(), ix = ff.argumente.indexOf(d.id); if (ix >= 0) ff.argumente.splice(ix, 1); else ff.argumente.push(d.id); fallSet(ff); render(); toast(ix >= 0 ? 'Aus deinem Fall entfernt' : 'Zu deinem Fall hinzugefügt'); }
+  else if (a === 'fall-tab') { state.fallTab = d.tab; render(); window.scrollTo(0, 0); }
+  else if (a === 'arch-add') { archAdd({ typ: d.typ || 'satz', text: d.text, herkunft: d.herkunft || '', url: d.url || '', quelle: d.quelle || '' }); }
+  else if (a === 'arch-pin') { var ap = archGet(), pi = ap.pins.indexOf(d.id); if (pi >= 0) ap.pins.splice(pi, 1); else { if (ap.pins.length >= 3) { toast('Höchstens drei Rettungssätze. Entferne erst einen.'); return; } ap.pins.push(d.id); } archSet(ap); render(); }
+  else if (a === 'arch-del') { state.confirmDel = d.id; render(); }
+  else if (a === 'arch-del-no') { state.confirmDel = null; render(); }
+  else if (a === 'arch-del-yes') { var ad = archGet(); ad.eintraege = ad.eintraege.filter(function (x) { return x.id !== d.id; }); ad.pins = ad.pins.filter(function (x) { return x !== d.id; }); archSet(ad); state.confirmDel = null; render(); toast('Eintrag gelöscht'); }
+  else if (a === 'copy-text') { copyText(d.text || ''); }
   else if (a === 'kamp-edit') { state.kampEdit = true; render(); }
   else if (a === 'kamp-cancel') { state.kampEdit = false; render(); }
   else if (a === 'kamp-reset') { store.del('kampagne'); state.kampEdit = false; render(); }
@@ -628,6 +764,11 @@ document.addEventListener('click', function (e) {
 document.addEventListener('keydown', function (e) {
   if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-go], [role="button"][data-act]')) { e.preventDefault(); e.target.dispatchEvent(new MouseEvent('click', { bubbles: true })); }
 });
+function bindSearch(id, key) {
+  var el = $('#' + id); if (!el) return;
+  if (state.focusId === id) { el.focus(); try { el.setSelectionRange(el.value.length, el.value.length); } catch (e) {} state.focusId = null; }
+  el.addEventListener('input', function () { state[key] = el.value; state.focusId = id; clearTimeout(bindSearch.t); bindSearch.t = setTimeout(render, 180); });
+}
 function updateProgress() {
   var f = $('form[data-form="kompass"]'); if (!f || !KOMPASS) return;
   var answers = kDraft().answers, N = KOMPASS.fragen.length, done = kAnswered(answers, KOMPASS.fragen);
@@ -637,6 +778,7 @@ function updateProgress() {
 }
 document.addEventListener('change', function (e) {
   var f = e.target.closest && e.target.closest('form[data-form="kompass"]'); if (f) { kCollect(f); updateProgress(); }
+  if (e.target.hasAttribute && e.target.hasAttribute('data-fall-arg')) { var ff = fallGet(), id = e.target.getAttribute('data-fall-arg'), ix = ff.argumente.indexOf(id); if (e.target.checked && ix < 0) ff.argumente.push(id); if (!e.target.checked && ix >= 0) ff.argumente.splice(ix, 1); fallSet(ff); }
   if (e.target.id === 'bk-file' && e.target.files && e.target.files[0]) {
     var rd = new FileReader();
     rd.onload = function () { try { restoreAll(String(rd.result)); render(); toast('Sicherung eingespielt'); } catch (err) { toast('Das ist keine gültige Sicherung.'); } };
@@ -648,6 +790,8 @@ document.addEventListener('submit', function (e) {
   e.preventDefault();
   if (f.dataset.form === 'kompass') { evalKompass(f); render(); window.scrollTo(0, 0); }
   else if (f.dataset.form === 'kampagne') { evalKampagne(f); render(); }
+  else if (f.dataset.form === 'archiv') { var fa = new FormData(f); var tx = String(fa.get('text') || '').trim(); if (!tx) return; archAdd({ typ: fa.get('typ') || 'notiz', text: tx, herkunft: String(fa.get('herkunft') || '').trim(), url: String(fa.get('url') || '').trim(), quelle: String(fa.get('quelle') || '').trim() }); render(); }
+  else if (f.dataset.form === 'fall-antwort') { var fb = new FormData(f), ff2 = fallGet(), aid = f.dataset.arg; var t2 = String(fb.get('text') || '').trim(); if (!t2) return; (ff2.antworten[aid] = ff2.antworten[aid] || []).unshift({ id: uid(), datum: today(), text: t2, lief: fb.get('lief') || 'ok' }); fallSet(ff2); render(); toast('Notiert'); }
   else if (f.dataset.form === 'tagebuch') {
     var fd = new FormData(f);
     var entries = store.get('tagebuch', []);

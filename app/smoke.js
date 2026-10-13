@@ -7,14 +7,14 @@ const window = { APP_DATA: {}, addEventListener: (t, fn) => { handlers['win:' + 
 const localStorage = { getItem() { return null; }, setItem() {}, removeItem() {} };
 const ctx = { window, document, localStorage, location: { hash: '' }, navigator: {}, history: {}, console, setTimeout, MouseEvent: function () {}, FormData: function () { return { get: () => '' }; } };
 vm.createContext(ctx);
-for (const f of ['linien', 'techniken', 'kompass', 'szenarien', 'kampagne', 'leitplanken', 'hilfe', 'messung']) vm.runInContext(fs.readFileSync(path.join(__dirname, 'data', f + '.js'), 'utf8'), ctx, { filename: f + '.js' });
+for (const f of ['linien', 'techniken', 'kompass', 'szenarien', 'kampagne', 'leitplanken', 'hilfe', 'messung', 'argumente']) vm.runInContext(fs.readFileSync(path.join(__dirname, 'data', f + '.js'), 'utf8'), ctx, { filename: f + '.js' });
 vm.runInContext(fs.readFileSync(path.join(__dirname, 'app.js'), 'utf8'), ctx, { filename: 'app.js' });
 const main = els['#main'];
 const fails = [];
 function click(d) { try { handlers['doc:click']({ target: { closest: () => ({ dataset: d }) }, preventDefault() {} }); } catch (e) { fails.push(JSON.stringify(d) + ': ' + e.stack.split('\n').slice(0, 2).join(' ')); } }
 function route(r) { ctx.location.hash = '#' + r; try { handlers['win:hashchange'](); } catch (e) { fails.push(r + ': ' + e.stack.split('\n').slice(0, 2).join(' ')); } return main.innerHTML.length; }
 const sizes = {};
-for (const r of ['start', 'netz', 'kompass', 'trainer', 'kampagne', 'wissen', 'leitplanken', 'tagebuch']) sizes[r] = route(r);
+for (const r of ['start', 'netz', 'kompass', 'trainer', 'antworten', 'archiv', 'kampagne', 'wissen', 'leitplanken', 'tagebuch']) sizes[r] = route(r);
 const D = window.APP_DATA;
 // jede Station einmal anzeigen
 D.linien.forEach(l => { click({ go: 'netz', linie: l.id, station: '' }); l.stationen.forEach(s => click({ go: 'netz', linie: l.id, station: s.id })); });
@@ -27,6 +27,9 @@ route('trainer'); D.szenarien.forEach(s => { click({ act: 'trainer-start', id: s
 // Kampagne: alle Tabs, Planer auswerten
 route('kampagne'); ['segmente', 'bausteine', 'phasen', 'kennzahlen', 'planer'].forEach(t => { click({ act: 'kamp-tab', tab: t }); sizes['kampagne:' + t] = main.innerHTML.length; });
 try { handlers['doc:submit']({ target: { dataset: { form: "kampagne" }, querySelector: () => null, querySelectorAll: () => [] }, preventDefault() {} }); } catch (e) { fails.push('kampagne-submit: ' + e.message); }
+// Antworten: jedes Argument öffnen, Tabs, Fall-Hub
+route('antworten'); (D.argumente ? D.argumente.argumente : []).forEach(a => { click({ act: 'arg-open', id: a.id }); }); click({ act: 'fall-arg', id: (D.argumente && D.argumente.argumente[0] || {}).id }); click({ act: 'ant-tab', tab: 'verhalten' }); click({ act: 'ant-tab', tab: 'studien' }); sizes['antworten:studien'] = main.innerHTML.length;
+route('archiv'); click({ act: 'arch-add', typ: 'satz', text: 'Testsatz', herkunft: 'Test' });
 // Wissen mit Technik
 click({ go: 'wissen', technik: D.techniken[0].id });
 // Tagebuch mit Vorbelegung
