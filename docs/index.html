@@ -340,7 +340,7 @@ details.acc .body { padding: 0 4px 20px; }
   </div>
 </header>
 <main class="main" id="main"></main>
-<footer class="foot">Alle Daten bleiben in deinem Browser. Keine Konten, keine Server. Jede Empfehlung nennt Evidenzstufe und Quellen. Die Inhalte ersetzen keine professionelle Beratung. Bei Gefahr für Leib und Leben wähle die 110.</footer>
+<footer class="foot">Alle Daten bleiben in deinem Browser. Keine Konten, keine Server. Jede Empfehlung nennt Evidenzstufe und Quellen. Die Inhalte ersetzen keine professionelle Beratung. Bei Gefahr für Leib und Leben wähle die 110.<span id="ver"></span></footer>
 
 <script src="data/linien.js"></script>
 <script src="data/techniken.js"></script>
@@ -351,12 +351,12 @@ details.acc .body { padding: 0 4px 20px; }
 <script src="data/hilfe.js"></script>
 <script src="data/messung.js"></script>
 <script src="data/argumente.js"></script>
-<script>window.UMSTEIGEN_HOSTED = true; window.UMSTEIGEN_VERSION = '20261013-184723';</script>
+<script>window.UMSTEIGEN_HOSTED = true; window.UMSTEIGEN_VERSION = '20261013-184818';</script>
 <script src="app.js"></script>
 <script>
 if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
   (function () {
-    var VERSION = '20261013-184723', hadController = !!navigator.serviceWorker.controller, pending = false, regRef = null;
+    var VERSION = '20261013-184818', hadController = !!navigator.serviceWorker.controller, pending = false, regRef = null;
     function note(text, ms) { var t = document.createElement('div'); t.className = 'toast'; t.textContent = text; document.body.appendChild(t); if (ms) setTimeout(function () { t.remove(); }, ms); return t; }
     function idle() { var a = document.activeElement; return !(a && (a.tagName === 'TEXTAREA' || (a.tagName === 'INPUT' && a.type === 'text'))); }
     function applyUpdate() { if (pending && idle()) { pending = false; try { sessionStorage.setItem('umsteigen:updated', '1'); } catch (e) {} location.reload(); } }
