@@ -26,12 +26,12 @@ const precache = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'i
 const sw = `// Umsteigen Service Worker, Version ${version}
 const VERSION = 'umsteigen-${version}';
 const FILES = ${JSON.stringify(precache)};
-self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => c.addAll(FILES)).then(() => self.skipWaiting())); });
+self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => Promise.all(FILES.map(f => fetch(f, { cache: 'reload' }).then(r => { if (!r.ok) throw new Error(f); return c.put(f, r); })))).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET' || new URL(e.request.url).origin !== location.origin) return;
   e.respondWith(caches.match(e.request, { ignoreSearch: true }).then(cached => {
-    const fresh = fetch(e.request).then(res => { if (res && res.ok) caches.open(VERSION).then(c => c.put(e.request, res.clone())); return res; }).catch(() => cached);
+    const fresh = fetch(e.request, { cache: 'no-cache' }).then(res => { if (res && res.ok) caches.open(VERSION).then(c => c.put(e.request, res.clone())); return res; }).catch(() => cached);
     return cached || fresh;
   }));
 });
@@ -69,6 +69,6 @@ if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
   })();
 }
 </script>`;
-const pwa = page.replace('<script src="app.js"></script>', hosted + '\n<script src="app.js"></script>\n' + swScript);
+const pwa = page.replace('<script src="app.js"></script>', hosted + '\n<script src="app.js"></script>\n' + swScript).replace(/<script src="(data\/[^"?]+\.js|app\.js)"><\/script>/g, (m, src) => '<script src="' + src + '?v=' + version + '"></script>');
 fs.writeFileSync(path.join(site, 'index.html'), doc(pwa, extraHead), 'utf8');
 console.log('geschrieben: dist/umsteigen.html (' + Math.round(doc(single).length / 1024) + ' KB), docs/ (Version ' + version + ', ' + (files.length + 6) + ' Dateien)');
