@@ -82,6 +82,7 @@ var ICONS = {
   leitplanken: '<path d="M12 3 20 6v6c0 4.8-3.4 8.3-8 9-4.6-.7-8-4.2-8-9V6z"/><path d="m9 12 2 2 4-4"/>',
   antworten: '<path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
   archiv: '<path d="M3 5h18v4H3z"/><path d="M5 9v10h14V9"/><path d="M10 13h4"/>',
+  mehr: '<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
   tagebuch: '<rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 8h6M9 12h6M9 16h3"/>'
 };
 function icon(k) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONS[k] || '') + '</svg>'; }
@@ -126,7 +127,7 @@ var lastRoute = null;
 
 function go(route, patch) {
   if (patch) Object.keys(patch).forEach(function (k) { state[k] = patch[k]; });
-  state.route = route;
+  state.route = route; state.sheet = false;
   var h = '#' + route;
   if (location.hash !== h) location.hash = h; else render();
 }
@@ -141,6 +142,10 @@ function render() {
   nav.innerHTML = ROUTES.map(function (r, i) {
     return '<button data-go="' + r[0] + '"' + (state.route === r[0] ? ' aria-current="page"' : '') + '>' + esc(r[1]) + '</button>';
   }).join('');
+  var tb = $('#tabbar'), MAIN = ['start', 'kompass', 'antworten', 'archiv'];
+  if (tb) tb.innerHTML = MAIN.map(function (r) { var R = ROUTES.filter(function (x) { return x[0] === r; })[0]; return '<button data-go="' + r + '"' + (state.route === r ? ' aria-current="page"' : '') + '>' + icon(r) + '<span>' + esc(R ? R[1] : r) + '</span></button>'; }).join('') + '<button data-act="sheet"' + (MAIN.indexOf(state.route) < 0 ? ' aria-current="page"' : '') + '>' + icon('mehr') + '<span>Mehr</span></button>';
+  var sh = $('#sheet');
+  if (sh) { sh.hidden = !state.sheet; sh.innerHTML = state.sheet ? '<div class="sheet-in">' + ROUTES.filter(function (r) { return MAIN.indexOf(r[0]) < 0; }).map(function (r) { return '<button data-go="' + r[0] + '">' + icon(r[0]) + esc(r[1]) + '</button>'; }).join('') + '</div>' : ''; }
   var view = VIEWS[state.route] || VIEWS.start;
   $('#main').innerHTML = '<div class="wrap">' + view() + '</div>';
   if (lastRoute !== state.route) { window.scrollTo(0, 0); lastRoute = state.route; }
@@ -261,7 +266,8 @@ function vKompass() {
   var step = Math.min(Math.max(state.kStep != null ? state.kStep : (draft.step || 0), 0), secs.length - 1);
   var b = secs[step], fr = kQuestions(b);
   var total = kAnswered(answers, KOMPASS.fragen);
-  var nav = '<div class="knav" aria-label="Richtungen">' + secs.map(function (s, i) {
+  var ksel = '<select class="only-mobile ksel" id="ksel" data-act="k-select" aria-label="Richtung wählen">' + secs.map(function (s, i) { var q = kQuestions(s), a = kAnswered(answers, q); return '<option value="' + i + '"' + (i === step ? ' selected' : '') + '>' + (i + 1) + ' · ' + esc(s.name) + ' (' + a + '/' + q.length + ')</option>'; }).join('') + '</select>';
+  var nav = ksel + '<div class="knav only-desktop" aria-label="Richtungen">' + secs.map(function (s, i) {
     var q = kQuestions(s), a = kAnswered(answers, q);
     return '<button type="button" class="' + (i === step ? 'cur' : '') + (q.length && a === q.length ? ' done' : '') + '" data-act="k-step" data-step="' + i + '" aria-current="' + (i === step ? 'step' : 'false') + '"><span class="n">' + (i + 1) + '</span><span class="t">' + esc(s.name) + '</span><span class="c">' + a + '/' + q.length + '</span></button>';
   }).join('') + '</div>';
@@ -491,9 +497,9 @@ function kampPhasen() {
   return '<div class="stack"><p class="muted small">Eine Kampagne ist eine Strecke, und jede Phase baut auf der vorigen auf. Tippe auf eine Phase, um Ziele, Bausteine und Kennzahlen zu sehen.</p>' + phaseRoute(KAMPAGNE.phasen, null) + '</div>';
 }
 function kampKennzahlen() {
-  var rows = KAMPAGNE.kennzahlen.map(function (k) { return '<tr><td><strong>' + esc(k.name) + '</strong></td><td>' + esc(k.wie) + '</td><td>' + esc(k.warum) + '</td><td>' + esc(k.fallstrick) + '</td></tr>'; }).join('');
+  var rows = KAMPAGNE.kennzahlen.map(function (k) { return '<tr><td data-label="Kennzahl"><strong>' + esc(k.name) + '</strong></td><td data-label="Wie messen">' + esc(k.wie) + '</td><td data-label="Warum">' + esc(k.warum) + '</td><td data-label="Fallstrick">' + esc(k.fallstrick) + '</td></tr>'; }).join('');
   var zh = MESSUNG && MESSUNG.zeithorizont ? '<div class="note">' + paras(MESSUNG.zeithorizont) + '</div>' : '';
-  return '<div class="stack">' + zh + '<div class="tbl-wrap"><table><thead><tr><th>Kennzahl</th><th>So messt ihr</th><th>Warum</th><th>Fallstrick</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
+  return '<div class="stack">' + zh + '<div class="tbl-wrap"><table class="stack-m"><thead><tr><th>Kennzahl</th><th>So messt ihr</th><th>Warum</th><th>Fallstrick</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
 }
 
 /* ---------- Wissen ---------- */
@@ -515,7 +521,7 @@ function vWissen() {
 function vLeitplanken() {
   if (!LEIT) return missing('Leitplanken');
   var g = (LEIT.grundsaetze || []).map(function (x) { return '<details class="acc"><summary>' + esc(x.titel) + '</summary><div class="body stack"><p>' + esc(x.text) + '</p><p class="muted small"><strong>Warum:</strong> ' + esc(x.warum) + '</p>' + quellen(x.quelle ? [x.quelle] : []) + '</div></details>'; }).join('');
-  var r = (LEIT.rote_linien || []).map(function (x) { return '<tr><td>' + esc(x.text) + '</td><td>' + esc(x.stattdessen) + '</td></tr>'; }).join('');
+  var r = (LEIT.rote_linien || []).map(function (x) { return '<tr><td data-label="Das nicht">' + esc(x.text) + '</td><td data-label="Stattdessen">' + esc(x.stattdessen) + '</td></tr>'; }).join('');
   var gef = (LEIT.gefahr || []).map(function (x) { return '<div class="note bad stack"><strong>' + esc(x.signal) + '</strong><p>' + esc(x.aktion) + '</p><p class="small"><strong>Anlaufstelle:</strong> ' + esc(x.anlaufstelle) + '</p></div>'; }).join('');
   var s = (LEIT.selbstschutz || []).map(function (x) { return '<div class="card"><strong>' + esc(x.titel) + '</strong><p class="small">' + esc(x.text) + '</p></div>'; }).join('');
   var ds = LEIT.datenschutz ? '<div class="note stack"><strong>' + esc(LEIT.datenschutz.kurz) + '</strong>' + ul(LEIT.datenschutz.regeln) + '</div>' : '';
@@ -526,7 +532,7 @@ function vLeitplanken() {
   }).join('');
   return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Ethik, Recht, Sicherheit</div><h1>Leitplanken</h1><p>Diese Regeln gelten auf allen Linien. Sie schützen die Person, dich und eure Beziehung – und sie bewahren dich davor, Menschen zu überwältigen, statt sie zu überzeugen.</p></div>' +
     '<section class="stack"><h2>Grundsätze</h2><div class="faq">' + g + '</div></section>' +
-    (r ? '<section class="stack"><h2>Rote Linien</h2><div class="tbl-wrap"><table><thead><tr><th>Nicht so</th><th>Stattdessen</th></tr></thead><tbody>' + r + '</tbody></table></div></section>' : '') +
+    (r ? '<section class="stack"><h2>Rote Linien</h2><div class="tbl-wrap"><table class="stack-m"><thead><tr><th>Nicht so</th><th>Stattdessen</th></tr></thead><tbody>' + r + '</tbody></table></div></section>' : '') +
     (gef ? '<section class="stack"><h2>Wenn es gefährlich wird</h2>' + gef + '</section>' : '') +
     (s ? '<section class="stack"><h2>Selbstschutz</h2><div class="grid">' + s + '</div></section>' : '') +
     (ds ? '<section class="stack"><h2>Datenschutz</h2>' + ds + '</section>' : '') +
@@ -654,7 +660,7 @@ function vArchiv() {
 function fallHub(res) {
   var f = fallGet(), tab = state.fallTab || 'einstellung';
   var tabs = [['einstellung', 'Deine innere Einstellung'], ['person', 'Die Einstellung der Person'], ['argumente', 'Die Argumente der Person'], ['antworten', 'Deine Antworten bislang'], ['empfehlungen', 'Empfehlungen'], ['archiv', 'Archiv']];
-  var nav = '<div class="knav">' + tabs.map(function (t, i) { return '<button type="button" class="' + (tab === t[0] ? 'cur' : '') + '" data-act="fall-tab" data-tab="' + t[0] + '"><span class="n">' + (i + 1) + '</span><span class="t">' + t[1] + '</span></button>'; }).join('') + '</div>';
+  var nav = '<select class="only-mobile ksel" data-act="fall-select" aria-label="Abschnitt wählen">' + tabs.map(function (t, i) { return '<option value="' + t[0] + '"' + (tab === t[0] ? ' selected' : '') + '>' + (i + 1) + ' · ' + t[1] + '</option>'; }).join('') + '</select><div class="knav only-desktop">' + tabs.map(function (t, i) { return '<button type="button" class="' + (tab === t[0] ? 'cur' : '') + '" data-act="fall-tab" data-tab="' + t[0] + '"><span class="n">' + (i + 1) + '</span><span class="t">' + t[1] + '</span></button>'; }).join('') + '</div>';
   var risks = (res.risiko || []).map(function (id) { var r = findIn(KOMPASS.risiko, id); return r ? '<div class="note bad"><strong>' + esc(r.text) + '</strong><p>' + esc(r.aktion) + '</p></div>' : ''; }).join('');
   var skala = function (id) { var s = findIn(KOMPASS.skalen, id), v = res.skalen ? res.skalen[id] : null, b = s && kBand(s, v); return (v == null || !b) ? '' : '<div class="card scale"><div class="eyebrow">' + esc(s.name) + '</div><div class="scale-head"><strong>' + esc(b.name) + '</strong><span class="muted small">' + v + ' %</span></div><div class="bar-t"><i style="width:' + v + '%"></i></div><p class="small" style="margin-top:8px">' + esc(b.text) + '</p></div>'; };
   var hinweiseAus = function (bereiche) { var out = []; KOMPASS.fragen.forEach(function (q) { if (bereiche.indexOf(q.bereich) < 0) return; var a = (res.answers || {})[q.id] || []; q.optionen.forEach(function (o) { if (a.indexOf(o.id) >= 0 && o.hinweis && out.indexOf(o.hinweis) < 0) out.push(o.hinweis); }); }); return out; };
@@ -745,6 +751,7 @@ document.addEventListener('click', function (e) {
   else if (a === 'arch-del-no') { state.confirmDel = null; render(); }
   else if (a === 'arch-del-yes') { var ad = archGet(); ad.eintraege = ad.eintraege.filter(function (x) { return x.id !== d.id; }); ad.pins = ad.pins.filter(function (x) { return x !== d.id; }); archSet(ad); state.confirmDel = null; render(); toast('Eintrag gelöscht'); }
   else if (a === 'copy-text') { copyText(d.text || ''); }
+  else if (a === 'sheet') { state.sheet = !state.sheet; render(); }
   else if (a === 'check-update') { if (window.umsteigenUpdate) window.umsteigenUpdate(); else toast('Diese Version prüft nicht automatisch. Seite neu laden.'); }
   else if (a === 'kamp-edit') { state.kampEdit = true; render(); }
   else if (a === 'kamp-cancel') { state.kampEdit = false; render(); }
@@ -780,6 +787,8 @@ function updateProgress() {
 }
 document.addEventListener('change', function (e) {
   var f = e.target.closest && e.target.closest('form[data-form="kompass"]'); if (f) { kCollect(f); updateProgress(); }
+  if (e.target.dataset && e.target.dataset.act === 'k-select') { var kfs = $('form[data-form="kompass"]'); if (kfs) kCollect(kfs); kGoStep(+e.target.value); return; }
+  if (e.target.dataset && e.target.dataset.act === 'fall-select') { state.fallTab = e.target.value; render(); window.scrollTo(0, 0); return; }
   if (e.target.hasAttribute && e.target.hasAttribute('data-fall-arg')) { var ff = fallGet(), id = e.target.getAttribute('data-fall-arg'), ix = ff.argumente.indexOf(id); if (e.target.checked && ix < 0) ff.argumente.push(id); if (!e.target.checked && ix >= 0) ff.argumente.splice(ix, 1); fallSet(ff); }
   if (e.target.id === 'bk-file' && e.target.files && e.target.files[0]) {
     var rd = new FileReader();
