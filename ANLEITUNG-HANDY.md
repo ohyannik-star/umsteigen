@@ -54,6 +54,10 @@ Neue Inhalte oder Funktionen kommen so zu deiner Freundin:
 - **Fahrplan teilen** und **Plan teilen** senden das jeweilige Ergebnis als lesbaren Text, zum Beispiel an eine Mitstreiterin.
 - Wichtig: In den iPhone-Einstellungen unter Safari nicht „Verlauf und Websitedaten löschen" ausführen, solange die Daten nicht gesichert sind. Das löscht auch die App-Daten. Die vom Home-Bildschirm gestartete App ist von der automatischen Löschung selten genutzter Website-Daten ausgenommen, solange sie installiert bleibt.
 
-## 5. Datenschutz in einem Satz
+## 5. Datenschutz in zwei Sätzen
 
-Die App sendet nichts an einen Server; der Hosting-Dienst liefert nur die Dateien aus und protokolliert dabei wie jede Website technische Zugriffsdaten wie die IP-Adresse.
+Die App sendet nichts an einen Server; der Hosting-Dienst liefert nur die Dateien aus und protokolliert dabei wie jede Website technische Zugriffsdaten wie die IP-Adresse. Einzige Ausnahme ist „Argument fehlt?“ unter Antworten: Wer dort eine Anfrage sendet, schickt den Satz und den freiwilligen Kontext an den Umsteigen-Server und zur Beantwortung an Anthropic (Claude), ohne Namen, IP-Speicherung oder Konto (Einzelheiten in `server/README.md`).
+
+## 6. „Argument fehlt?“ einschalten
+
+Der Kasten erscheint erst, wenn in `app/config.json` eine Server-Adresse steht. Einrichtung des Servers, HTTPS und Bearbeitung der Anfragen: `server/README.md`.

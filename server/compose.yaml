@@ -1,0 +1,42 @@
+# Start: im Ordner server/ erst .env aus .env.example anlegen, dann: docker compose up -d --build
+# Der Dienst ist nur auf dem Server selbst erreichbar (127.0.0.1). Nach außen geht es über den Tunnel (Profil "tunnel") oder einen eigenen Reverse-Proxy.
+name: umsteigen
+services:
+  umsteigen:
+    build:
+      context: ..
+      dockerfile: server/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "127.0.0.1:8787:8787"
+    volumes:
+      - umsteigen-daten:/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 256m
+    pids_limit: 100
+
+  # Optional: Cloudflare Tunnel liefert HTTPS ohne offene Ports. Start mit: docker compose --profile tunnel up -d
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    profiles: ["tunnel"]
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN:-}
+    depends_on:
+      - umsteigen
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  umsteigen-daten:

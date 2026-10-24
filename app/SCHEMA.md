@@ -213,6 +213,7 @@ Segmente: 5–7. Bausteine: 12–18. Phasen: 4–5. Kennzahlen: 6–8. Planer-Fr
       titel: "Die Medien lügen doch alle.",              // so, wie die Person es sagt
       varianten: ["Lügenpresse", "Alles gesteuert"],   // 2–4 weitere Formulierungen
       stichworte: ["Medien", "Presse"],                // optional: Suchwörter, die weder im Titel noch in den Varianten stehen
+      anfragen: ["3f2b…-…"],                           // optional: Nummern der „Argument fehlt“-Anfragen, die dieser Eintrag beantwortet
       dahinter: "1–2 Sätze: Bedürfnis oder Gefühl hinter dem Satz.",
       tonalitaet: "1–2 Sätze: Haltung und Ton, der hier trägt.",
       nogo: ["Wort oder Satz, der alles kaputt macht"],   // 3–6
@@ -237,5 +238,7 @@ Segmente: 5–7. Bausteine: 12–18. Phasen: 4–5. Kennzahlen: 6–8. Planer-Fr
 Die Suche durchsucht Titel, Varianten, Stichworte und den Kategorienamen.
 
 Neue Argumente kommen als Teildatei `app/data/argumente-<thema>.json` mit derselben Struktur (nur die neuen Kategorien und Einträge). Prüfen mit `node app/validate-argumente.js app/data/argumente-<thema>.json`, einfügen mit `node app/merge-argumente.js app/data/argumente-<thema>.json`: Einträge mit gleicher `id` werden ersetzt, neue angehängt. Danach die Teildatei löschen, `argumente.js` bleibt die einzige Quelle. Das ganze Playbook prüft `node app/validate-argumente.js app/data/argumente.js`.
+
+Anfragen aus „Argument fehlt?“: Der Server liefert mit `docker compose exec umsteigen node server/src/admin.js export` die offenen Anfragen samt KI-Entwurf (Ablauf in `server/README.md`). Der geprüfte Eintrag übernimmt, was am Entwurf trägt, ergänzt verifizierte Fakten und trägt die Nummern unter `anfragen` ein. Sobald das Update live ist, meldet die App der fragenden Person beim nächsten Öffnen, dass ihre Anfrage beantwortet ist. Danach auf dem Server `admin.js beantwortet <id> <argument-id>` ausführen.
 
 Haltung: Legitime Meinungen, etwa gegen Waffenlieferungen oder für geringere Sozialleistungen, werden nicht als extrem behandelt; dort hilft das Playbook beim Gespräch, nicht beim Umstimmen. Eine klare Grenze gibt es nur bei geleugneten belegten Fakten, bei Abwertung von Menschen und bei Gewalt. Fakten, die sich schnell ändern, tragen ihren Stand in der Aussage oder im Quellentitel.

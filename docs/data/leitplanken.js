@@ -282,6 +282,7 @@ window.APP_DATA.leitplanken = {
       "Löschfrist: 90 Tage nach dem letzten Kontakt, spätestens nach 12 Monaten. Die App erinnert dich daran.",
       "Keine Listen über Dritte, keine Profile Minderjähriger, keine Weitergabe ohne ausdrücklichen Auftrag der Person.",
       "Export und Teilen nur mit Warnhinweis; keine Nutzungsanalyse, kein Tracking.",
+      "Einzige Ausnahme vom Nur-lokal-Prinzip ist „Argument fehlt?“ unter Antworten: Wenn du dort eine Anfrage sendest, gehen der Satz und dein freiwilliger Kontext an den Umsteigen-Server und zur Beantwortung an Anthropic (Claude, USA). Gespeichert werden Satz, Kontext, KI-Entwurf und Datum, ohne IP-Adresse, ohne Namen und ohne Konto; erledigte Anfragen werden nach 90 Tagen gelöscht. Trage deshalb nie Namen oder Angaben ein, an denen man jemanden erkennt.",
       "Wenn du im Auftrag eines Vereins arbeitest, ist der Verein verantwortlich. Er braucht eine Einwilligung nach Art. 9 Abs. 2 lit. a DSGVO, ein Verarbeitungsverzeichnis und bei größerem Umfang eine Datenschutz-Folgenabschätzung.",
       "Supervision und Fallberatung nur anonymisiert."
     ],

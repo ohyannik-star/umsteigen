@@ -3,14 +3,27 @@ const fs = require('fs'), path = require('path'), vm = require('vm');
 const handlers = {}, els = {};
 function el() { return { innerHTML: '', dataset: {}, style: {}, value: '', textContent: '', clientWidth: 900, scrollLeft: 0, addEventListener(t, fn) { (this.on = this.on || {})[t] = fn; }, querySelector() { return null; }, querySelectorAll() { return []; }, scrollIntoView() {}, getAttribute() { return '0'; }, setAttribute() {}, remove() {}, appendChild() {}, focus() {}, select() {}, matches() { return false; } }; }
 const document = { querySelector: s => els[s] || (els[s] = el()), querySelectorAll: () => [], addEventListener: (t, fn) => { handlers['doc:' + t] = fn; }, createElement: () => el(), body: el() };
-const window = { APP_DATA: {}, addEventListener: (t, fn) => { handlers['win:' + t] = fn; }, scrollTo() {} };
-const localStorage = { getItem() { return null; }, setItem() {}, removeItem() {} };
-const ctx = { window, document, localStorage, location: { hash: '' }, navigator: {}, history: {}, console, setTimeout, clearTimeout,MouseEvent: function () {}, FormData: function () { return { get: () => '' }; } };
+const window = { APP_DATA: {}, UMSTEIGEN_HOSTED: true, UMSTEIGEN_API: 'https://api.test', addEventListener: (t, fn) => { handlers['win:' + t] = fn; }, scrollTo() {} };
+// Speicher im Arbeitsspeicher, vorbelegt mit einer Anfrage, die der geprüfte Eintrag unten beantwortet
+const mem = { 'umsteigen:anfragen': JSON.stringify([{ id: 'beantwortet-1', argument: 'Testanfrage', datum: '2026-10-01', status: 'entwurf' }]) };
+const localStorage = { getItem: k => (k in mem ? mem[k] : null), setItem: (k, v) => { mem[k] = String(v); }, removeItem: k => { delete mem[k]; }, key: i => Object.keys(mem)[i], get length() { return Object.keys(mem).length; } };
+// Server-Attrappe für „Argument fehlt“
+const api = { posts: [] };
+function fetchAttrappe(url, opt = {}) {
+  const antwort = (ok, d) => Promise.resolve({ ok, json: () => Promise.resolve(d) });
+  if (opt.method === 'POST' && url === 'https://api.test/api/anfragen') { api.posts.push(JSON.parse(opt.body)); return antwort(true, { id: 'neu-1', status: 'in-arbeit' }); }
+  if (url === 'https://api.test/api/anfragen/neu-1') { const { id, fakten, ...rest } = window.APP_DATA.argumente.argumente[1]; return antwort(true, { id: 'neu-1', status: 'entwurf', hinweis: '', entwurf: { ...rest, aehnlich: 'medien-luegen', recherche: ['Testpunkt zum Belegen'] } }); }
+  return antwort(false, { fehler: 'unbekannt' });
+}
+const ctx = { window, document, localStorage, location: { hash: '' }, navigator: {}, history: {}, console, setTimeout: (fn, ms) => setTimeout(fn, Math.min(ms || 0, 5)), clearTimeout, fetch: fetchAttrappe, MouseEvent: function () {}, FormData: function (f) { const w = (f && f._werte) || {}; return { get: k => (w[k] == null ? '' : w[k]) }; } };
 vm.createContext(ctx);
 for (const f of ['linien', 'techniken', 'kompass', 'szenarien', 'kampagne', 'leitplanken', 'hilfe', 'messung', 'argumente']) vm.runInContext(fs.readFileSync(path.join(__dirname, 'data', f + '.js'), 'utf8'), ctx, { filename: f + '.js' });
+window.APP_DATA.argumente.argumente[0].anfragen = ['beantwortet-1'];
 vm.runInContext(fs.readFileSync(path.join(__dirname, 'app.js'), 'utf8'), ctx, { filename: 'app.js' });
 const main = els['#main'];
 const fails = [];
+// Beim Start meldet die App, dass die vorbelegte Anfrage geprüft beantwortet ist
+if (main.innerHTML.indexOf('geprüft beantwortet') < 0) fails.push('Kein Hinweis auf die beantwortete Anfrage beim Start');
 function click(d) { try { handlers['doc:click']({ target: { closest: () => ({ dataset: d }) }, preventDefault() {} }); } catch (e) { fails.push(JSON.stringify(d) + ': ' + e.stack.split('\n').slice(0, 2).join(' ')); } }
 function route(r) { ctx.location.hash = '#' + r; try { handlers['win:hashchange'](); } catch (e) { fails.push(r + ': ' + e.stack.split('\n').slice(0, 2).join(' ')); } return main.innerHTML.length; }
 const sizes = {};
@@ -40,9 +53,32 @@ suche('');
 click({ go: 'wissen', technik: D.techniken[0].id });
 // Tagebuch mit Vorbelegung
 click({ go: 'tagebuch', prefill: 'gespraech|zuhoeren' });
-console.log(Object.entries(sizes).map(([k, v]) => k + '=' + v).join(' '));
-fails.forEach(f => console.log('FEHLER ' + f));
-const empty = Object.entries(sizes).filter(([k, v]) => v < 800).map(([k]) => k);
-if (empty.length) console.log('WARNUNG sehr kurze Ansichten: ' + empty.join(', '));
-console.log(fails.length ? fails.length + ' Fehler' : 'OK, alle Ansichten rendern ohne Fehler');
-process.exit(fails.length ? 1 : 0);
+// Argument fehlt: Kasten sichtbar, ohne Bestätigung kein Versand, mit Bestätigung Versand und Entwurf abholen
+(async () => {
+  route('antworten'); click({ act: 'ant-tab', tab: 'argumente' });
+  if (main.innerHTML.indexOf('Argument fehlt?') < 0) fails.push('Kasten „Argument fehlt?“ fehlt');
+  const senden = werte => { try { handlers['doc:submit']({ target: { dataset: { form: 'anfrage' }, _werte: werte }, preventDefault() {} }); } catch (e) { fails.push('anfrage-submit: ' + e.message); } };
+  senden({ argument: 'Ohne Bestätigung gesendet.', kontext: '' });
+  if (api.posts.length) fails.push('Anfrage ohne Bestätigung gesendet');
+  senden({ argument: 'Die Rente ist sowieso weg.', kontext: 'Kollege', ok: 'on' });
+  await new Promise(r => setTimeout(r, 300));
+  if (api.posts.length !== 1 || api.posts[0].argument !== 'Die Rente ist sowieso weg.') fails.push('Anfrage nicht gesendet');
+  const neu = JSON.parse(mem['umsteigen:anfragen'] || '[]').find(x => x.id === 'neu-1');
+  if (!neu || neu.status !== 'entwurf') fails.push('Entwurf nicht abgeholt, Status: ' + (neu && neu.status));
+  route('antworten'); click({ act: 'ant-tab', tab: 'anfragen' });
+  sizes['antworten:anfragen'] = main.innerHTML.length;
+  if (main.innerHTML.indexOf('KI-Entwurf') < 0 || main.innerHTML.indexOf('Testpunkt zum Belegen') < 0) fails.push('KI-Entwurf wird nach dem Senden nicht angezeigt');
+  if (main.innerHTML.indexOf('data-act="fall-arg"') >= 0) fails.push('Entwurf zeigt den Mein-Fall-Knopf');
+  click({ act: 'anf-toggle', id: 'neu-1' });
+  if (main.innerHTML.indexOf('Testpunkt zum Belegen') >= 0) fails.push('Entwurf lässt sich nicht zuklappen');
+  click({ act: 'anf-ansehen', id: 'beantwortet-1' });
+  if (JSON.parse(mem['umsteigen:anfragen']).find(x => x.id === 'beantwortet-1').neu) fails.push('Hinweis bleibt nach dem Ansehen stehen');
+  click({ act: 'anf-del', id: 'neu-1' });
+  if (JSON.parse(mem['umsteigen:anfragen']).some(x => x.id === 'neu-1')) fails.push('Anfrage lässt sich nicht entfernen');
+  console.log(Object.entries(sizes).map(([k, v]) => k + '=' + v).join(' '));
+  fails.forEach(f => console.log('FEHLER ' + f));
+  const empty = Object.entries(sizes).filter(([k, v]) => v < 800).map(([k]) => k);
+  if (empty.length) console.log('WARNUNG sehr kurze Ansichten: ' + empty.join(', '));
+  console.log(fails.length ? fails.length + ' Fehler' : 'OK, alle Ansichten rendern ohne Fehler');
+  process.exit(fails.length ? 1 : 0);
+})();

@@ -15,7 +15,7 @@ const findings = {};
 const add = (k, p, s) => { (findings[k] = findings[k] || []).push(p + ' → ' + s.slice(0, 140)); };
 function walk(v, p, key) {
   if (typeof v === "string") return check(v, p, key);
-  if (Array.isArray(v) && /^(segmente|bausteine|kennzahlen|techniken|empfiehlt|meidet|top|risiko)$/.test(key) && v.every(x => typeof x === "string" && /^[a-z0-9-]+$/.test(x))) return;
+  if (Array.isArray(v) && /^(segmente|bausteine|kennzahlen|techniken|empfiehlt|meidet|top|risiko|anfragen)$/.test(key) && v.every(x => typeof x === "string" && /^[a-z0-9-]+$/.test(x))) return;
   if (Array.isArray(v)) return v.forEach((x, i) => walk(x, p + '[' + i + ']', key));
   if (v && typeof v === 'object') return Object.keys(v).forEach(k => walk(v[k], p + '.' + k, k));
 }

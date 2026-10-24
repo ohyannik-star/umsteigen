@@ -48,7 +48,10 @@ const extraHead = [
   '<link rel="apple-touch-icon" href="apple-touch-icon.png">',
   '<link rel="icon" href="icon-192.png">',
 ].join('\n') + '\n';
-const hosted = `<script>window.UMSTEIGEN_HOSTED = true; window.UMSTEIGEN_VERSION = '${version}';</script>`;
+// Server-Adresse für „Argument fehlt“ aus app/config.json; UMSTEIGEN_API überschreibt sie für lokale Tests. Leer heißt: Funktion ausgeblendet.
+const api = (process.env.UMSTEIGEN_API != null ? process.env.UMSTEIGEN_API : JSON.parse(fs.readFileSync(path.join(app, 'config.json'), 'utf8')).api || '').trim();
+if (api && !/^https:\/\/|^http:\/\/localhost[:/]/.test(api)) throw new Error('Server-Adresse muss mit https:// beginnen: ' + api);
+const hosted = `<script>window.UMSTEIGEN_HOSTED = true; window.UMSTEIGEN_VERSION = '${version}';${api ? ' window.UMSTEIGEN_API = ' + JSON.stringify(api) + ';' : ''}</script>`;
 const swScript = `<script>
 if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
   (function () {
@@ -71,4 +74,4 @@ if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
 </script>`;
 const pwa = page.replace('<script src="app.js"></script>', hosted + '\n<script src="app.js"></script>\n' + swScript).replace(/<script src="(data\/[^"?]+\.js|app\.js)"><\/script>/g, (m, src) => '<script src="' + src + '?v=' + version + '"></script>');
 fs.writeFileSync(path.join(site, 'index.html'), doc(pwa, extraHead), 'utf8');
-console.log('geschrieben: dist/umsteigen.html (' + Math.round(doc(single).length / 1024) + ' KB), docs/ (Version ' + version + ', ' + (files.length + 6) + ' Dateien)');
+console.log('geschrieben: dist/umsteigen.html (' + Math.round(doc(single).length / 1024) + ' KB), docs/ (Version ' + version + ', ' + (files.length + 6) + ' Dateien), Server: ' + (api || 'keiner, „Argument fehlt?“ ausgeblendet'));

@@ -53,6 +53,7 @@ function copyText(text) {
 }
 
 var HOSTED = !!window.UMSTEIGEN_HOSTED;
+var API = HOSTED && window.UMSTEIGEN_API ? String(window.UMSTEIGEN_API).replace(/\/+$/, '') : '';
 function isStandalone() { try { return window.navigator.standalone === true || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches); } catch (e) { return false; } }
 function shareText(title, text) {
   if (navigator.share) { try { navigator.share({ title: title, text: text }).catch(function (err) { if (!err || err.name !== 'AbortError') copyText(text); }); return; } catch (e) {} }
@@ -167,6 +168,7 @@ function vStart() {
   var leit = LEIT && LEIT.grundsaetze ? LEIT.grundsaetze.slice(0, 4).map(function (g) { return '<div class="card"><h4>' + esc(g.titel) + '</h4><p class="small muted" style="margin-top:6px">' + esc(g.text) + '</p></div>'; }).join('') : '';
   return '<div class="stack-lg">' +
     '<section class="hero"><h1 class="display">Menschen zurück ins Gespräch holen.</h1><p class="lead">Für alle, die jemanden erreichen wollen, der eine verfassungsfeindliche Partei attraktiv findet. Nicht durch Überreden, sondern durch Zuhören, Beziehung und kluge nächste Schritte.</p><div class="row center"><button class="btn primary" data-go="kompass">Mit dem Kompass starten</button><button class="link" data-go="netz">Netzplan ansehen ›</button></div>' + heroArt() + '</section>' +
+    anfBanner() +
     '<div class="iconrow">' + mods + '</div>' +
     (HOSTED && !isStandalone() ? '<div class="note"><strong>Als App auf dem Handy</strong>iPhone: In Safari unten auf „Teilen“ tippen, dann „Zum Home-Bildschirm“ und „Hinzufügen“. Android: Im Browser-Menü „App installieren“ wählen. Danach läuft Umsteigen wie eine App, auch offline. Deine Daten bleiben auf dem Gerät.</div>' : '') +
     '<section><h2 class="sh">Drei Wege, ein Ziel. <span>Wähle, wo du gerade stehst.</span></h2><div class="rail">' + wege + '</div></section>' +
@@ -595,6 +597,81 @@ function archAdd(e) {
 function archBtn(typ, text, herkunft, url, quelle) {
   return '<button type="button" class="chip btn-chip arch" data-act="arch-add" data-typ="' + esc(typ) + '" data-text="' + esc(text) + '" data-herkunft="' + esc(herkunft || '') + '"' + (url ? ' data-url="' + esc(url) + '"' : '') + (quelle ? ' data-quelle="' + esc(quelle) + '"' : '') + ' title="Ins Archiv speichern">+ Archiv</button>';
 }
+/* ---------- Argument fehlt: Anfragen an den Server, Entwürfe und geprüfte Antworten ---------- */
+var ANF_STATUS = { 'in-arbeit': 'KI schreibt den Entwurf', entwurf: 'KI-Entwurf, noch nicht geprüft', ungeeignet: 'Kein Entwurf möglich', abgelehnt: 'Kein KI-Entwurf', fehler: 'Nicht geklappt', beantwortet: 'Geprüft beantwortet' };
+function anfGet() { return store.get('anfragen', []); }
+function anfSet(l) { store.set('anfragen', l); }
+function anfPatch(id, patch) { var l = anfGet(); l.forEach(function (x) { if (x.id === id) Object.keys(patch).forEach(function (k) { x[k] = patch[k]; }); }); anfSet(l); }
+function apiCall(method, pfad, body) {
+  return fetch(API + pfad, { method: method, headers: body ? { 'Content-Type': 'application/json' } : {}, body: body ? JSON.stringify(body) : undefined }).then(function (r) {
+    return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok) throw new Error(d.fehler || 'Der Server antwortet gerade nicht.'); return d; });
+  });
+}
+function anfSenden(argument, kontext) {
+  state.anfBusy = true; render();
+  apiCall('POST', '/api/anfragen', { argument: argument, kontext: kontext }).then(function (d) {
+    var l = anfGet(); l.unshift({ id: d.id, argument: argument, kontext: kontext, datum: today(), status: d.status }); anfSet(l);
+    state.anfBusy = false; state.anfForm = null; state.antTab = 'anfragen'; state.anfOffen = d.id; render(); toast('Anfrage gesendet');
+    anfPollen(d.id, 0);
+  }).catch(function (err) { state.anfBusy = false; state.anfFehler = err && err.name === 'TypeError' ? 'Keine Verbindung zum Server. Bitte später noch einmal.' : err.message; render(); });
+}
+// Fragt alle drei Sekunden nach, bis der Entwurf fertig ist; nach etwa drei Minuten übernimmt der nächste App-Start.
+function anfPollen(id, n) {
+  if (n > 60) return;
+  setTimeout(function () {
+    apiCall('GET', '/api/anfragen/' + id).then(function (d) {
+      if (d.status === 'in-arbeit') { anfPollen(id, n + 1); return; }
+      anfPatch(id, { status: d.status, hinweis: d.hinweis || '', entwurf: d.entwurf || null });
+      if (state.route === 'antworten' && state.antTab === 'anfragen') render();
+      toast(d.status === 'entwurf' ? 'Dein KI-Entwurf ist da' : 'Antwort auf deine Anfrage ist da');
+    }).catch(function () { anfPollen(id, n + 1); });
+  }, n ? 3000 : 2000);
+}
+// Beim Start: Anfragen, deren Nummer in einem geprüften Eintrag steht, gelten als beantwortet; unfertige Entwürfe werden abgeholt.
+function anfAbgleich() {
+  var l = anfGet(), neu = false;
+  l.forEach(function (x) {
+    if (x.argId || !ARG) return;
+    var a = ARG.argumente.filter(function (g) { return (g.anfragen || []).indexOf(x.id) >= 0; })[0];
+    if (a) { x.argId = a.id; x.status = 'beantwortet'; x.neu = true; neu = true; }
+  });
+  if (neu) anfSet(l);
+  if (API) l.forEach(function (x) { if (x.status === 'in-arbeit') anfPollen(x.id, 0); });
+}
+function anfBanner() {
+  return anfGet().filter(function (x) { return x.neu && x.argId; }).map(function (x) {
+    var a = argById(x.argId);
+    return '<div class="note good"><strong>Deine Anfrage ist jetzt geprüft beantwortet</strong><p>„' + esc(x.argument) + '“' + (a ? ' steht jetzt im Playbook unter „' + esc(a.titel) + '“.' : '') + '</p><div class="row"><button class="btn sm primary" data-act="anf-ansehen" data-id="' + esc(x.id) + '">Geprüfte Antwort öffnen</button></div></div>';
+  }).join('');
+}
+function anfKasten(vorschlag) {
+  var f = state.anfForm || { argument: vorschlag || '', kontext: '' };
+  return '<section class="panel stack"><div><div class="eyebrow">Argument fehlt?</div><h2>Sag uns, was die Person sagt</h2><p class="muted" style="max-width:62ch">Du bekommst gleich einen KI-Entwurf im gewohnten Aufbau. Innerhalb von etwa vier Wochen arbeiten wir eine geprüfte Antwort mit belegten Fakten in die App ein. Dann meldet sich die App bei dir.</p></div>' +
+    '<form class="form-grid" data-form="anfrage"><label class="fld wide">Was sagt die Person?<textarea name="argument" maxlength="300" placeholder="Zum Beispiel: Die Rente ist sowieso weg, für uns bleibt nichts.">' + esc(f.argument) + '</textarea></label>' +
+    '<label class="fld wide">Kontext, freiwillig und ohne Namen<input type="text" name="kontext" maxlength="300" value="' + esc(f.kontext) + '" placeholder="Zum Beispiel: älterer Kollege, Thema Rente"></label>' +
+    '<label class="opt wide"><input class="vh" type="checkbox" name="ok"><i class="ck" aria-hidden="true"></i><span class="small">Ich habe keine Namen und keine Angaben eingetragen, an denen man jemanden erkennen kann. Satz und Kontext gehen an den Umsteigen-Server und zur Beantwortung an Anthropic (Claude).</span></label>' +
+    (state.anfFehler ? '<div class="note bad wide"><strong>Nicht gesendet</strong><p>' + esc(state.anfFehler) + '</p></div>' : '') +
+    '<div class="row wide"><button class="btn primary" type="submit"' + (state.anfBusy ? ' disabled' : '') + '>' + (state.anfBusy ? 'Wird gesendet …' : 'Anfrage senden und KI-Entwurf holen') + '</button></div></form></section>';
+}
+function anfEntwurf(e) {
+  var aehnlich = e.aehnlich ? argById(e.aehnlich) : null;
+  return '<div class="note warn"><strong>KI-Entwurf, noch nicht geprüft</strong><p>Erlebnis-Sätze nur nutzen, wenn du so etwas wirklich erlebt hast. Belegte Fakten kommen mit der geprüften Fassung.</p></div>' +
+    (aehnlich ? '<div class="note"><strong>Schon im Playbook</strong><p>Ein ähnliches Argument gibt es bereits. <button class="link" data-go="antworten" data-arg="' + esc(aehnlich.id) + '">„' + esc(aehnlich.titel) + '“ öffnen ›</button></p></div>' : '') +
+    playbook(e, false) +
+    (e.recherche && e.recherche.length ? '<div class="note"><strong>Das prüfen wir noch</strong>' + ul(e.recherche) + '</div>' : '');
+}
+function anfListe() {
+  var l = anfGet();
+  if (!l.length) return '<div class="empty">Noch keine Anfragen. Fehlt dir ein Argument, kannst du es unter „Argumente“ anfragen.</div>';
+  return '<p class="muted" style="max-width:62ch">Deine Anfragen liegen nur auf diesem Gerät. Der Server kennt sie nur über ihre Nummer.</p>' + l.map(function (x) {
+    var offen = state.anfOffen === x.id, mitEntwurf = x.status === 'entwurf' && x.entwurf, inhalt = '';
+    if (x.status === 'beantwortet') inhalt = '<div class="row"><button class="btn sm primary" data-act="anf-ansehen" data-id="' + esc(x.id) + '">Geprüfte Antwort öffnen</button></div>';
+    else if (x.status === 'in-arbeit') inhalt = '<p class="small muted">Das dauert meist unter einer Minute. Du kannst die App schließen, der Entwurf wird beim nächsten Öffnen abgeholt.</p>';
+    else if (mitEntwurf) inhalt = offen ? anfEntwurf(x.entwurf) : '';
+    else inhalt = '<p class="small">' + esc(x.hinweis || 'Bitte später noch einmal versuchen.') + '</p>' + (x.status === 'fehler' && API ? '<div class="row"><button class="btn sm" data-act="anf-neu" data-id="' + esc(x.id) + '">Noch einmal senden</button></div>' : '');
+    return '<section class="panel stack"><div class="row"><span class="tag">' + esc(ANF_STATUS[x.status] || x.status) + '</span><span class="small muted">' + esc(x.datum) + '</span><span style="margin-left:auto"></span>' + (mitEntwurf ? '<button class="link" data-act="anf-toggle" data-id="' + esc(x.id) + '">' + (offen ? 'Entwurf schließen' : 'Entwurf ansehen') + '</button>' : '') + '<button class="link" data-act="anf-del" data-id="' + esc(x.id) + '">Entfernen</button></div><h3>„' + esc(x.argument) + '“</h3>' + inhalt + '</section>';
+  }).join('');
+}
 function argById(id) { return ARG ? findIn(ARG.argumente, id) : null; }
 function katName(id) { var k = ARG ? findIn(ARG.kategorien, id) : null; return k ? k.name : id; }
 function plain(s) { return String(s || '').trim().replace(/^[„"“]+/, '').replace(/[“"„]+$/, ''); }
@@ -617,16 +694,19 @@ function playbook(a, kompakt) {
     (wd ? '<section><h3>Wenn die Person so reagiert</h3><div class="stack">' + wd + '</div></section>' : '') +
     (!kompakt && a.fakten && a.fakten.length ? '<section><h3>Fakten, die tragen</h3><p class="small muted">Erst das Erlebnis anerkennen, dann höchstens ein Fakt, dann zurück zur Beziehung.</p><div class="grid">' + faktRows(a.fakten, h) + '</div></section>' : '') +
     (!kompakt && a.fallstricke && a.fallstricke.length ? '<div class="note warn"><strong>Fallstricke</strong>' + ul(a.fallstricke) + '</div>' : '') +
-    '<div class="row">' + (a.techniken && a.techniken.length ? '<span class="small muted">Techniken:</span>' + technikChips(a.techniken) : '') + '<span style="margin-left:auto"></span><button class="btn sm' + (inFall ? '' : ' primary') + '" data-act="fall-arg" data-id="' + esc(a.id) + '">' + (inFall ? 'Aus meinem Fall entfernen' : 'Die Person sagt das: zu meinem Fall') + '</button>' + (kompakt ? '<button class="btn sm" data-go="antworten" data-arg="' + esc(a.id) + '">Ganzes Playbook</button>' : '') + '</div>' +
+    '<div class="row">' + (a.techniken && a.techniken.length ? '<span class="small muted">Techniken:</span>' + technikChips(a.techniken) : '') + '<span style="margin-left:auto"></span>' + (a.id ? '<button class="btn sm' + (inFall ? '' : ' primary') + '" data-act="fall-arg" data-id="' + esc(a.id) + '">' + (inFall ? 'Aus meinem Fall entfernen' : 'Die Person sagt das: zu meinem Fall') + '</button>' : '') + (kompakt ? '<button class="btn sm" data-go="antworten" data-arg="' + esc(a.id) + '">Ganzes Playbook</button>' : '') + '</div>' +
   '</div>';
 }
 function vAntworten() {
   if (!ARG) return missing('Antworten');
   var tabs = [['argumente', 'Argumente'], ['verhalten', 'Verhalten'], ['studien', 'Studien lesen']];
+  if (API || anfGet().length) tabs.push(['anfragen', 'Meine Anfragen']);
   var nav = '<div class="seg" role="tablist">' + tabs.map(function (t) { return '<button type="button" role="tab" aria-pressed="' + (state.antTab === t[0]) + '" data-act="ant-tab" data-tab="' + t[0] + '">' + t[1] + '</button>'; }).join('') + '</div>';
   var body = '';
   if (state.antTab === 'verhalten') {
     body = '<div class="faq">' + (ARG.verhalten || []).map(function (v) { return '<details class="acc"><summary>' + esc(v.verhalten) + '</summary><div class="body stack"><p class="muted">' + esc(v.dahinter) + '</p><div class="station-detail"><div><h4>So verhältst du dich</h4>' + ol(v.dann) + '</div><div class="note bad"><strong>Macht es schlimmer</strong>' + ul(v.nicht) + '</div></div><div><h4>Was du sagen kannst</h4>' + sagenRows(v.sagen, v.verhalten) + '</div></div></details>'; }).join('') + '</div>';
+  } else if (state.antTab === 'anfragen') {
+    body = anfListe();
   } else if (state.antTab === 'studien') {
     body = '<p class="muted" style="max-width:62ch">Zahlen sind in diesen Gesprächen selten das Problem, ihre Deutung schon. Diese Regeln helfen dir, eine Zahl gemeinsam mit der Person zu prüfen, statt sie ihr entgegenzuhalten.</p><div class="faq">' + (ARG.studien_lesen || []).map(function (s) { return '<details class="acc"><summary>' + esc(s.titel) + '</summary><div class="body stack">' + paras(s.text) + '<div class="quote">' + esc(s.beispiel) + '</div></div></details>'; }).join('') + '</div>';
   } else {
@@ -636,9 +716,10 @@ function vAntworten() {
     var sel = state.arg ? argById(state.arg) : null;
     body = '<div class="row"><input type="text" id="arg-q" placeholder="Argument suchen, zum Beispiel „Medien“" value="' + esc(state.argQ || '') + '" style="max-width:360px"></div>' + seg('argKat', kats) +
       (sel ? '<section class="panel stack"><div class="row"><span class="tag">' + esc(katName(sel.kategorie)) + '</span><button class="link" style="margin-left:auto" data-act="arg-open" data-id="">Schließen</button></div><h2>„' + esc(sel.titel) + '“</h2><div class="row">' + (sel.varianten || []).map(function (v) { return chip(v); }).join('') + '</div>' + playbook(sel, false) + '</section>' : '') +
-      '<div class="grid">' + list.map(function (a) { var on = fallGet().argumente.indexOf(a.id) >= 0; return '<div class="card card-link stack" role="button" tabindex="0" data-act="arg-open" data-id="' + esc(a.id) + '"><div class="row"><span class="tag">' + esc(katName(a.kategorie)) + '</span>' + (on ? chip('Mein Fall') : '') + '</div><strong>„' + esc(a.titel) + '“</strong><p class="small muted">' + esc((a.varianten || []).join(' · ')) + '</p></div>'; }).join('') + '</div>' + (list.length ? '' : '<div class="empty">Kein Argument passt zur Suche.</div>');
+      '<div class="grid">' + list.map(function (a) { var on = fallGet().argumente.indexOf(a.id) >= 0; return '<div class="card card-link stack" role="button" tabindex="0" data-act="arg-open" data-id="' + esc(a.id) + '"><div class="row"><span class="tag">' + esc(katName(a.kategorie)) + '</span>' + (on ? chip('Mein Fall') : '') + '</div><strong>„' + esc(a.titel) + '“</strong><p class="small muted">' + esc((a.varianten || []).join(' · ')) + '</p></div>'; }).join('') + '</div>' + (list.length ? '' : '<div class="empty">Kein Argument passt zur Suche.</div>') +
+      (API ? anfKasten(list.length ? '' : state.argQ) : '');
   }
-  return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Playbook</div><h1>Antworten</h1><p>Wenn die Person das sagt, dann sag das. Für jedes Argument: was dahintersteckt, welcher Ton trägt, welche Wörter alles kaputt machen, wörtliche Sätze vom Anerkennen bis zum Zweifel, Wenn-dann-Regeln und belegte Fakten. Jeden Satz kannst du ins Archiv legen.</p></div>' + nav + body + '</div>';
+  return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Playbook</div><h1>Antworten</h1><p>Wenn die Person das sagt, dann sag das. Für jedes Argument: was dahintersteckt, welcher Ton trägt, welche Wörter alles kaputt machen, wörtliche Sätze vom Anerkennen bis zum Zweifel, Wenn-dann-Regeln und belegte Fakten. Jeden Satz kannst du ins Archiv legen.</p></div>' + anfBanner() + nav + body + '</div>';
 }
 var RETTUNG = ['Erzähl mir mehr. Wie bist du darauf gekommen?', 'Ich merke, das ist dir wichtig. Ich sehe es anders, aber ich will verstehen, warum du das so siehst.', 'Lass uns kurz Pause machen. Ich will das hier nicht kaputtreden, du bist mir wichtiger als das Thema.'];
 function vArchiv() {
@@ -766,6 +847,10 @@ document.addEventListener('click', function (e) {
   else if (a === 'bk-share') { shareText('Umsteigen-Sicherung vom ' + today(), backupAll()); }
   else if (a === 'bk-download') { downloadText('umsteigen-sicherung-' + today() + '.json', backupAll()); }
   else if (a === 'bk-import') { try { restoreAll($('#bk-io').value); render(); toast('Sicherung eingespielt'); } catch (err) { toast('Das ist keine gültige Sicherung.'); } }
+  else if (a === 'anf-toggle') { state.anfOffen = state.anfOffen === d.id ? null : d.id; render(); }
+  else if (a === 'anf-del') { anfSet(anfGet().filter(function (x) { return x.id !== d.id; })); render(); toast('Anfrage entfernt'); }
+  else if (a === 'anf-neu') { var an = anfGet().filter(function (x) { return x.id === d.id; })[0]; if (!an) return; anfSet(anfGet().filter(function (x) { return x.id !== d.id; })); anfSenden(an.argument, an.kontext || ''); }
+  else if (a === 'anf-ansehen') { var aa = anfGet().filter(function (x) { return x.id === d.id; })[0]; anfPatch(d.id, { neu: false }); if (aa && aa.argId) go('antworten', { arg: aa.argId, argScroll: true, antTab: 'argumente' }); else render(); }
   else if (a === 'tb-clear') { state.confirmClear = true; render(); }
   else if (a === 'tb-clear-no') { state.confirmClear = false; render(); }
   else if (a === 'tb-clear-yes') { store.del('tagebuch'); state.confirmClear = false; render(); toast('Alle Einträge gelöscht'); }
@@ -801,6 +886,13 @@ document.addEventListener('submit', function (e) {
   e.preventDefault();
   if (f.dataset.form === 'kompass') { evalKompass(f); render(); window.scrollTo(0, 0); }
   else if (f.dataset.form === 'kampagne') { evalKampagne(f); render(); }
+  else if (f.dataset.form === 'anfrage') {
+    var fq = new FormData(f), ar = String(fq.get('argument') || '').trim(), ko = String(fq.get('kontext') || '').trim();
+    state.anfForm = { argument: ar, kontext: ko };
+    if (ar.length < 8) { state.anfFehler = 'Bitte gib den Satz der Person ein, mindestens 8 Zeichen.'; render(); return; }
+    if (!fq.get('ok')) { state.anfFehler = 'Bitte bestätige, dass keine Namen und keine erkennbaren Angaben drinstehen.'; render(); return; }
+    state.anfFehler = null; anfSenden(ar, ko);
+  }
   else if (f.dataset.form === 'archiv') { var fa = new FormData(f); var tx = String(fa.get('text') || '').trim(); if (!tx) return; archAdd({ typ: fa.get('typ') || 'notiz', text: tx, herkunft: String(fa.get('herkunft') || '').trim(), url: String(fa.get('url') || '').trim(), quelle: String(fa.get('quelle') || '').trim() }); render(); }
   else if (f.dataset.form === 'fall-antwort') { var fb = new FormData(f), ff2 = fallGet(), aid = f.dataset.arg; var t2 = String(fb.get('text') || '').trim(); if (!t2) return; (ff2.antworten[aid] = ff2.antworten[aid] || []).unshift({ id: uid(), datum: today(), text: t2, lief: fb.get('lief') || 'ok' }); fallSet(ff2); render(); toast('Notiert'); }
   else if (f.dataset.form === 'tagebuch') {
@@ -814,5 +906,6 @@ document.addEventListener('submit', function (e) {
 var verEl = $('#ver'); if (verEl && HOSTED && window.UMSTEIGEN_VERSION) verEl.innerHTML = ' Version ' + esc(window.UMSTEIGEN_VERSION) + ' · <button class="link" style="font-size:inherit;padding:0" data-act="check-update">Nach Updates suchen</button>';
 var initial = location.hash.replace('#', '');
 if (ROUTES.some(function (x) { return x[0] === initial; })) state.route = initial;
+anfAbgleich();
 render();
 })();
