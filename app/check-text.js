@@ -20,7 +20,7 @@ function walk(v, p, key) {
   if (v && typeof v === 'object') return Object.keys(v).forEach(k => walk(v[k], p + '.' + k, k));
 }
 function check(s, p, key) {
-  if (/^(id|farbe|url|telefon|typ|ebene|evidenz|aufwand|erreichbar|region|fuer|linie|station|zu|start|bewertung|technik|weiter|bis|skala)$/.test(key)) return;
+  if (/^(id|kategorie|farbe|url|telefon|typ|ebene|evidenz|aufwand|erreichbar|region|fuer|linie|station|zu|start|bewertung|technik|weiter|bis|skala)$/.test(key)) return;
   if (s.length < 4) return;
   if (/"/.test(s)) add('ASCII-Anführungszeichen', p, s);
   if (/  /.test(s)) add('Doppeltes Leerzeichen', p, s);

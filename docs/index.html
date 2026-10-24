@@ -376,21 +376,21 @@ details.acc .body { padding: 0 4px 20px; }
 <div class="sheet" id="sheet" data-act="sheet" hidden></div>
 <footer class="foot">Alle Daten bleiben in deinem Browser. Keine Konten, keine Server. Jede Empfehlung nennt Evidenzstufe und Quellen. Die Inhalte ersetzen keine professionelle Beratung. Bei Gefahr für Leib und Leben wähle die 110.<span id="ver"></span></footer>
 
-<script src="data/linien.js?v=20261014-104055"></script>
-<script src="data/techniken.js?v=20261014-104055"></script>
-<script src="data/kompass.js?v=20261014-104055"></script>
-<script src="data/szenarien.js?v=20261014-104055"></script>
-<script src="data/kampagne.js?v=20261014-104055"></script>
-<script src="data/leitplanken.js?v=20261014-104055"></script>
-<script src="data/hilfe.js?v=20261014-104055"></script>
-<script src="data/messung.js?v=20261014-104055"></script>
-<script src="data/argumente.js?v=20261014-104055"></script>
-<script>window.UMSTEIGEN_HOSTED = true; window.UMSTEIGEN_VERSION = '20261014-104055';</script>
-<script src="app.js?v=20261014-104055"></script>
+<script src="data/linien.js?v=20261024-094450"></script>
+<script src="data/techniken.js?v=20261024-094450"></script>
+<script src="data/kompass.js?v=20261024-094450"></script>
+<script src="data/szenarien.js?v=20261024-094450"></script>
+<script src="data/kampagne.js?v=20261024-094450"></script>
+<script src="data/leitplanken.js?v=20261024-094450"></script>
+<script src="data/hilfe.js?v=20261024-094450"></script>
+<script src="data/messung.js?v=20261024-094450"></script>
+<script src="data/argumente.js?v=20261024-094450"></script>
+<script>window.UMSTEIGEN_HOSTED = true; window.UMSTEIGEN_VERSION = '20261024-094450';</script>
+<script src="app.js?v=20261024-094450"></script>
 <script>
 if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
   (function () {
-    var VERSION = '20261014-104055', hadController = !!navigator.serviceWorker.controller, pending = false, regRef = null;
+    var VERSION = '20261024-094450', hadController = !!navigator.serviceWorker.controller, pending = false, regRef = null;
     function note(text, ms) { var t = document.createElement('div'); t.className = 'toast'; t.textContent = text; document.body.appendChild(t); if (ms) setTimeout(function () { t.remove(); }, ms); return t; }
     function idle() { var a = document.activeElement; return !(a && (a.tagName === 'TEXTAREA' || (a.tagName === 'INPUT' && a.type === 'text'))); }
     function applyUpdate() { if (pending && idle()) { pending = false; try { sessionStorage.setItem('umsteigen:updated', '1'); } catch (e) {} location.reload(); } }

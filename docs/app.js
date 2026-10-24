@@ -632,7 +632,7 @@ function vAntworten() {
   } else {
     var q = (state.argQ || '').toLowerCase();
     var kats = [['alle', 'Alle']].concat((ARG.kategorien || []).map(function (k) { return [k.id, k.name]; }));
-    var list = (ARG.argumente || []).filter(function (a) { return (state.argKat === 'alle' || !state.argKat || a.kategorie === state.argKat) && (!q || (a.titel + ' ' + (a.varianten || []).join(' ')).toLowerCase().indexOf(q) >= 0); });
+    var list = (ARG.argumente || []).filter(function (a) { return (state.argKat === 'alle' || !state.argKat || a.kategorie === state.argKat) && (!q || [a.titel, katName(a.kategorie)].concat(a.varianten || [], a.stichworte || []).join(' ').toLowerCase().indexOf(q) >= 0); });
     var sel = state.arg ? argById(state.arg) : null;
     body = '<div class="row"><input type="text" id="arg-q" placeholder="Argument suchen, zum Beispiel „Medien“" value="' + esc(state.argQ || '') + '" style="max-width:360px"></div>' + seg('argKat', kats) +
       (sel ? '<section class="panel stack"><div class="row"><span class="tag">' + esc(katName(sel.kategorie)) + '</span><button class="link" style="margin-left:auto" data-act="arg-open" data-id="">Schließen</button></div><h2>„' + esc(sel.titel) + '“</h2><div class="row">' + (sel.varianten || []).map(function (v) { return chip(v); }).join('') + '</div>' + playbook(sel, false) + '</section>' : '') +

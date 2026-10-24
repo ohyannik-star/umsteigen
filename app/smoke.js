@@ -1,11 +1,11 @@
 // Rendert alle Ansichten mit den echten Daten in einer DOM-Attrappe und meldet Laufzeitfehler. Aufruf: node app/smoke.js
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const handlers = {}, els = {};
-function el() { return { innerHTML: '', dataset: {}, style: {}, value: '', textContent: '', clientWidth: 900, scrollLeft: 0, addEventListener() {}, querySelector() { return null; }, querySelectorAll() { return []; }, scrollIntoView() {}, getAttribute() { return '0'; }, setAttribute() {}, remove() {}, appendChild() {}, focus() {}, select() {}, matches() { return false; } }; }
+function el() { return { innerHTML: '', dataset: {}, style: {}, value: '', textContent: '', clientWidth: 900, scrollLeft: 0, addEventListener(t, fn) { (this.on = this.on || {})[t] = fn; }, querySelector() { return null; }, querySelectorAll() { return []; }, scrollIntoView() {}, getAttribute() { return '0'; }, setAttribute() {}, remove() {}, appendChild() {}, focus() {}, select() {}, matches() { return false; } }; }
 const document = { querySelector: s => els[s] || (els[s] = el()), querySelectorAll: () => [], addEventListener: (t, fn) => { handlers['doc:' + t] = fn; }, createElement: () => el(), body: el() };
 const window = { APP_DATA: {}, addEventListener: (t, fn) => { handlers['win:' + t] = fn; }, scrollTo() {} };
 const localStorage = { getItem() { return null; }, setItem() {}, removeItem() {} };
-const ctx = { window, document, localStorage, location: { hash: '' }, navigator: {}, history: {}, console, setTimeout, MouseEvent: function () {}, FormData: function () { return { get: () => '' }; } };
+const ctx = { window, document, localStorage, location: { hash: '' }, navigator: {}, history: {}, console, setTimeout, clearTimeout,MouseEvent: function () {}, FormData: function () { return { get: () => '' }; } };
 vm.createContext(ctx);
 for (const f of ['linien', 'techniken', 'kompass', 'szenarien', 'kampagne', 'leitplanken', 'hilfe', 'messung', 'argumente']) vm.runInContext(fs.readFileSync(path.join(__dirname, 'data', f + '.js'), 'utf8'), ctx, { filename: f + '.js' });
 vm.runInContext(fs.readFileSync(path.join(__dirname, 'app.js'), 'utf8'), ctx, { filename: 'app.js' });
@@ -30,6 +30,12 @@ try { handlers['doc:submit']({ target: { dataset: { form: "kampagne" }, querySel
 // Antworten: jedes Argument öffnen, Tabs, Fall-Hub
 route('antworten'); (D.argumente ? D.argumente.argumente : []).forEach(a => { click({ act: 'arg-open', id: a.id }); }); click({ act: 'fall-arg', id: (D.argumente && D.argumente.argumente[0] || {}).id }); click({ act: 'ant-tab', tab: 'verhalten' }); click({ act: 'ant-tab', tab: 'studien' }); sizes['antworten:studien'] = main.innerHTML.length;
 route('archiv'); click({ act: 'arch-add', typ: 'satz', text: 'Testsatz', herkunft: 'Test' });
+// Suche: „ukraine“ findet jedes Argument, das das Wort im Titel, in den Varianten oder in den Stichworten trägt
+const ukr = (D.argumente ? D.argumente.argumente : []).filter(a => /ukraine/i.test([a.titel].concat(a.varianten || [], a.stichworte || []).join(' ')));
+function suche(q) { route('antworten'); click({ act: 'ant-tab', tab: 'argumente' }); click({ act: 'arg-open', id: '' }); const f = els['#arg-q']; f.value = q; f.on.input(); route('antworten'); return (main.innerHTML.match(/data-act="arg-open" data-id="[^"]+"/g) || []).length; }
+const treffer = suche('ukraine');
+if (treffer !== ukr.length) fails.push('Suche „ukraine“ findet ' + treffer + ' von ' + ukr.length + ' Argumenten');
+suche('');
 // Wissen mit Technik
 click({ go: 'wissen', technik: D.techniken[0].id });
 // Tagebuch mit Vorbelegung

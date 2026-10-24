@@ -1,4 +1,4 @@
-// Prüft eine Teildatei des Antworten-Playbooks. Aufruf: node app/validate-argumente.js app/data/argumente-teilA.json
+// Prüft eine Teildatei oder das ganze Antworten-Playbook. Aufruf: node app/validate-argumente.js app/data/argumente-ukraine.json oder app/data/argumente.js
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const file = process.argv[2];
 const ctx = { window: {} }; vm.createContext(ctx);
@@ -7,7 +7,7 @@ const TECH = new Set(ctx.window.APP_DATA.techniken.map(t => t.id));
 const PHASEN = ['Anerkennen', 'Nachfragen', 'Erlebnis', 'Zweifel', 'Überleitung'];
 const errors = [], warns = [];
 let d;
-try { d = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { console.log('FEHLER JSON: ' + e.message); process.exit(1); }
+try { if (file.endsWith('.js')) { vm.runInContext(fs.readFileSync(file, 'utf8'), ctx); d = ctx.window.APP_DATA.argumente; } else d = JSON.parse(fs.readFileSync(file, 'utf8')); } catch (e) { console.log('FEHLER Laden: ' + e.message); process.exit(1); }
 const txt = (s, p) => { if (typeof s !== 'string' || !s.trim()) errors.push(p + ': Text fehlt'); else { if (/"/.test(s)) errors.push(p + ': ASCII-Anführungszeichen'); if (/(^|[.!?] )Sie [a-zäöüß]+t\b/.test(s) && !/Sie (ist|hat)\b.*Person/.test(s)) warns.push(p + ': beginnt mit „Sie …“ statt „Die Person …“: ' + s.slice(0, 60)); } };
 const ids = new Set();
 (d.argumente || []).forEach((a, i) => {
@@ -16,6 +16,7 @@ const ids = new Set();
   if (!a.kategorie) errors.push(p + ': kategorie fehlt');
   txt(a.titel, p + '.titel'); txt(a.dahinter, p + '.dahinter'); txt(a.tonalitaet, p + '.tonalitaet');
   if (!Array.isArray(a.varianten) || a.varianten.length < 2) warns.push(p + ': weniger als 2 Varianten');
+  if (a.stichworte !== undefined && (!Array.isArray(a.stichworte) || a.stichworte.some(s => typeof s !== 'string' || !s.trim()))) errors.push(p + ': stichworte muss eine Liste von Wörtern sein');
   if (!Array.isArray(a.nogo) || a.nogo.length < 3) errors.push(p + ': nogo braucht 3 bis 6 Einträge');
   const ph = (a.schritte || []).map(s => s.phase);
   if (ph.join('|') !== PHASEN.join('|')) errors.push(p + ': schritte müssen genau die 5 Phasen in Reihenfolge sein, gefunden: ' + ph.join(', '));

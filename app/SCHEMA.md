@@ -212,6 +212,7 @@ Segmente: 5–7. Bausteine: 12–18. Phasen: 4–5. Kennzahlen: 6–8. Planer-Fr
       kategorie: "medien",
       titel: "Die Medien lügen doch alle.",              // so, wie die Person es sagt
       varianten: ["Lügenpresse", "Alles gesteuert"],   // 2–4 weitere Formulierungen
+      stichworte: ["Medien", "Presse"],                // optional: Suchwörter, die weder im Titel noch in den Varianten stehen
       dahinter: "1–2 Sätze: Bedürfnis oder Gefühl hinter dem Satz.",
       tonalitaet: "1–2 Sätze: Haltung und Ton, der hier trägt.",
       nogo: ["Wort oder Satz, der alles kaputt macht"],   // 3–6
@@ -232,3 +233,9 @@ Segmente: 5–7. Bausteine: 12–18. Phasen: 4–5. Kennzahlen: 6–8. Planer-Fr
   studien_lesen: [ { id, titel, text: "3–5 Sätze", beispiel: "1–3 Sätze" } ]   // 6–8
 }
 ```
+
+Die Suche durchsucht Titel, Varianten, Stichworte und den Kategorienamen.
+
+Neue Argumente kommen als Teildatei `app/data/argumente-<thema>.json` mit derselben Struktur (nur die neuen Kategorien und Einträge). Prüfen mit `node app/validate-argumente.js app/data/argumente-<thema>.json`, einfügen mit `node app/merge-argumente.js app/data/argumente-<thema>.json`: Einträge mit gleicher `id` werden ersetzt, neue angehängt. Danach die Teildatei löschen, `argumente.js` bleibt die einzige Quelle. Das ganze Playbook prüft `node app/validate-argumente.js app/data/argumente.js`.
+
+Haltung: Legitime Meinungen, etwa gegen Waffenlieferungen oder für geringere Sozialleistungen, werden nicht als extrem behandelt; dort hilft das Playbook beim Gespräch, nicht beim Umstimmen. Eine klare Grenze gibt es nur bei geleugneten belegten Fakten, bei Abwertung von Menschen und bei Gewalt. Fakten, die sich schnell ändern, tragen ihren Stand in der Aussage oder im Quellentitel.

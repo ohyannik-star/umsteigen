@@ -1,13 +1,19 @@
-// Fügt die Teildateien des Antworten-Playbooks zu app/data/argumente.js zusammen. Aufruf: node app/merge-argumente.js
-const fs = require('fs'), path = require('path');
-const dir = path.join(__dirname, 'data');
-const out = { kategorien: [], argumente: [], verhalten: [], studien_lesen: [] };
-['A', 'B', 'C', 'D'].forEach(x => {
-  const p = path.join(dir, 'argumente-teil' + x + '.json'); if (!fs.existsSync(p)) { console.log('fehlt: ' + p); return; }
+// Fügt Teildateien in das Antworten-Playbook app/data/argumente.js ein. Aufruf: node app/merge-argumente.js app/data/argumente-ukraine.json [weitere.json]
+// Grundlage ist die bestehende argumente.js: Einträge mit gleicher id werden ersetzt, neue angehängt. Neue Kategorien kommen vor „Angriffe auf dich“, die am Ende bleibt.
+const fs = require('fs'), path = require('path'), vm = require('vm');
+const target = path.join(__dirname, 'data', 'argumente.js');
+const parts = process.argv.slice(2);
+if (!parts.length) { console.log('Aufruf: node app/merge-argumente.js <teildatei.json> [weitere.json]'); process.exit(1); }
+const ctx = { window: {} }; vm.createContext(ctx);
+vm.runInContext(fs.readFileSync(target, 'utf8'), ctx);
+const out = ctx.window.APP_DATA.argumente;
+const upsert = (list, items, label) => items.forEach(x => { const i = list.findIndex(y => y.id === x.id); if (i >= 0) list[i] = x; else list.push(x); console.log((i >= 0 ? 'ersetzt: ' : 'neu: ') + label + ' ' + x.id); });
+parts.forEach(p => {
   const d = JSON.parse(fs.readFileSync(p, 'utf8'));
-  (d.kategorien || []).forEach(k => { if (!out.kategorien.some(y => y.id === k.id)) out.kategorien.push(k); });
-  out.argumente.push(...(d.argumente || [])); out.verhalten.push(...(d.verhalten || [])); out.studien_lesen.push(...(d.studien_lesen || []));
+  (d.kategorien || []).forEach(k => { if (out.kategorien.some(y => y.id === k.id)) return; const i = out.kategorien.findIndex(y => y.id === 'persoenlich'); out.kategorien.splice(i >= 0 ? i : out.kategorien.length, 0, k); console.log('neu: Kategorie ' + k.id); });
+  upsert(out.argumente, d.argumente || [], 'Argument'); upsert(out.verhalten, d.verhalten || [], 'Verhalten'); upsert(out.studien_lesen, d.studien_lesen || [], 'Studien-Hinweis');
 });
-const ids = new Set(); out.argumente.forEach(a => { if (ids.has(a.id)) throw new Error('doppelt: ' + a.id); ids.add(a.id); });
-fs.writeFileSync(path.join(dir, 'argumente.js'), 'window.APP_DATA = window.APP_DATA || {};\nwindow.APP_DATA.argumente = ' + JSON.stringify(out, null, 2) + ';\n', 'utf8');
+const kats = new Set(out.kategorien.map(k => k.id));
+out.argumente.forEach(a => { if (!kats.has(a.kategorie)) throw new Error('Kategorie unbekannt: ' + a.kategorie + ' bei ' + a.id); });
+fs.writeFileSync(target, 'window.APP_DATA = window.APP_DATA || {};\nwindow.APP_DATA.argumente = ' + JSON.stringify(out, null, 2) + ';\n', 'utf8');
 console.log('argumente.js: ' + out.argumente.length + ' Argumente in ' + out.kategorien.length + ' Kategorien, ' + out.verhalten.length + ' Verhaltensweisen, ' + out.studien_lesen.length + ' Studien-Hinweise');
