@@ -1,5 +1,5 @@
-# Start: im Ordner server/ erst .env aus .env.example anlegen, dann: docker compose up -d --build
-# Der Dienst ist nur auf dem Server selbst erreichbar (127.0.0.1). Nach außen geht es über den Tunnel (Profil "tunnel") oder einen eigenen Reverse-Proxy.
+# Einfachster Weg: server/einrichten.sh (siehe README). Von Hand: im Ordner server/ .env aus .env.example anlegen, dann docker compose --profile schnelltunnel up -d --build
+# Der Dienst ist nur auf dem Server selbst erreichbar (127.0.0.1). Nach außen geht es über einen der Tunnel oder einen eigenen Reverse-Proxy.
 name: umsteigen
 services:
   umsteigen:
@@ -22,21 +22,39 @@ services:
     mem_limit: 256m
     pids_limit: 100
 
-  # Optional: Cloudflare Tunnel liefert HTTPS ohne offene Ports. Start mit: docker compose --profile tunnel up -d
-  tunnel:
-    image: cloudflare/cloudflared:latest
-    profiles: ["tunnel"]
+  # Schnell-Tunnel ohne Konto und ohne Domain: HTTPS-Adresse *.trycloudflare.com.
+  # Achtung: Die Adresse ist bei JEDEM Start dieses Containers neu, also auch nach einem Neustart des Servers oder von Docker.
+  # Dann einrichten.sh erneut ausführen und die neue Adresse in app/config.json eintragen. Für den Dauerbetrieb den festen Tunnel nutzen.
+  schnelltunnel:
+    image: cloudflare/cloudflared:2026.10.3
+    profiles: ["schnelltunnel"]
     restart: unless-stopped
-    command: tunnel --no-autoupdate run
-    environment:
-      - TUNNEL_TOKEN=${TUNNEL_TOKEN:-}
+    command: tunnel --no-autoupdate --url http://umsteigen:8787
     depends_on:
       - umsteigen
-    read_only: true
     cap_drop:
       - ALL
     security_opt:
       - no-new-privileges:true
+    mem_limit: 128m
+    pids_limit: 100
+
+  # Fester Tunnel mit eigener Domain und gleichbleibender Adresse (Cloudflare-Konto). Token in server/tunnel.env als TUNNEL_TOKEN=…
+  # (einrichten.sh legt die Datei leer mit Rechten 600 an und nutzt diesen Tunnel automatisch, sobald ein Token drinsteht).
+  tunnel:
+    image: cloudflare/cloudflared:2026.10.3
+    profiles: ["tunnel"]
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    env_file: tunnel.env
+    depends_on:
+      - umsteigen
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    mem_limit: 128m
+    pids_limit: 100
 
 volumes:
   umsteigen-daten:

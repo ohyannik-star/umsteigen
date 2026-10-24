@@ -5,8 +5,9 @@ COPY server/package.json server/package-lock.json ./server/
 RUN cd server && npm ci --omit=dev && npm cache clean --force
 COPY server/src ./server/src
 COPY app/data/techniken.js app/data/argumente.js ./app/data/
-RUN mkdir /data && chown node:node /data
-USER node
+# Eigener Benutzer mit hoher Kennung, damit er auf dem Host keinem echten Benutzer entspricht.
+RUN adduser -D -H -u 10001 umsteigen && mkdir /data && chown 10001:10001 /data
+USER 10001:10001
 ENV NODE_ENV=production PORT=8787 DATA_DIR=/data APP_DATA_DIR=/srv/app/data
 VOLUME /data
 EXPOSE 8787

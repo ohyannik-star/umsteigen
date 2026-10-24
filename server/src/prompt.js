@@ -46,6 +46,9 @@ Beispiel eines geprüften Eintrags, für Stil, Tiefe und Ton (nicht das Ausgabef
 ${JSON.stringify(stil, null, 2)}`;
 }
 
+// Spitze Klammern werden ersetzt, damit niemand die Markierungen schließen und eigene Anweisungen davor oder dahinter setzen kann.
+const entschaerfen = s => String(s || '').replace(/</g, '‹').replace(/>/g, '›');
+
 export function nutzerText(argument, kontext) {
-  return `<satz>${argument}</satz>\n<kontext>${kontext || ''}</kontext>`;
+  return `<satz>${entschaerfen(argument)}</satz>\n<kontext>${entschaerfen(kontext)}</kontext>`;
 }

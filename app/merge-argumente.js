@@ -15,5 +15,7 @@ parts.forEach(p => {
 });
 const kats = new Set(out.kategorien.map(k => k.id));
 out.argumente.forEach(a => { if (!kats.has(a.kategorie)) throw new Error('Kategorie unbekannt: ' + a.kategorie + ' bei ' + a.id); });
+// Im Feld anfragen nur Hashes, nie die Anfragenummer selbst (die wäre öffentlich und erlaubt Abrufen und Löschen).
+out.argumente.forEach(a => { if ((a.anfragen || []).some(h => !/^[0-9a-f]{64}$/.test(h))) throw new Error('anfragen bei ' + a.id + ' muss SHA-256-Hashes enthalten (admin.js hash <id>)'); });
 fs.writeFileSync(target, 'window.APP_DATA = window.APP_DATA || {};\nwindow.APP_DATA.argumente = ' + JSON.stringify(out, null, 2) + ';\n', 'utf8');
 console.log('argumente.js: ' + out.argumente.length + ' Argumente in ' + out.kategorien.length + ' Kategorien, ' + out.verhalten.length + ' Verhaltensweisen, ' + out.studien_lesen.length + ' Studien-Hinweise');

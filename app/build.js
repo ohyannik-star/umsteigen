@@ -1,8 +1,16 @@
 // Baut zwei Dinge: dist/umsteigen.html (eine Datei zum Doppelklicken) und site/ (installierbare Web-App zum Hochladen).
 // Aufruf: node app/build.js
-const fs = require('fs'), path = require('path');
+const fs = require('fs'), path = require('path'), vm = require('vm');
 const app = __dirname, root = path.join(app, '..');
 const page = fs.readFileSync(path.join(app, 'index.html'), 'utf8');
+
+// Sicherung: Im Feld anfragen dürfen nur SHA-256-Hashes stehen. Eine echte Anfragenummer würde mit der App veröffentlicht und erlaubte Abrufen und Löschen.
+(() => {
+  const ctx = { window: {} }; vm.createContext(ctx);
+  vm.runInContext(fs.readFileSync(path.join(app, 'data', 'argumente.js'), 'utf8'), ctx);
+  const falsch = ((ctx.window.APP_DATA.argumente || {}).argumente || []).filter(a => (a.anfragen || []).some(h => !/^[0-9a-f]{64}$/.test(h)));
+  if (falsch.length) throw new Error('Feld anfragen enthält etwas anderes als SHA-256-Hashes (admin.js hash <id>): ' + falsch.map(a => a.id).join(', '));
+})();
 const HEAD = '<!doctype html>\n<html lang="de">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n';
 const doc = (body, extraHead) => HEAD + (extraHead || '') + body.replace(/^([\s\S]*?<\/style>)/, '$1\n</head>\n<body>') + '\n</body>\n</html>\n';
 

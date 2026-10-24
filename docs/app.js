@@ -71,7 +71,11 @@ function restoreAll(text) {
   var o = JSON.parse(text);
   if (Array.isArray(o)) { var cur = store.get('tagebuch', []), ids = {}; cur.forEach(function (x) { ids[x.id] = 1; }); o.forEach(function (x) { if (x && x.alias && x.notiz && !ids[x.id]) cur.push({ id: x.id || uid(), alias: x.alias, datum: x.datum || today(), linie: x.linie || '', station: x.station || '', stufe: x.stufe || '', notiz: x.notiz, naechster: x.naechster || '' }); }); store.set('tagebuch', cur); return; }
   if (!o || o.app !== APP || !o.daten) throw new Error('format');
-  Object.keys(o.daten).forEach(function (k) { store.set(k, o.daten[k]); });
+  Object.keys(o.daten).forEach(function (k) {
+    // Anfragen zusammenführen statt überschreiben, damit Nummern und vorgemerkte Löschungen auf diesem Gerät erhalten bleiben.
+    if (k === 'anfragen' && Array.isArray(o.daten[k])) { var hier = store.get('anfragen', []), ids = {}; hier.forEach(function (x) { ids[x.id] = 1; }); store.set('anfragen', hier.concat(o.daten[k].filter(function (x) { return x && x.id && !ids[x.id]; }))); return; }
+    store.set(k, o.daten[k]);
+  });
 }
 var ICONS = {
   start: '<path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v9.5h13V10"/><path d="M10 19.5v-5h4v5"/>',
@@ -604,71 +608,121 @@ function anfSet(l) { store.set('anfragen', l); }
 function anfPatch(id, patch) { var l = anfGet(); l.forEach(function (x) { if (x.id === id) Object.keys(patch).forEach(function (k) { x[k] = patch[k]; }); }); anfSet(l); }
 function apiCall(method, pfad, body) {
   return fetch(API + pfad, { method: method, headers: body ? { 'Content-Type': 'application/json' } : {}, body: body ? JSON.stringify(body) : undefined }).then(function (r) {
-    return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok) throw new Error(d.fehler || 'Der Server antwortet gerade nicht.'); return d; });
+    return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok) { var err = new Error(d.fehler || 'Der Server antwortet gerade nicht.'); err.status = r.status; throw err; } return d; });
   });
 }
-function anfSenden(argument, kontext) {
+// Einträge mit weg warten nur noch darauf, dass der Server das Löschen bestätigt; sie sind unsichtbar.
+function anfSichtbar() { return anfGet().filter(function (x) { return !x.weg; }); }
+function anfVorhanden(id) { return anfSichtbar().some(function (x) { return x.id === id; }); }
+// Löscht auf dem Server und erst danach die Nummer auf dem Gerät, damit ein gescheitertes Löschen später wiederholt werden kann.
+// Satz, Kontext und Entwurf verschwinden sofort vom Gerät; nur die Nummer bleibt, bis der Server bestätigt (ohne Server-Adresse bis später).
+var ANF_LOESCH = {};
+function anfFinde(id) { return anfGet().filter(function (x) { return x.id === id; })[0] || null; }
+function anfServerLoeschen(id, melden) {
+  anfSet(anfGet().map(function (x) { return x.id === id ? { id: id, weg: true } : x; }));
+  var raus = function () { anfSet(anfGet().filter(function (x) { return x.id !== id; })); };
+  if (!API || ANF_LOESCH[id]) return;
+  ANF_LOESCH[id] = true;
+  apiCall('DELETE', '/api/anfragen/' + id).then(function () { delete ANF_LOESCH[id]; raus(); if (melden) toast('Anfrage gelöscht, auch auf dem Server'); }, function (err) {
+    delete ANF_LOESCH[id];
+    if (err && err.status === 404) { raus(); if (melden) toast('Anfrage gelöscht'); }
+    else if (melden) toast('Von diesem Gerät entfernt. Auf dem Server wird sie gelöscht, sobald er wieder erreichbar ist.');
+  });
+}
+// altId: beim erneuten Senden wird die alte, gescheiterte Anfrage erst nach Erfolg ersetzt und dann auch auf dem Server gelöscht.
+function anfSenden(argument, kontext, altId) {
+  if (state.anfBusy) return;
   state.anfBusy = true; render();
   apiCall('POST', '/api/anfragen', { argument: argument, kontext: kontext }).then(function (d) {
-    var l = anfGet(); l.unshift({ id: d.id, argument: argument, kontext: kontext, datum: today(), status: d.status }); anfSet(l);
-    state.anfBusy = false; state.anfForm = null; state.antTab = 'anfragen'; state.anfOffen = d.id; render(); toast('Anfrage gesendet');
+    var l = anfGet(); l.unshift({ id: d.id, argument: argument, kontext: kontext, datum: today(), seit: Date.now(), status: d.status }); anfSet(l);
+    state.anfBusy = false; state.anfFehler = null; if (!altId) state.anfForm = null;
+    if (altId) anfServerLoeschen(altId);
+    state.antTab = 'anfragen'; state.anfOffen = d.id; render(); toast('Anfrage gesendet');
     anfPollen(d.id, 0);
-  }).catch(function (err) { state.anfBusy = false; state.anfFehler = err && err.name === 'TypeError' ? 'Keine Verbindung zum Server. Bitte später noch einmal.' : err.message; render(); });
+  }).catch(function (err) {
+    var text = err && err.name === 'TypeError' ? 'Keine Verbindung zum Server. Bitte später noch einmal.' : err.message;
+    state.anfBusy = false; if (!altId) state.anfFehler = text; render(); toast(text);
+  });
 }
-// Fragt alle drei Sekunden nach, bis der Entwurf fertig ist; nach etwa drei Minuten übernimmt der nächste App-Start.
+// Fragt alle drei Sekunden nach, bis der Entwurf fertig ist, je Anfrage nur ein Abfrager. Nach etwa drei Minuten geht es beim nächsten Öffnen von „Meine Anfragen“ weiter.
+var ANF_POLL = {};
 function anfPollen(id, n) {
-  if (n > 60) return;
+  if (!n) { if (ANF_POLL[id]) return; ANF_POLL[id] = true; }
+  if (n > 60 || !anfVorhanden(id)) { delete ANF_POLL[id]; return; }
   setTimeout(function () {
+    if (!anfVorhanden(id)) { delete ANF_POLL[id]; return; }
+    // Ergebnisse nur übernehmen, solange der Eintrag noch läuft; eine inzwischen erkannte geprüfte Antwort hat Vorrang.
+    var laeuft = function () { var x = anfFinde(id); return x && !x.weg && !x.argId && x.status === 'in-arbeit'; };
     apiCall('GET', '/api/anfragen/' + id).then(function (d) {
       if (d.status === 'in-arbeit') { anfPollen(id, n + 1); return; }
+      delete ANF_POLL[id];
+      if (!laeuft()) return;
       anfPatch(id, { status: d.status, hinweis: d.hinweis || '', entwurf: d.entwurf || null });
       if (state.route === 'antworten' && state.antTab === 'anfragen') render();
       toast(d.status === 'entwurf' ? 'Dein KI-Entwurf ist da' : 'Antwort auf deine Anfrage ist da');
-    }).catch(function () { anfPollen(id, n + 1); });
+    }).catch(function (err) {
+      if (err && err.status === 404) { delete ANF_POLL[id]; if (laeuft()) { anfPatch(id, { status: 'fehler', hinweis: 'Der Server kennt diese Anfrage nicht mehr. Du kannst sie noch einmal senden.' }); if (state.route === 'antworten' && state.antTab === 'anfragen') render(); } return; }
+      anfPollen(id, n + 1);
+    });
   }, n ? 3000 : 2000);
 }
-// Beim Start: Anfragen, deren Nummer in einem geprüften Eintrag steht, gelten als beantwortet; unfertige Entwürfe werden abgeholt.
+// Holt unfertige Entwürfe ab und wiederholt Löschungen, die der Server noch nicht bestätigt hat.
+function anfWeiter() { if (API) anfGet().forEach(function (x) { if (x.weg) anfServerLoeschen(x.id); else if (x.status === 'in-arbeit' && !x.argId) anfPollen(x.id, 0); }); }
+// In den geprüften Einträgen steht nur der SHA-256-Hash der Nummer (Feld anfragen), damit die Nummer selbst nie öffentlich wird.
+function anfHash(id) {
+  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(id)).then(function (b) { return Array.prototype.map.call(new Uint8Array(b), function (x) { return ('0' + x.toString(16)).slice(-2); }).join(''); });
+}
+// Beim Start: Erst Anfragen, deren Hash in einem geprüften Eintrag steht, als beantwortet erkennen (und auf dem Server löschen),
+// danach unfertige Entwürfe abholen, damit kein Abholen die erkannte Antwort überschreibt.
 function anfAbgleich() {
-  var l = anfGet(), neu = false;
-  l.forEach(function (x) {
-    if (x.argId || !ARG) return;
-    var a = ARG.argumente.filter(function (g) { return (g.anfragen || []).indexOf(x.id) >= 0; })[0];
-    if (a) { x.argId = a.id; x.status = 'beantwortet'; x.neu = true; neu = true; }
-  });
-  if (neu) anfSet(l);
-  if (API) l.forEach(function (x) { if (x.status === 'in-arbeit') anfPollen(x.id, 0); });
+  var erledigt = {};
+  if (ARG) ARG.argumente.forEach(function (g) { (g.anfragen || []).forEach(function (h) { erledigt[h] = g.id; }); });
+  var offen = anfSichtbar().filter(function (x) { return !x.argId; });
+  if (!offen.length || !Object.keys(erledigt).length || !(window.crypto && window.crypto.subtle && window.TextEncoder)) { anfWeiter(); return; }
+  Promise.all(offen.map(function (x) { return anfHash(x.id); })).then(function (hashes) {
+    var neu = false;
+    offen.forEach(function (x, i) {
+      var arg = erledigt[hashes[i]]; if (!arg) return;
+      anfPatch(x.id, { argId: arg, status: 'beantwortet', neu: true, entwurf: null }); neu = true;
+      if (API) apiCall('DELETE', '/api/anfragen/' + x.id).catch(function () {});
+    });
+    if (neu) render();
+  }).catch(function () {}).then(anfWeiter);
 }
 function anfBanner() {
-  return anfGet().filter(function (x) { return x.neu && x.argId; }).map(function (x) {
+  return anfSichtbar().filter(function (x) { return x.neu && x.argId; }).map(function (x) {
     var a = argById(x.argId);
     return '<div class="note good"><strong>Deine Anfrage ist jetzt geprüft beantwortet</strong><p>„' + esc(x.argument) + '“' + (a ? ' steht jetzt im Playbook unter „' + esc(a.titel) + '“.' : '') + '</p><div class="row"><button class="btn sm primary" data-act="anf-ansehen" data-id="' + esc(x.id) + '">Geprüfte Antwort öffnen</button></div></div>';
   }).join('');
 }
 function anfKasten(vorschlag) {
-  var f = state.anfForm || { argument: vorschlag || '', kontext: '' };
+  var f = state.anfForm || { argument: vorschlag || '', kontext: '', ok: false };
   return '<section class="panel stack"><div><div class="eyebrow">Argument fehlt?</div><h2>Sag uns, was die Person sagt</h2><p class="muted" style="max-width:62ch">Du bekommst gleich einen KI-Entwurf im gewohnten Aufbau. Innerhalb von etwa vier Wochen arbeiten wir eine geprüfte Antwort mit belegten Fakten in die App ein. Dann meldet sich die App bei dir.</p></div>' +
     '<form class="form-grid" data-form="anfrage"><label class="fld wide">Was sagt die Person?<textarea name="argument" maxlength="300" placeholder="Zum Beispiel: Die Rente ist sowieso weg, für uns bleibt nichts.">' + esc(f.argument) + '</textarea></label>' +
     '<label class="fld wide">Kontext, freiwillig und ohne Namen<input type="text" name="kontext" maxlength="300" value="' + esc(f.kontext) + '" placeholder="Zum Beispiel: älterer Kollege, Thema Rente"></label>' +
-    '<label class="opt wide"><input class="vh" type="checkbox" name="ok"><i class="ck" aria-hidden="true"></i><span class="small">Ich habe keine Namen und keine Angaben eingetragen, an denen man jemanden erkennen kann. Satz und Kontext gehen an den Umsteigen-Server und zur Beantwortung an Anthropic (Claude).</span></label>' +
+    '<label class="opt wide"><input class="vh" type="checkbox" name="ok"' + (f.ok ? ' checked' : '') + '><i class="ck" aria-hidden="true"></i><span class="small">Ich willige ein, dass Satz und Kontext über Cloudflare an den Umsteigen-Server und zur Beantwortung an Anthropic (Claude, USA) gehen. Ich habe keine Namen und keine Angaben eingetragen, an denen man jemanden erkennen kann.</span></label>' +
     (state.anfFehler ? '<div class="note bad wide"><strong>Nicht gesendet</strong><p>' + esc(state.anfFehler) + '</p></div>' : '') +
     '<div class="row wide"><button class="btn primary" type="submit"' + (state.anfBusy ? ' disabled' : '') + '>' + (state.anfBusy ? 'Wird gesendet …' : 'Anfrage senden und KI-Entwurf holen') + '</button></div></form></section>';
 }
 function anfEntwurf(e) {
   var aehnlich = e.aehnlich ? argById(e.aehnlich) : null;
-  return '<div class="note warn"><strong>KI-Entwurf, noch nicht geprüft</strong><p>Erlebnis-Sätze nur nutzen, wenn du so etwas wirklich erlebt hast. Belegte Fakten kommen mit der geprüften Fassung.</p></div>' +
+  return '<div class="note warn"><strong>KI-Entwurf, noch nicht geprüft</strong><p>Erlebnis-Sätze nur nutzen, wenn du so etwas wirklich erlebt hast. Belegte Fakten kommen mit der geprüften Fassung.</p>' + (e.hinweis ? '<p>' + esc(e.hinweis) + '</p>' : '') + '</div>' +
     (aehnlich ? '<div class="note"><strong>Schon im Playbook</strong><p>Ein ähnliches Argument gibt es bereits. <button class="link" data-go="antworten" data-arg="' + esc(aehnlich.id) + '">„' + esc(aehnlich.titel) + '“ öffnen ›</button></p></div>' : '') +
     playbook(e, false) +
     (e.recherche && e.recherche.length ? '<div class="note"><strong>Das prüfen wir noch</strong>' + ul(e.recherche) + '</div>' : '');
 }
+function anfNeuKnopf(x) { return API ? '<div class="row"><button class="btn sm" data-act="anf-neu" data-id="' + esc(x.id) + '"' + (state.anfBusy ? ' disabled' : '') + '>' + (state.anfBusy ? 'Wird gesendet …' : 'Noch einmal senden') + '</button></div>' : ''; }
 function anfListe() {
-  var l = anfGet();
+  var l = anfSichtbar();
   if (!l.length) return '<div class="empty">Noch keine Anfragen. Fehlt dir ein Argument, kannst du es unter „Argumente“ anfragen.</div>';
-  return '<p class="muted" style="max-width:62ch">Deine Anfragen liegen nur auf diesem Gerät. Der Server kennt sie nur über ihre Nummer.</p>' + l.map(function (x) {
+  return '<p class="muted" style="max-width:62ch">Die Liste deiner Anfragen liegt nur auf diesem Gerät.' + (API ? ' Der Server speichert Satz, Kontext und Entwurf ohne Bezug zu dir, höchstens 180 Tage. „Entfernen“ löscht die Anfrage auch dort.' : '') + '</p>' + l.map(function (x) {
     var offen = state.anfOffen === x.id, mitEntwurf = x.status === 'entwurf' && x.entwurf, inhalt = '';
-    if (x.status === 'beantwortet') inhalt = '<div class="row"><button class="btn sm primary" data-act="anf-ansehen" data-id="' + esc(x.id) + '">Geprüfte Antwort öffnen</button></div>';
+    var haengt = x.status === 'in-arbeit' && (x.seit ? Date.now() - x.seit > 6e5 : x.datum < today());
+    if (x.status === 'beantwortet') inhalt = x.argId ? '<div class="row"><button class="btn sm primary" data-act="anf-ansehen" data-id="' + esc(x.id) + '">Geprüfte Antwort öffnen</button></div>' : '<p class="small muted">Geprüft beantwortet. Die Antwort erscheint mit dem nächsten Update der App.</p>';
+    else if (haengt) inhalt = '<p class="small">Der Server hat noch nicht geantwortet. Du kannst die Anfrage noch einmal senden.</p>' + anfNeuKnopf(x);
     else if (x.status === 'in-arbeit') inhalt = '<p class="small muted">Das dauert meist unter einer Minute. Du kannst die App schließen, der Entwurf wird beim nächsten Öffnen abgeholt.</p>';
     else if (mitEntwurf) inhalt = offen ? anfEntwurf(x.entwurf) : '';
-    else inhalt = '<p class="small">' + esc(x.hinweis || 'Bitte später noch einmal versuchen.') + '</p>' + (x.status === 'fehler' && API ? '<div class="row"><button class="btn sm" data-act="anf-neu" data-id="' + esc(x.id) + '">Noch einmal senden</button></div>' : '');
+    else inhalt = '<p class="small">' + esc(x.hinweis || 'Bitte später noch einmal versuchen.') + '</p>' + (x.status === 'fehler' ? anfNeuKnopf(x) : '');
     return '<section class="panel stack"><div class="row"><span class="tag">' + esc(ANF_STATUS[x.status] || x.status) + '</span><span class="small muted">' + esc(x.datum) + '</span><span style="margin-left:auto"></span>' + (mitEntwurf ? '<button class="link" data-act="anf-toggle" data-id="' + esc(x.id) + '">' + (offen ? 'Entwurf schließen' : 'Entwurf ansehen') + '</button>' : '') + '<button class="link" data-act="anf-del" data-id="' + esc(x.id) + '">Entfernen</button></div><h3>„' + esc(x.argument) + '“</h3>' + inhalt + '</section>';
   }).join('');
 }
@@ -700,7 +754,7 @@ function playbook(a, kompakt) {
 function vAntworten() {
   if (!ARG) return missing('Antworten');
   var tabs = [['argumente', 'Argumente'], ['verhalten', 'Verhalten'], ['studien', 'Studien lesen']];
-  if (API || anfGet().length) tabs.push(['anfragen', 'Meine Anfragen']);
+  if (API || anfSichtbar().length) tabs.push(['anfragen', 'Meine Anfragen']);
   var nav = '<div class="seg" role="tablist">' + tabs.map(function (t) { return '<button type="button" role="tab" aria-pressed="' + (state.antTab === t[0]) + '" data-act="ant-tab" data-tab="' + t[0] + '">' + t[1] + '</button>'; }).join('') + '</div>';
   var body = '';
   if (state.antTab === 'verhalten') {
@@ -822,7 +876,7 @@ document.addEventListener('click', function (e) {
   else if (a === 'trainer-exit') { state.trainer = null; render(); }
   else if (a === 'kamp-tab') { state.kampTab = d.tab; render(); }
   else if (a === 'phase') { state.phase = d.id; state.phaseScroll = !!d.id; render(); }
-  else if (a === 'ant-tab') { state.antTab = d.tab; render(); }
+  else if (a === 'ant-tab') { state.antTab = d.tab; render(); if (d.tab === 'anfragen') anfWeiter(); }
   else if (a === 'arg-open') { state.arg = d.id || null; render(); if (d.id) { var ao = $('.panel h2'); if (ao) ao.scrollIntoView({ block: 'start' }); } }
   else if (a === 'fall-arg') { var ff = fallGet(), ix = ff.argumente.indexOf(d.id); if (ix >= 0) ff.argumente.splice(ix, 1); else ff.argumente.push(d.id); fallSet(ff); render(); toast(ix >= 0 ? 'Aus deinem Fall entfernt' : 'Zu deinem Fall hinzugefügt'); }
   else if (a === 'fall-tab') { state.fallTab = d.tab; render(); window.scrollTo(0, 0); }
@@ -848,8 +902,8 @@ document.addEventListener('click', function (e) {
   else if (a === 'bk-download') { downloadText('umsteigen-sicherung-' + today() + '.json', backupAll()); }
   else if (a === 'bk-import') { try { restoreAll($('#bk-io').value); render(); toast('Sicherung eingespielt'); } catch (err) { toast('Das ist keine gültige Sicherung.'); } }
   else if (a === 'anf-toggle') { state.anfOffen = state.anfOffen === d.id ? null : d.id; render(); }
-  else if (a === 'anf-del') { anfSet(anfGet().filter(function (x) { return x.id !== d.id; })); render(); toast('Anfrage entfernt'); }
-  else if (a === 'anf-neu') { var an = anfGet().filter(function (x) { return x.id === d.id; })[0]; if (!an) return; anfSet(anfGet().filter(function (x) { return x.id !== d.id; })); anfSenden(an.argument, an.kontext || ''); }
+  else if (a === 'anf-del') { anfServerLoeschen(d.id, true); render(); if (!API) toast('Von diesem Gerät entfernt'); }
+  else if (a === 'anf-neu') { if (state.anfBusy) return; var an = anfSichtbar().filter(function (x) { return x.id === d.id; })[0]; if (an) anfSenden(an.argument, an.kontext || '', an.id); }
   else if (a === 'anf-ansehen') { var aa = anfGet().filter(function (x) { return x.id === d.id; })[0]; anfPatch(d.id, { neu: false }); if (aa && aa.argId) go('antworten', { arg: aa.argId, argScroll: true, antTab: 'argumente' }); else render(); }
   else if (a === 'tb-clear') { state.confirmClear = true; render(); }
   else if (a === 'tb-clear-no') { state.confirmClear = false; render(); }
@@ -870,6 +924,10 @@ function updateProgress() {
   if (bar) bar.style.width = Math.round(100 * done / N) + '%';
   if (txt) txt.textContent = done + ' von ' + N + ' beantwortet';
 }
+// Eingaben im Anfrage-Formular überstehen ein Neuzeichnen der Seite, etwa wenn gerade ein Entwurf eintrifft.
+function anfFormMerken(e) { var f = e.target && e.target.form; if (f && f.dataset && f.dataset.form === 'anfrage') state.anfForm = { argument: f.argument.value, kontext: f.kontext.value, ok: f.ok.checked }; }
+document.addEventListener('input', anfFormMerken);
+document.addEventListener('change', anfFormMerken);
 document.addEventListener('change', function (e) {
   var f = e.target.closest && e.target.closest('form[data-form="kompass"]'); if (f) { kCollect(f); updateProgress(); }
   if (e.target.dataset && e.target.dataset.act === 'k-select') { var kfs = $('form[data-form="kompass"]'); if (kfs) kCollect(kfs); kGoStep(+e.target.value); return; }
@@ -888,7 +946,7 @@ document.addEventListener('submit', function (e) {
   else if (f.dataset.form === 'kampagne') { evalKampagne(f); render(); }
   else if (f.dataset.form === 'anfrage') {
     var fq = new FormData(f), ar = String(fq.get('argument') || '').trim(), ko = String(fq.get('kontext') || '').trim();
-    state.anfForm = { argument: ar, kontext: ko };
+    state.anfForm = { argument: ar, kontext: ko, ok: !!fq.get('ok') };
     if (ar.length < 8) { state.anfFehler = 'Bitte gib den Satz der Person ein, mindestens 8 Zeichen.'; render(); return; }
     if (!fq.get('ok')) { state.anfFehler = 'Bitte bestätige, dass keine Namen und keine erkennbaren Angaben drinstehen.'; render(); return; }
     state.anfFehler = null; anfSenden(ar, ko);

@@ -276,13 +276,13 @@ window.APP_DATA.leitplanken = {
   "datenschutz": {
     "kurz": "Politische Meinungen, auch nur vermutete, sind besonders geschützte Daten nach Art. 9 DSGVO. Deine Notizen fallen nur dann nicht unter die DSGVO, wenn du sie rein privat für dich führst. Sobald ein Verein, eine Kampagne oder eine Schule den Zweck vorgibt oder du Daten teilst, gelten die vollen Regeln; außerdem können Notizen beschlagnahmt werden.",
     "regeln": [
-      "Nur lokal speichern, mit Passphrase verschlüsselt und ohne Cloud-Sync, es sei denn, du entscheidest dich bewusst dafür.",
+      "Nur lokal speichern und ohne Cloud-Sync, es sei denn, du entscheidest dich bewusst dafür. Notizen außerhalb der App nur verschlüsselt aufbewahren.",
       "Datenminimierung: nur Pseudonym oder Initialen, Datum, Thema, nächster Schritt und eigene Reflexion. Keine Felder für Parteizugehörigkeit, Adresse, Arbeitgeber oder Fotos.",
       "Die Zuordnung von Pseudonym zu Person hältst du weder in der App noch sonst digital fest.",
-      "Löschfrist: 90 Tage nach dem letzten Kontakt, spätestens nach 12 Monaten. Die App erinnert dich daran.",
+      "Löschfrist: 90 Tage nach dem letzten Kontakt, spätestens nach 12 Monaten. Lösche deine Einträge nach dieser Frist selbst.",
       "Keine Listen über Dritte, keine Profile Minderjähriger, keine Weitergabe ohne ausdrücklichen Auftrag der Person.",
       "Export und Teilen nur mit Warnhinweis; keine Nutzungsanalyse, kein Tracking.",
-      "Einzige Ausnahme vom Nur-lokal-Prinzip ist „Argument fehlt?“ unter Antworten: Wenn du dort eine Anfrage sendest, gehen der Satz und dein freiwilliger Kontext an den Umsteigen-Server und zur Beantwortung an Anthropic (Claude, USA). Gespeichert werden Satz, Kontext, KI-Entwurf und Datum, ohne IP-Adresse, ohne Namen und ohne Konto; erledigte Anfragen werden nach 90 Tagen gelöscht. Trage deshalb nie Namen oder Angaben ein, an denen man jemanden erkennt.",
+      "Einzige Ausnahme vom Nur-lokal-Prinzip ist „Argument fehlt?“ unter Antworten: Wenn du dort eine Anfrage sendest, gehen der Satz und dein freiwilliger Kontext über Cloudflare (Tunnel-Dienst, sieht dabei auch deine IP-Adresse) an den Umsteigen-Server und zur Beantwortung an Anthropic (Claude, USA). Der Umsteigen-Server speichert Satz, Kontext, KI-Entwurf und Datum, ohne IP-Adresse, ohne Namen und ohne Konto. Sobald deine App die geprüfte Antwort erkennt oder spätestens beim nächsten Server-Update wird der Inhalt gelöscht; unbeantwortete Anfragen spätestens nach 180 Tagen, der Rest nach 90 Tagen. „Entfernen“ unter „Meine Anfragen“ löscht den Inhalt, sobald der Server erreichbar ist. Trage nie Namen oder Angaben ein, an denen man jemanden erkennt.",
       "Wenn du im Auftrag eines Vereins arbeitest, ist der Verein verantwortlich. Er braucht eine Einwilligung nach Art. 9 Abs. 2 lit. a DSGVO, ein Verarbeitungsverzeichnis und bei größerem Umfang eine Datenschutz-Folgenabschätzung.",
       "Supervision und Fallberatung nur anonymisiert."
     ],

@@ -17,7 +17,7 @@ const ids = new Set();
   txt(a.titel, p + '.titel'); txt(a.dahinter, p + '.dahinter'); txt(a.tonalitaet, p + '.tonalitaet');
   if (!Array.isArray(a.varianten) || a.varianten.length < 2) warns.push(p + ': weniger als 2 Varianten');
   if (a.stichworte !== undefined && (!Array.isArray(a.stichworte) || a.stichworte.some(s => typeof s !== 'string' || !s.trim()))) errors.push(p + ': stichworte muss eine Liste von Wörtern sein');
-  if (a.anfragen !== undefined && (!Array.isArray(a.anfragen) || a.anfragen.some(s => !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(s)))) errors.push(p + ': anfragen muss eine Liste von Anfragenummern sein');
+  if (a.anfragen !== undefined && (!Array.isArray(a.anfragen) || a.anfragen.some(s => !/^[0-9a-f]{64}$/.test(s)))) errors.push(p + ': anfragen muss eine Liste von SHA-256-Hashes sein (admin.js hash <id>), nie die Nummer selbst');
   if (!Array.isArray(a.nogo) || a.nogo.length < 3) errors.push(p + ': nogo braucht 3 bis 6 Einträge');
   const ph = (a.schritte || []).map(s => s.phase);
   if (ph.join('|') !== PHASEN.join('|')) errors.push(p + ': schritte müssen genau die 5 Phasen in Reihenfolge sein, gefunden: ' + ph.join(', '));
