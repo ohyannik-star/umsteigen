@@ -30,8 +30,37 @@ const anfragen = () => JSON.parse(mem['umsteigen:anfragen'] || '[]');
 function click(d) { try { handlers['doc:click']({ target: { closest: () => ({ dataset: d }) }, preventDefault() {} }); } catch (e) { fails.push(JSON.stringify(d) + ': ' + e.stack.split('\n').slice(0, 2).join(' ')); } }
 function route(r) { ctx.location.hash = '#' + r; try { handlers['win:hashchange'](); } catch (e) { fails.push(r + ': ' + e.stack.split('\n').slice(0, 2).join(' ')); } return main.innerHTML.length; }
 const sizes = {};
-for (const r of ['start', 'netz', 'kompass', 'trainer', 'antworten', 'archiv', 'kampagne', 'wissen', 'leitplanken', 'tagebuch']) sizes[r] = route(r);
+const HUBS = ['verstehen', 'argumentieren', 'vorbereiten', 'aktiv', 'schutz'];
+for (const r of ['start'].concat(HUBS, ['meins', 'suche', 'netz', 'kompass', 'trainer', 'antworten', 'archiv', 'kampagne', 'wissen', 'leitplanken', 'tagebuch'])) sizes[r] = route(r);
 const D = window.APP_DATA;
+// Startseite: Zweck, „Hier anfangen“, fünf Bereiche; untere Leiste mit Start, Meine Inhalte, Suche, Mehr
+route('start');
+if (main.innerHTML.indexOf('Jemand aus deinem Umfeld') < 0 || main.innerHTML.indexOf('Hier anfangen') < 0) fails.push('Startseite erklärt den Zweck nicht');
+HUBS.forEach(h => { if (main.innerHTML.indexOf('class="area" data-go="' + h + '"') < 0) fails.push('Startseite ohne Bereich ' + h); });
+const tabs = (els['#tabbar'].innerHTML.match(/<span>[^<]+<\/span>/g) || []).join(' ');
+if (tabs !== '<span>Start</span> <span>Meine Inhalte</span> <span>Suche</span> <span>Mehr</span>') fails.push('Untere Leiste: ' + tabs);
+// Jeder Bereich: Zurück zu Start, höchstens drei Wege, jeder Weg führt irgendwohin
+HUBS.forEach(h => {
+  click({ go: h }); route(h);
+  const n = (main.innerHTML.match(/class="choice-card"/g) || []).length;
+  if (n < 2 || n > 3) fails.push('Bereich ' + h + ' zeigt ' + n + ' Wege');
+  if (main.innerHTML.indexOf('class="crumb"><button data-go="start"') < 0) fails.push('Bereich ' + h + ' ohne Zurück zu Start');
+});
+// Werkzeug aus einem Bereich geöffnet: Zurück führt in den Bereich, nicht zur Startseite
+click({ go: 'verstehen' }); route('verstehen'); click({ go: 'kompass' }); route('kompass');
+if (main.innerHTML.indexOf('class="crumb"><button data-go="verstehen"') < 0) fails.push('Kompass aus „Verstehen“ führt nicht dorthin zurück');
+if (main.innerHTML.indexOf('Person verstehen') < 0) fails.push('Kompass heißt nicht „Person verstehen“');
+// Menü „Mehr“ zeigt Bereiche und alle Werkzeuge
+click({ act: 'sheet' });
+if (els['#sheet'].innerHTML.indexOf('Alle Werkzeuge') < 0 || els['#sheet'].innerHTML.indexOf('data-go="tagebuch"') < 0) fails.push('Menü „Mehr“ unvollständig');
+click({ act: 'sheet' });
+// Sprung an eine Stelle der Leitplanken
+click({ go: 'leitplanken', anker: 'gefahr' }); route('leitplanken');
+if (main.innerHTML.indexOf('id="gefahr"') < 0) fails.push('Leitplanken ohne Abschnitt „gefahr“');
+// Szenario direkt aus der Suche starten
+click({ go: 'trainer', szenario: window.APP_DATA.szenarien[0].id }); route('trainer');
+if (main.innerHTML.indexOf('Szenario verlassen') < 0) fails.push('Szenario aus der Suche startet nicht');
+click({ act: 'trainer-exit' });
 // jede Station einmal anzeigen
 D.linien.forEach(l => { click({ go: 'netz', linie: l.id, station: '' }); l.stationen.forEach(s => click({ go: 'netz', linie: l.id, station: s.id })); });
 sizes.station = main.innerHTML.length;
@@ -52,6 +81,16 @@ function suche(q) { route('antworten'); click({ act: 'ant-tab', tab: 'argumente'
 const treffer = suche('ukraine');
 if (treffer !== ukr.length) fails.push('Suche „ukraine“ findet ' + treffer + ' von ' + ukr.length + ' Argumenten');
 suche('');
+// Globale Suche: findet dieselben Argumente, dazu Techniken; Unsinn ergibt den Hinweis „Nichts gefunden“
+function globalSuche(q) { route('suche'); const f = els['#such-q']; f.value = q; f.on.input(); route('suche'); return main.innerHTML; }
+const g = globalSuche('ukraine');
+if ((g.match(/data-go="antworten" data-arg="/g) || []).length !== ukr.length) fails.push('Globale Suche „ukraine“ findet nicht alle ' + ukr.length + ' Argumente');
+if (globalSuche(D.techniken[0].name).indexOf('data-technik="' + D.techniken[0].id + '"') < 0) fails.push('Globale Suche findet die Technik ' + D.techniken[0].name + ' nicht');
+if (globalSuche('xqzv').indexOf('Nichts gefunden') < 0) fails.push('Globale Suche ohne Hinweis bei null Treffern');
+sizes['suche:ukraine'] = g.length;
+globalSuche('');
+if (main.innerHTML.indexOf('data-act="such-set"') < 0) fails.push('Suche ohne Themenvorschläge');
+route('meins'); if (main.innerHTML.indexOf('Mein Fall') < 0 || main.innerHTML.indexOf('Archiv') < 0 || main.innerHTML.indexOf('Tagebuch') < 0) fails.push('Meine Inhalte unvollständig');
 // Wissen mit Technik
 click({ go: 'wissen', technik: D.techniken[0].id });
 // Tagebuch mit Vorbelegung
