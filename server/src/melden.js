@@ -3,7 +3,7 @@
 export function erstelleMelder({ telegramToken, telegramChat }, abrufen = globalThis.fetch) {
   if (!telegramToken || !telegramChat) return async () => {};
   return async function melden(anfrage) {
-    const text = 'Umsteigen: neue Anfrage (' + anfrage.status + '), Kennung ' + String(anfrage.id).slice(0, 8) + '. Lesen auf dem Server mit admin.js liste.';
+    const text = 'UMDENKEN: neue Anfrage (' + anfrage.status + '), Kennung ' + String(anfrage.id).slice(0, 8) + '. Lesen auf dem Server mit admin.js liste.';
     try {
       await abrufen('https://api.telegram.org/bot' + telegramToken + '/sendMessage', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: telegramChat, text }) });
     } catch (e) { console.error('Telegram nicht erreichbar: ' + e.message); }

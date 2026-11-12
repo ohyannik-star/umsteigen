@@ -1,7 +1,8 @@
 (function () {
 'use strict';
 
-var APP = 'umsteigen';
+var APP = 'umsteigen'; // interner Speichername von vor der Umbenennung; bleibt, damit Gespeichertes und alte Sicherungen weiter passen
+var NAME = 'UMDENKEN';
 var D = window.APP_DATA || {};
 var LINIEN = Array.isArray(D.linien) ? D.linien : [];
 var TECHNIKEN = Array.isArray(D.techniken) ? D.techniken : [];
@@ -54,10 +55,17 @@ function copyText(text) {
 
 var HOSTED = !!window.UMSTEIGEN_HOSTED;
 var API = HOSTED && window.UMSTEIGEN_API ? String(window.UMSTEIGEN_API).replace(/\/+$/, '') : '';
+// Öffentliche Adresse der App für „Weitersagen“ (QR-Code und Link). Die gebaute App bekommt sie aus app/config.json.
+// Sie wird bewusst nirgends als Text angezeigt: Sie steckt nur im QR-Code und im geteilten Link.
+var ADRESSE = String(window.UMSTEIGEN_URL || 'https://ohyannik-star.github.io/umsteigen/');
+var KURZTEXT = 'Die App ' + NAME + ' hilft dir, mit Menschen im Gespräch zu bleiben, die extreme Ansichten vertreten. Kostenlos und ohne Anmeldung.';
 function isStandalone() { try { return window.navigator.standalone === true || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches); } catch (e) { return false; } }
-function shareText(title, text) {
-  if (navigator.share) { try { navigator.share({ title: title, text: text }).catch(function (err) { if (!err || err.name !== 'AbortError') copyText(text); }); return; } catch (e) {} }
-  copyText(text);
+// Teilt über das Gerät; ohne Teilen-Funktion landet der Text (samt Adresse, falls angegeben) in der Zwischenablage.
+function shareText(title, text, url) {
+  var daten = { title: title, text: text }, kopie = url ? text + ' ' + url : text;
+  if (url) daten.url = url;
+  if (navigator.share) { try { navigator.share(daten).catch(function (err) { if (!err || err.name !== 'AbortError') copyText(kopie); }); return; } catch (e) {} }
+  copyText(kopie);
 }
 function downloadText(name, text) {
   try { var b = new Blob([text], { type: 'application/json' }); var u = URL.createObjectURL(b); var a = document.createElement('a'); a.href = u; a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { a.remove(); URL.revokeObjectURL(u); }, 800); toast('Datei gespeichert'); } catch (e) { copyText(text); }
@@ -93,7 +101,8 @@ var ICONS = {
   vorbereiten: '<rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9.5 4V3h5v1"/><path d="m8.5 11 1.8 1.8 3.4-3.4M8.5 16.5h7"/>',
   aktiv: '<circle cx="9" cy="8" r="3"/><circle cx="17.5" cy="9.5" r="2.3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 14.3c2.8.3 5 2.6 5 5.7"/>',
   meins: '<path d="M4 7a2 2 0 0 1 2-2h3.5l2 2H18a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>',
-  suche: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>'
+  suche: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+  teilen: '<circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="m8.3 10.7 7.4-4.4M8.3 13.3l7.4 4.4"/>'
 };
 ICONS.argumentieren = ICONS.antworten; ICONS.schutz = ICONS.leitplanken;
 function icon(k) { return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (ICONS[k] || '') + '</svg>'; }
@@ -104,17 +113,17 @@ function group(title, hint, rows, eyebrow) { return '<div class="group">' + (eye
 /* ---------- Zustand und Routing ---------- */
 var ROUTES = [
   ['start', 'Start'], ['verstehen', 'Verstehen & Einordnen'], ['argumentieren', 'Argumentieren & Reagieren'], ['vorbereiten', 'Gespräche vorbereiten'], ['aktiv', 'Aktiv werden & Vernetzen'], ['schutz', 'Mich schützen & Grenzen setzen'], ['meins', 'Meine Inhalte'], ['suche', 'Suche'],
-  ['kompass', 'Person verstehen'], ['antworten', 'Antworten'], ['trainer', 'Trainer'], ['netz', 'Netzplan'], ['wissen', 'Techniken'], ['kampagne', 'Kampagne'], ['leitplanken', 'Leitplanken'], ['archiv', 'Archiv'], ['tagebuch', 'Tagebuch']
+  ['kompass', 'Person verstehen'], ['antworten', 'Antworten'], ['trainer', 'Trainer'], ['netz', 'Netzplan'], ['wissen', 'Techniken'], ['kampagne', 'Kampagne'], ['leitplanken', 'Leitplanken'], ['archiv', 'Archiv'], ['tagebuch', 'Tagebuch'], ['teilen', 'Weitersagen']
 ];
 function routeName(r) { for (var i = 0; i < ROUTES.length; i++) if (ROUTES[i][0] === r) return ROUTES[i][1]; return r; }
 // Die fünf Bereiche der Startseite. Jeder führt auf eine einfache Seite mit höchstens drei Wegen.
 var HUB_IDS = ['verstehen', 'argumentieren', 'vorbereiten', 'aktiv', 'schutz'];
 var HUBS = {
-  verstehen: { kurz: 'Verstehen', farbe: '#0a5fa7', teaser: 'Was treibt die Person an, und wie ernst ist es?', warum: 'Hinter jeder Haltung stehen Gründe. Wer sie kennt, findet leichter den richtigen Ton. Erst verstehen, dann reden.' },
-  argumentieren: { kurz: 'Argumentieren', farbe: '#15803d', teaser: 'Gute Antworten auf das, was die Person sagt.', warum: 'Die Person sagt etwas, und dir fehlen die Worte? Hier findest du Antworten, die das Gespräch offen halten, statt es zu beenden.' },
-  vorbereiten: { kurz: 'Vorbereiten', farbe: '#7c3aed', teaser: 'Üben und Schritt für Schritt planen.', warum: 'Ein gutes Gespräch lässt sich üben. Probier Antworten aus, bevor es ernst wird, und plane die nächsten Schritte.' },
-  aktiv: { kurz: 'Aktiv werden', farbe: '#c2410c', teaser: 'Mehr Menschen erreichen, Mitstreiter finden.', warum: 'Du willst mehr tun als ein einzelnes Gespräch, etwa in der Nachbarschaft, im Verein oder an der Schule? Hier findest du Wege und Verbündete.' },
-  schutz: { kurz: 'Schützen', farbe: '#0e7490', teaser: 'Auf dich achten und wissen, wann du Hilfe holst.', warum: 'Solche Gespräche kosten Kraft. Hier steht, wie du auf dich achtest, wo deine Grenzen liegen und wer dir hilft, wenn es gefährlich wird.' }
+  verstehen: { kurz: 'Verstehen', farbe: '#0a5fa7', teaser: 'Was treibt die Person an?', warum: 'Hinter jeder Haltung stehen Gründe. Wer sie kennt, findet leichter den richtigen Ton.' },
+  argumentieren: { kurz: 'Argumentieren', farbe: '#15803d', teaser: 'Gute Antworten auf Sätze der Person.', warum: 'Antworten, die das Gespräch offen halten, statt es zu beenden.' },
+  vorbereiten: { kurz: 'Vorbereiten', farbe: '#7c3aed', teaser: 'Üben und Schritte planen.', warum: 'Ein gutes Gespräch lässt sich üben und planen, bevor es ernst wird.' },
+  aktiv: { kurz: 'Aktiv werden', farbe: '#c2410c', teaser: 'Mehr Menschen erreichen.', warum: 'Mehr tun als ein einzelnes Gespräch: Wege und Verbündete für Nachbarschaft, Verein und Schule.' },
+  schutz: { kurz: 'Schützen', farbe: '#0e7490', teaser: 'Auf dich achten, Hilfe holen.', warum: 'Solche Gespräche kosten Kraft. Hier steht, wie du auf dich achtest und wer dir hilft.' }
 };
 // Wohin der Zurück-Link einer Werkzeugseite führt, wenn man sie nicht über einen Bereich geöffnet hat
 var PARENT = { kompass: 'verstehen', antworten: 'argumentieren', trainer: 'vorbereiten', netz: 'vorbereiten', wissen: 'vorbereiten', kampagne: 'aktiv', leitplanken: 'schutz', archiv: 'meins', tagebuch: 'meins' };
@@ -133,13 +142,14 @@ function go(route, patch) {
   if (patch) Object.keys(patch).forEach(function (k) { state[k] = patch[k]; });
   if (route !== state.route && istOben(state.route)) state.from = state.route;
   if (route === 'suche' && state.route !== 'suche') state.focusId = 'such-q';
-  state.route = route; state.sheet = false;
+  state.route = route; state.sheet = false; state.zeigen = false;
   var h = '#' + route;
   if (location.hash !== h) location.hash = h; else render();
 }
 window.addEventListener('hashchange', function () {
   var r = location.hash.replace('#', '');
   if (ROUTES.some(function (x) { return x[0] === r; })) state.route = r;
+  state.zeigen = false;
   render();
 });
 
@@ -157,8 +167,10 @@ function render() {
     sh.hidden = !state.sheet;
     sh.innerHTML = state.sheet ? '<div class="sheet-in" role="dialog" aria-label="Mehr"><div class="sheet-h">Bereiche</div>' + HUB_IDS.map(knopf).join('') +
       '<div class="sheet-h">Alle Werkzeuge</div><div class="sheet-grid">' + TOOL_IDS.map(knopf).join('') + '</div>' +
-      '<div class="sheet-h">App</div><button data-go="leitplanken" data-anker="datenschutz">' + icon('leitplanken') + 'Datenschutz</button>' + (HOSTED ? '<button data-act="check-update">' + icon('start') + 'Nach Updates suchen</button>' : '') + '</div>' : '';
+      '<div class="sheet-h">App</div><button data-go="teilen">' + icon('teilen') + 'Weitersagen</button><button data-go="leitplanken" data-anker="datenschutz">' + icon('leitplanken') + 'Datenschutz</button>' + (HOSTED ? '<button data-act="check-update">' + icon('start') + 'Nach Updates suchen</button>' : '') + '</div>' : '';
   }
+  var gs = $('#gshare');
+  if (gs) { if (state.route === 'teilen') gs.setAttribute('aria-current', 'page'); else gs.removeAttribute('aria-current'); }
   var view = VIEWS[state.route] || VIEWS.start, ziel = crumbZiel(state.route);
   $('#main').innerHTML = '<div class="wrap">' + (ziel ? '<div class="crumb"><button data-go="' + ziel + '">‹ ' + esc(routeName(ziel)) + '</button></div>' : '') + view() + '</div>';
   if (lastRoute !== state.route) { window.scrollTo(0, 0); lastRoute = state.route; }
@@ -169,59 +181,60 @@ function render() {
 /* ---------- Start ---------- */
 function anz(n, eins, mehr) { return n + ' ' + (n === 1 ? eins : mehr); }
 function goAttrs(o) { return o.go ? ' data-go="' + esc(o.go) + '"' + Object.keys(o.daten || {}).map(function (k) { return ' data-' + k + '="' + esc(o.daten[k]) + '"'; }).join('') : ''; }
+// Kachel, die aufs Weitersagen hinweist: auf der Startseite nach den fünf Bereichen und im Bereich „Aktiv werden“
+function weiterZeile(zusatz) {
+  return '<button class="area weiter" data-go="teilen"><span class="area-ic">' + icon('teilen') + '</span><span class="area-t"><strong>Hilft dir die App? Zeig sie weiter.</strong><span>' + esc(zusatz) + '</span></span><span class="area-chev" aria-hidden="true">›</span></button>';
+}
 function vStart() {
   var res = store.get('kompass', null);
-  var schritte = [
-    { go: 'kompass', titel: 'Person verstehen', text: res ? 'Dein Fahrplan steht. Sieh ihn dir an oder ergänze deine Antworten.' : 'Kreuze an, was du bei der Person beobachtest. Daraus entsteht dein Fahrplan: was sie antreibt, was hilft, was schadet.' },
-    { go: 'antworten', titel: 'Antworten finden', text: 'Such den Satz, den die Person sagt, und hol dir Antworten, die das Gespräch offen halten.' },
-    { go: 'trainer', titel: 'Gespräch üben', text: 'Probier Antworten in Alltagssituationen aus, bevor es ernst wird.' }
-  ].map(function (s) { return '<div role="button" tabindex="0"' + goAttrs(s) + '><strong>' + esc(s.titel) + '</strong><p class="small muted" style="margin-top:4px">' + esc(s.text) + '</p><span class="step-cta">Öffnen ›</span></div>'; }).join('');
   var bereiche = HUB_IDS.map(function (h) {
     var b = HUBS[h];
     return '<button class="area" data-go="' + h + '" style="--ac:' + esc(b.farbe) + '"><span class="area-ic">' + icon(h) + '</span><span class="area-t"><strong>' + esc(routeName(h)) + '</strong><span>' + esc(b.teaser) + '</span></span><span class="area-chev" aria-hidden="true">›</span></button>';
   }).join('');
   return '<div class="stack-lg">' +
     '<section class="hero"><h1 class="display">Jemand aus deinem Umfeld vertritt extreme Ansichten?</h1>' +
-      '<p class="lead">Umsteigen hilft dir, mit dieser Person im Gespräch zu bleiben: sie besser verstehen, gut antworten, auf dich selbst achten. Egal aus welcher politischen Richtung. Ohne Belehren, ohne Streit.</p>' +
+      '<p class="lead">' + NAME + ' hilft dir, im Gespräch zu bleiben. Ohne Belehren, ohne Streit, egal aus welcher politischen Richtung.</p>' +
       '<div class="row center"><button class="btn primary lg" data-go="kompass">' + (res ? 'Deinen Fahrplan öffnen' : 'Hier anfangen') + '</button></div>' +
-      '<p class="small muted hero-note">Die App ist für dich. Die Person muss nichts ausfüllen. Was du einträgst, bleibt auf deinem Gerät' + (API ? ', außer Anfragen, die du selbst abschickst' : '') + '.</p></section>' +
+      '<p class="small muted hero-note">Die Person muss nichts ausfüllen. Deine Eingaben bleiben auf deinem Gerät' + (API ? ', außer Anfragen, die du selbst abschickst' : '') + '.</p></section>' +
     anfBanner() +
-    '<section><h2 class="sh">So fängst du an. <span>Drei Schritte, in deinem Tempo.</span></h2><div class="steps go">' + schritte + '</div></section>' +
-    '<section><h2 class="sh">Wobei brauchst du Hilfe? <span>Wähle einen Bereich.</span></h2><div class="areas">' + bereiche + '</div></section>' +
-    (HOSTED && !isStandalone() ? '<div class="note"><strong>Als App auf dem Handy</strong>iPhone: In Safari unten auf „Teilen“ tippen, dann „Zum Home-Bildschirm“ und „Hinzufügen“. Android: Im Browser-Menü „App installieren“ wählen. Danach läuft Umsteigen wie eine App, auch offline. Deine Daten bleiben auf dem Gerät.</div>' : '') +
+    '<section><h2 class="sh sm">Wobei brauchst du Hilfe?</h2><div class="areas">' + bereiche + weiterZeile('Mit QR-Code, Link oder Aushang.') + '</div></section>' +
+    (HOSTED && !isStandalone() ? '<details class="acc inst"><summary>Als App aufs Handy holen</summary><div class="body"><p class="small">iPhone: In Safari auf das Teilen-Symbol tippen (Quadrat mit Pfeil nach oben), dann „Zum Home-Bildschirm“ und „Hinzufügen“. Android: In Chrome auf die drei Punkte tippen, dann „Zum Startbildschirm hinzufügen“ oder „App installieren“. Danach läuft ' + NAME + ' wie eine App, auch offline.</p><p class="small">Wichtig beim iPhone: Die App auf dem Home-Bildschirm fängt leer an. Was du vorher in Safari eingetragen hast, holst du über „Meine Inhalte“ und „Sichern und übertragen“ herüber.</p></div></details>' : '') +
   '</div>';
 }
 
 /* ---------- Bereiche ---------- */
 // Höchstens drei Wege je Bereich. Jeder Weg sagt in einem Satz, warum man ihn öffnet.
 function hubWege(h) {
-  var res = store.get('kompass', null), N = KOMPASS ? KOMPASS.fragen.length : 0;
-  var nArg = ARG ? ARG.argumente.length : 0, nKat = ARG ? ARG.kategorien.length : 0, nVerh = ARG ? (ARG.verhalten || []).length : 0, nStud = ARG ? (ARG.studien_lesen || []).length : 0;
+  var res = store.get('kompass', null);
+  var nArg = ARG ? ARG.argumente.length : 0, nVerh = ARG ? (ARG.verhalten || []).length : 0, nStud = ARG ? (ARG.studien_lesen || []).length : 0;
+  // Die ersten Themen beim Namen nennen, damit man vor dem Tippen sieht, wozu es Antworten gibt
+  var themen = ARG ? ARG.kategorien.slice(0, 3).map(function (k) { return k.name.split(' ')[0]; }) : [];
+  var zuThemen = themen.length > 1 ? ', etwa zu ' + themen.slice(0, -1).join(', ') + ' und ' + themen[themen.length - 1] : '';
   var einzel = LINIEN.filter(function (l) { return l.ebene === 'individuum'; })[0], viele = LINIEN.filter(function (l) { return l.ebene !== 'individuum'; });
   if (h === 'verstehen') return [
-    { go: 'kompass', titel: 'Person verstehen', text: res ? 'Dein Fahrplan vom ' + res.datum + ' steht. Darin: was die Person antreibt, was hilft, was schadet und wo du einsteigst.' : 'Du kreuzt an, was du bei der Person beobachtest: Themen, Verhalten, eure Beziehung. Daraus entsteht dein Fahrplan: was sie antreibt, was hilft, was schadet. ' + N + ' kurze Fragen, du musst nicht alle beantworten.', cta: res ? 'Fahrplan öffnen' : 'Fragen starten' },
-    nStud ? { go: 'antworten', daten: { anttab: 'studien' }, titel: 'Zahlen und Studien einordnen', text: 'Die Person kommt mit einer Statistik? Zahlen sind selten das Problem, ihre Deutung schon. ' + nStud + ' Regeln, wie ihr eine Zahl gemeinsam prüft.', cta: 'Regeln ansehen' } : null,
-    LEIT && LEIT.gefahr ? { go: 'leitplanken', daten: { anker: 'gefahr' }, titel: 'Wie ernst ist es?', text: 'Warnzeichen, bei denen Reden allein nicht mehr reicht, was du dann tust und wen du anrufst.', cta: 'Warnzeichen ansehen' } : null
+    { go: 'kompass', titel: 'Person verstehen', text: res ? 'Dein Fahrplan vom ' + res.datum + ': was die Person antreibt, was hilft und was schadet.' : 'Du kreuzt an, was du beobachtest, und bekommst deinen Fahrplan: was die Person antreibt, was hilft und was schadet.', cta: res ? 'Fahrplan öffnen' : 'Fragen starten' },
+    nStud ? { go: 'antworten', daten: { anttab: 'studien' }, titel: 'Zahlen und Studien einordnen', text: 'So prüft ihr eine Statistik gemeinsam, statt über Zahlen zu streiten.', cta: 'Regeln ansehen' } : null,
+    LEIT && LEIT.gefahr ? { go: 'leitplanken', daten: { anker: 'gefahr' }, titel: 'Wie ernst ist es?', text: 'Warnzeichen, bei denen Reden allein nicht mehr reicht, und wen du dann anrufst.', cta: 'Warnzeichen ansehen' } : null
   ];
   if (h === 'argumentieren') return [
-    ARG ? { go: 'antworten', daten: { anttab: 'argumente' }, titel: 'Antwort auf einen Satz finden', text: nArg + ' typische Sätze in ' + nKat + ' Themen. Zu jedem: was dahintersteckt, der richtige Ton, Wörter, die du meiden solltest, und wörtliche Antworten.' + (API ? ' Fehlt dein Satz, kannst du ihn anfragen.' : ''), cta: 'Satz suchen' } : null,
-    nVerh ? { go: 'antworten', daten: { anttab: 'verhalten' }, titel: 'Wenn die Person laut wird oder abblockt', text: 'Sie spottet, wechselt ständig das Thema oder schickt Videos? ' + nVerh + ' typische Situationen und wie du ruhig bleibst.', cta: 'Situationen ansehen' } : null,
-    { go: 'archiv', titel: 'Rettungssätze für den Blackout', text: 'Drei Sätze, die immer gehen, wenn dir im Gespräch nichts mehr einfällt. Dazu deine gesammelten Sätze und Fakten.', cta: 'Rettungssätze ansehen' }
+    ARG ? { go: 'antworten', daten: { anttab: 'argumente' }, titel: 'Antwort auf einen Satz finden', text: nArg + ' typische Sätze der Person' + zuThemen + '. Zu jedem: der richtige Ton und wörtliche Antworten.' + (API ? ' Ist dein Satz nicht dabei, schickst du ihn uns.' : ''), cta: 'Satz suchen' } : null,
+    nVerh ? { go: 'antworten', daten: { anttab: 'verhalten' }, titel: 'Wenn die Person laut wird oder abblockt', text: nVerh + ' typische Situationen, etwa Spott oder ständiger Themenwechsel, und wie du ruhig bleibst.', cta: 'Situationen ansehen' } : null,
+    { go: 'archiv', titel: 'Rettungssätze für den Blackout', text: 'Drei Sätze, die immer gehen, wenn dir im Gespräch nichts mehr einfällt.', cta: 'Rettungssätze ansehen' }
   ];
   if (h === 'vorbereiten') return [
-    SZENARIEN.length ? { go: 'trainer', titel: 'Gespräch üben', text: anz(SZENARIEN.length, 'Situation', 'Situationen') + ' vom Familienessen bis zur Bürgerversammlung. Du liest, was die Person sagt, wählst eine Antwort und siehst sofort, wie sie wirkt.', cta: 'Üben' } : null,
-    einzel ? { go: 'netz', daten: { linie: einzel.id, station: '' }, titel: 'Gespräch Schritt für Schritt planen', text: 'In ' + einzel.stationen.length + ' Stationen durch ein Gespräch: was du tust, welche Sätze helfen und woran du merkst, dass du weitergehen oder lieber die Richtung wechseln solltest.', cta: 'Plan ansehen' } : null,
-    TECHNIKEN.length ? { go: 'wissen', titel: 'Gesprächstechniken nachlesen', text: TECHNIKEN.length + ' Techniken, etwa gezielt nachfragen oder Gemeinsamkeiten finden. Jede mit Anleitung, Beispiel und ehrlicher Studienlage.', cta: 'Techniken ansehen' } : null
+    SZENARIEN.length ? { go: 'trainer', titel: 'Gespräch üben', text: anz(SZENARIEN.length, 'Situation', 'Situationen') + ' zum Durchspielen: Du wählst eine Antwort und siehst sofort, wie sie wirkt.', cta: 'Üben' } : null,
+    einzel ? { go: 'netz', daten: { linie: einzel.id, station: '' }, titel: 'Gespräch Schritt für Schritt planen', text: 'In ' + einzel.stationen.length + ' Stationen durch ein Gespräch, mit Sätzen und Warnsignalen für jeden Schritt.', cta: 'Plan ansehen' } : null,
+    TECHNIKEN.length ? { go: 'wissen', titel: 'Gesprächstechniken nachlesen', text: TECHNIKEN.length + ' Techniken wie gezieltes Nachfragen, jede mit Anleitung, Beispiel und Studienlage.', cta: 'Techniken ansehen' } : null
   ];
   if (h === 'aktiv') return [
-    KAMPAGNE ? { go: 'kampagne', titel: 'Viele Menschen erreichen', text: 'Für Initiativen, Vereine und Kommunen: Der Planer schlägt Schritte vor, die zu euren Möglichkeiten passen, und sagt ehrlich, was wie gut wirkt.', cta: 'Plan erstellen' } : null,
-    viele.length ? { titel: 'In Nachbarschaft, Schule und Öffentlichkeit', text: 'Fertige Wege für Gruppen, Schritt für Schritt. Wähle, wo du aktiv werden willst.', extra: '<div class="row">' + viele.map(function (l) { return '<button class="btn sm" data-go="netz" data-linie="' + esc(l.id) + '" data-station="">' + badge(l, true) + ' ' + esc(l.name) + '</button>'; }).join('') + '</div>' } : null,
-    HILFE.length ? { go: 'leitplanken', daten: { anker: 'hilfe' }, titel: 'Verbündete und Anlaufstellen finden', text: 'Beratung für Angehörige, Kommunen und Schulen, Hilfe beim Ausstieg und für Betroffene. Du musst das nicht allein machen.', cta: 'Anlaufstellen ansehen' } : null
+    KAMPAGNE ? { go: 'kampagne', titel: 'Viele Menschen erreichen', text: 'Der Planer für Initiativen, Vereine und Kommunen schlägt Schritte vor, die zu euren Möglichkeiten passen.', cta: 'Plan erstellen' } : null,
+    viele.length ? { titel: 'In Nachbarschaft, Schule und Öffentlichkeit', text: 'Fertige Wege für Gruppen, Schritt für Schritt.', extra: '<div class="row">' + viele.map(function (l) { return '<button class="btn sm" data-go="netz" data-linie="' + esc(l.id) + '" data-station="">' + badge(l, true) + ' ' + esc(l.name) + '</button>'; }).join('') + '</div>' } : null,
+    HILFE.length ? { go: 'leitplanken', daten: { anker: 'hilfe' }, titel: 'Verbündete und Anlaufstellen finden', text: 'Beratung für Angehörige, Kommunen und Schulen, damit du das nicht allein machen musst.', cta: 'Anlaufstellen ansehen' } : null
   ];
   if (h === 'schutz') return [
-    LEIT && LEIT.selbstschutz ? { go: 'leitplanken', daten: { anker: 'selbstschutz' }, titel: 'Auf dich selbst achten', text: 'Gespräche über Politik kosten Kraft. Woran du merkst, dass du eine Pause brauchst, und wie du dich schützt.', cta: 'Selbstschutz ansehen' } : null,
-    LEIT && LEIT.rote_linien ? { go: 'leitplanken', daten: { anker: 'rote-linien' }, titel: 'Grenzen kennen', text: 'Was du besser lässt, auch wenn es verlockend ist, und was du stattdessen tust. So bleibt das Gespräch fair, für beide Seiten.', cta: 'Grenzen ansehen' } : null,
-    LEIT && LEIT.gefahr ? { go: 'leitplanken', daten: { anker: 'gefahr' }, titel: 'Wenn es gefährlich wird', text: 'Drohungen, Gewalt, Waffen: Warnzeichen, was du dann tust und welche Stellen helfen.', cta: 'Hilfe ansehen' } : null
+    LEIT && LEIT.selbstschutz ? { go: 'leitplanken', daten: { anker: 'selbstschutz' }, titel: 'Auf dich selbst achten', text: 'Woran du merkst, dass du eine Pause brauchst, und wie du dich schützt.', cta: 'Selbstschutz ansehen' } : null,
+    LEIT && LEIT.rote_linien ? { go: 'leitplanken', daten: { anker: 'rote-linien' }, titel: 'Grenzen kennen', text: 'Was du besser lässt, damit das Gespräch fair bleibt, und was du stattdessen tust.', cta: 'Grenzen ansehen' } : null,
+    LEIT && LEIT.gefahr ? { go: 'leitplanken', daten: { anker: 'gefahr' }, titel: 'Wenn es gefährlich wird', text: 'Drohungen, Gewalt, Waffen: was du dann tust und welche Stellen helfen.', cta: 'Hilfe ansehen' } : null
   ];
   return [];
 }
@@ -233,7 +246,7 @@ function vHub(h) {
   var b = HUBS[h];
   return '<div class="stack-lg"><div class="page-head"><span class="area-ic big" style="--ac:' + esc(b.farbe) + '">' + icon(h) + '</span><h1>' + esc(routeName(h)) + '</h1><p class="why">' + esc(b.warum) + '</p></div>' +
     (h === 'schutz' ? '<div class="note bad choices"><strong>Akute Gefahr?</strong>Ruf die 110. Bei Gedanken an Suizid hilft die Telefonseelsorge rund um die Uhr: 0800 111 0 111.</div>' : '') +
-    '<div class="choices">' + hubWege(h).filter(Boolean).map(wegKarte).join('') + '</div></div>';
+    '<div class="choices">' + hubWege(h).filter(Boolean).map(wegKarte).join('') + (h === 'aktiv' ? weiterZeile('QR-Code für Demo und Infostand.') : '') + '</div></div>';
 }
 
 /* ---------- Meine Inhalte ---------- */
@@ -285,6 +298,25 @@ function vSuche() {
   return '<div class="stack-lg">' + kopf + feld + (gruppen.length ? gruppen.join('') : leer) + '</div>';
 }
 
+/* ---------- Weitersagen ---------- */
+// QR-Code zur Adresse der App. Fehlt der Erzeuger (qr.js), bietet die Seite nur „Link teilen“ an.
+var QR_BILD = '';
+function qrCode() { if (!QR_BILD) QR_BILD = window.QR ? window.QR.svg(ADRESSE, 'QR-Code zur App ' + NAME) : ''; return QR_BILD; }
+function vTeilen() {
+  var qr = qrCode();
+  // Aushang: nur im Druck sichtbar. Großer QR-Code: deckt die ganze Seite ab, damit beim Vorzeigen nichts anderes zu sehen ist.
+  var aushang = '<div class="aushang"><div class="aus-n">' + NAME + '</div><div class="aus-h">Jemand aus deinem Umfeld vertritt extreme Ansichten?</div><p class="aus-p">Diese App hilft dir, im Gespräch zu bleiben. Ohne Belehren, ohne Streit, egal aus welcher politischen Richtung.</p>' + qr + '<p class="aus-s">Handy-Kamera auf den Code halten und den Link antippen.</p><p class="aus-f">Kostenlos · Ohne Anmeldung · Ohne Werbung</p></div>';
+  var gross = '<div class="zeigen" role="dialog" aria-modal="true" aria-label="QR-Code zum Vorzeigen" data-act="zeigen-zu"><div class="zeigen-n">' + NAME + '</div>' + qr + '<p class="zeigen-t">Kamera draufhalten, Link antippen</p><button class="btn" id="zeigen-zu" data-act="zeigen-zu">Schließen</button></div>';
+  return '<div class="stack-lg">' + kopf('Weitersagen', 'Zeig die App weiter', 'Gute Gespräche stecken an. Zeig ' + NAME + ' Menschen, denen es geht wie dir: auf der Demo, am Infostand, im Verein oder im Freundeskreis.', '') +
+    '<section class="panel teilen">' + (qr ? qr + '<p class="small muted">Die andere Person hält ihre Handy-Kamera auf den Code und tippt den Link an, der erscheint.</p>' : '') +
+      '<div class="row center">' + (qr ? '<button class="btn primary" id="zeigen-auf" data-act="zeigen">Groß zeigen</button>' : '') + '<button class="btn" data-act="teilen-link">Link teilen</button></div></section>' +
+    '<div class="choices">' +
+      '<div class="choice-card"><h3>Was du dazu sagen kannst</h3><div class="say"><span class="say-t">„' + esc(KURZTEXT) + '“</span></div></div>' +
+      (qr ? '<div class="choice-card"><h3>Zum Aufhängen und Auslegen</h3><p>Ein Aushang mit QR-Code für Infostand, Vereinsheim oder Schwarzes Brett.</p><div class="row"><button class="btn" data-act="aushang">Aushang drucken</button></div><p class="small muted">Tipp: Im Druckfenster „Kopf- und Fußzeilen“ ausschalten, sonst druckt der Browser Datum und Web-Adresse mit.</p></div>' : '') +
+      '<div class="note"><strong>Gut zu wissen</strong>Beim Vorzeigen sieht niemand deine Notizen. Empfiehl die App, aber dräng sie niemandem auf. Und zeig sie nicht der Person, um die du dich sorgst: Das wirkt schnell wie ein Vorwurf.</div>' +
+    '</div>' + (qr ? aushang : '') + (qr && state.zeigen ? gross : '') + '</div>';
+}
+
 /* ---------- Seitenkopf ---------- */
 function kopf(eyebrow, titel, warum, mehr) { return '<div class="page-head"><div class="eyebrow">' + esc(eyebrow) + '</div><h1>' + esc(titel) + '</h1><p class="why">' + esc(warum) + '</p>' + (mehr ? '<p class="small muted">' + esc(mehr) + '</p>' : '') + '</div>'; }
 
@@ -325,7 +357,7 @@ function stopBody(l, s) {
       (s.techniken && s.techniken.length ? '<div><h4>Techniken dazu</h4><div class="row">' + technikChips(s.techniken) + '</div></div>' : '') +
     '</div></div>' +
     '<div class="stack"><div><h4>Wie es weitergeht</h4>' + (weiter ? '<p class="small muted">Je nachdem, was passiert, fährst du hier weiter:</p>' + weiter : '<p class="muted small">Endstation dieser Linie. Steig um oder fang noch einmal von vorn an.</p>') + '</div>' +
-    (um ? '<div><h4>Umsteigen</h4><p class="small muted">Wechsle die Linie, sobald eines davon zutrifft:</p>' + um + '</div>' : '') +
+    (um ? '<div><h4>Linie wechseln</h4><p class="small muted">Sobald eines davon zutrifft:</p>' + um + '</div>' : '') +
     '<div class="row"><button class="btn sm" data-go="tagebuch" data-prefill="' + esc(l.id) + '|' + esc(s.id) + '">Im Tagebuch notieren</button></div></div>' +
   '</div>';
 }
@@ -505,7 +537,7 @@ function vTrainer() {
   if (!node) return '<div class="note bad">Szenario-Knoten fehlt. <button class="btn sm" data-act="trainer-exit">Zurück</button></div>';
   var head = '<div class="page-head"><div class="eyebrow">Szenario · Schritt ' + (t.history.length + 1) + ' · <span class="score">' + t.score + ' / ' + t.max + ' Punkte</span></div><h1>' + esc(sz.titel) + '</h1><p>' + esc(sz.kontext) + ' <em>' + esc(sz.person) + '</em></p></div>';
   if (!node.optionen || !node.optionen.length) {
-    return '<div class="stack-lg">' + head + '<div class="bubble"><div class="who">Die Person</div>' + esc(node.aussage) + '</div><div class="panel stack"><h2>Fazit</h2><p>' + esc(node.abschluss || '') + '</p><p class="score">Ergebnis: ' + t.score + ' von ' + t.max + ' Punkten.</p><div class="row"><button class="btn primary" data-act="trainer-start" data-id="' + esc(sz.id) + '">Noch einmal</button><button class="btn" data-act="trainer-exit">Andere Szenarien</button></div></div></div>';
+    return '<div class="stack-lg">' + head + '<div class="bubble"><div class="who">Die Person</div>' + esc(node.aussage) + '</div><div class="panel stack"><h2>Fazit</h2><p>' + esc(node.abschluss || '') + '</p><p class="score">Ergebnis: ' + t.score + ' von ' + t.max + ' Punkten.</p><div class="row"><button class="btn primary" data-act="trainer-start" data-id="' + esc(sz.id) + '">Noch einmal</button><button class="btn" data-act="trainer-exit">Andere Szenarien</button></div><p class="small muted">Hat dir das Üben geholfen? <button class="link" style="font-size:inherit;padding:0" data-go="teilen">Zeig die App weiter ›</button></p></div></div>';
   }
   if (!t.order[t.node]) t.order[t.node] = shuffled(node.optionen);
   var picked = t.chosen != null ? node.optionen[t.chosen] : null;
@@ -806,7 +838,7 @@ function anfKasten(vorschlag) {
   return '<section class="panel stack"><div><div class="eyebrow">Argument fehlt?</div><h2>Sag uns, was die Person sagt</h2><p class="muted" style="max-width:62ch">Du bekommst gleich einen KI-Entwurf im gewohnten Aufbau. Innerhalb von etwa vier Wochen arbeiten wir eine geprüfte Antwort mit belegten Fakten in die App ein. Dann meldet sich die App bei dir.</p></div>' +
     '<form class="form-grid" data-form="anfrage"><label class="fld wide">Was sagt die Person?<textarea name="argument" maxlength="300" placeholder="Zum Beispiel: Die Rente ist sowieso weg, für uns bleibt nichts.">' + esc(f.argument) + '</textarea></label>' +
     '<label class="fld wide">Kontext, freiwillig und ohne Namen<input type="text" name="kontext" maxlength="300" value="' + esc(f.kontext) + '" placeholder="Zum Beispiel: älterer Kollege, Thema Rente"></label>' +
-    '<label class="opt wide"><input class="vh" type="checkbox" name="ok"' + (f.ok ? ' checked' : '') + '><i class="ck" aria-hidden="true"></i><span class="small">Ich willige ein, dass Satz und Kontext über Cloudflare an den Umsteigen-Server und zur Beantwortung an Anthropic (Claude, USA) gehen. Ich habe keine Namen und keine Angaben eingetragen, an denen man jemanden erkennen kann.</span></label>' +
+    '<label class="opt wide"><input class="vh" type="checkbox" name="ok"' + (f.ok ? ' checked' : '') + '><i class="ck" aria-hidden="true"></i><span class="small">Ich willige ein, dass Satz und Kontext über Cloudflare an den ' + NAME + '-Server und zur Beantwortung an Anthropic (Claude, USA) gehen. Ich habe keine Namen und keine Angaben eingetragen, an denen man jemanden erkennen kann.</span></label>' +
     (state.anfFehler ? '<div class="note bad wide"><strong>Nicht gesendet</strong><p>' + esc(state.anfFehler) + '</p></div>' : '') +
     '<div class="row wide"><button class="btn primary" type="submit"' + (state.anfBusy ? ' disabled' : '') + '>' + (state.anfBusy ? 'Wird gesendet …' : 'Anfrage senden und KI-Entwurf holen') + '</button></div></form></section>';
 }
@@ -943,10 +975,15 @@ function fallHub(res) {
     '<div class="row"><button class="btn" data-act="share-kompass">Fahrplan teilen</button><button class="btn" data-act="copy-kompass">Als Text kopieren</button><button class="btn" data-act="kompass-edit">Antworten ändern</button><button class="btn" data-act="kompass-reset">Neu beginnen</button></div></div>';
 }
 
-var VIEWS = { start: vStart, meins: vMeins, suche: vSuche, antworten: vAntworten, archiv: vArchiv, netz: vNetz, kompass: vKompass, trainer: vTrainer, kampagne: vKampagne, wissen: vWissen, leitplanken: vLeitplanken, tagebuch: vTagebuch };
+var VIEWS = { start: vStart, meins: vMeins, suche: vSuche, antworten: vAntworten, archiv: vArchiv, netz: vNetz, kompass: vKompass, trainer: vTrainer, kampagne: vKampagne, wissen: vWissen, leitplanken: vLeitplanken, tagebuch: vTagebuch, teilen: vTeilen };
 HUB_IDS.forEach(function (h) { VIEWS[h] = function () { return vHub(h); }; });
 function trainerNeu(id) { var sz = findIn(SZENARIEN, id); return sz ? { id: sz.id, node: sz.start, chosen: null, history: [], score: 0, max: 0, order: {} } : null; }
 var AFTER = {
+  // Großer QR-Code: Tastatur-Fokus auf „Schließen“ setzen und nach dem Schließen zurück auf „Groß zeigen“
+  teilen: function () {
+    if (state.zeigen) { var zu = $('#zeigen-zu'); if (zu) zu.focus(); }
+    else if (state.focusId === 'zeigen-auf') { var auf = $('#zeigen-auf'); if (auf) auf.focus(); state.focusId = null; }
+  },
   suche: function () { bindSearch('such-q', 'suchQ'); },
   netz: function () { var el = $('.stop.sel'); if (el && state.station) el.scrollIntoView({ block: 'start' }); },
   kompass: function () { updateProgress(); },
@@ -1004,6 +1041,10 @@ document.addEventListener('click', function (e) {
   else if (a === 'arch-del-yes') { var ad = archGet(); ad.eintraege = ad.eintraege.filter(function (x) { return x.id !== d.id; }); ad.pins = ad.pins.filter(function (x) { return x !== d.id; }); archSet(ad); state.confirmDel = null; render(); toast('Eintrag gelöscht'); }
   else if (a === 'copy-text') { copyText(d.text || ''); }
   else if (a === 'sheet') { state.sheet = !state.sheet; render(); }
+  else if (a === 'zeigen') { state.zeigen = true; render(); }
+  else if (a === 'zeigen-zu') { state.zeigen = false; state.focusId = 'zeigen-auf'; render(); }
+  else if (a === 'teilen-link') { shareText(NAME, KURZTEXT, ADRESSE); }
+  else if (a === 'aushang') { if (typeof window.print === 'function') window.print(); else toast('Drucken geht hier nicht. Öffne die App dafür am Computer.'); }
   else if (a === 'check-update') { if (state.sheet) { state.sheet = false; render(); } if (window.umsteigenUpdate) window.umsteigenUpdate(); else toast('Diese Version prüft nicht automatisch. Seite neu laden.'); }
   else if (a === 'kamp-edit') { state.kampEdit = true; render(); }
   else if (a === 'kamp-cancel') { state.kampEdit = false; render(); }
@@ -1012,11 +1053,11 @@ document.addEventListener('click', function (e) {
   else if (a === 'tb-del') { state.confirmDel = d.id; render(); }
   else if (a === 'tb-del-no') { state.confirmDel = null; render(); }
   else if (a === 'tb-del-yes') { store.set('tagebuch', store.get('tagebuch', []).filter(function (x) { return x.id !== d.id; })); state.confirmDel = null; render(); toast('Eintrag gelöscht'); }
-  else if (a === 'share-kompass') { var rk = store.get('kompass', null); if (rk) shareText('Mein Fahrplan aus Umsteigen', kompassMarkdown(rk)); }
-  else if (a === 'share-kampagne') { var pk = store.get('kampagne', null); if (pk) shareText('Kampagnenplan aus Umsteigen', kampagneMarkdown(pk)); }
+  else if (a === 'share-kompass') { var rk = store.get('kompass', null); if (rk) shareText('Mein Fahrplan aus ' + NAME, kompassMarkdown(rk)); }
+  else if (a === 'share-kampagne') { var pk = store.get('kampagne', null); if (pk) shareText('Kampagnenplan aus ' + NAME, kampagneMarkdown(pk)); }
   else if (a === 'bk-copy') { copyText(backupAll()); }
-  else if (a === 'bk-share') { shareText('Umsteigen-Sicherung vom ' + today(), backupAll()); }
-  else if (a === 'bk-download') { downloadText('umsteigen-sicherung-' + today() + '.json', backupAll()); }
+  else if (a === 'bk-share') { shareText(NAME + '-Sicherung vom ' + today(), backupAll()); }
+  else if (a === 'bk-download') { downloadText('umdenken-sicherung-' + today() + '.json', backupAll()); }
   else if (a === 'bk-import') { try { restoreAll($('#bk-io').value); render(); toast('Sicherung eingespielt'); } catch (err) { toast('Das ist keine gültige Sicherung.'); } }
   else if (a === 'anf-toggle') { state.anfOffen = state.anfOffen === d.id ? null : d.id; render(); }
   else if (a === 'anf-del') { anfServerLoeschen(d.id, true); render(); if (!API) toast('Von diesem Gerät entfernt'); }
@@ -1027,6 +1068,8 @@ document.addEventListener('click', function (e) {
   else if (a === 'tb-clear-yes') { store.del('tagebuch'); state.confirmClear = false; render(); toast('Alle Einträge gelöscht'); }
 });
 document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && state.zeigen) { state.zeigen = false; state.focusId = 'zeigen-auf'; render(); return; }
+  if (e.key === 'Tab' && state.zeigen) { e.preventDefault(); var zu = $('#zeigen-zu'); if (zu) zu.focus(); return; }
   if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-go], [role="button"][data-act]')) { e.preventDefault(); e.target.dispatchEvent(new MouseEvent('click', { bubbles: true })); }
 });
 function bindSearch(id, key) {

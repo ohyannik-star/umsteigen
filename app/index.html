@@ -1,5 +1,4 @@
-<title>Umsteigen</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<title>UMDENKEN</title>
 <style>
 /* Layout: wie apple.com. Schmale Glas-Navigation oben, Inhalt in einer 1024er-Spalte, große schwarze und weiße Kacheln mit 28 px Rundung in seitlich auslaufenden Reihen, fette Überschrift mit grauem Nachsatz. */
 :root {
@@ -52,20 +51,32 @@ button { font: inherit; color: inherit; }
 /* Navigation */
 .gnav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--glass); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid var(--hair); }
 .gnav-in { max-width: 1024px; margin: 0 auto; padding-inline: 22px; height: 48px; display: flex; align-items: center; gap: 28px; }
-.brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .95rem; letter-spacing: -.01em; flex: none; cursor: pointer; background: none; border: 0; padding: 0; }
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: .95rem; letter-spacing: .05em; flex: none; cursor: pointer; background: none; border: 0; padding: 0; }
 .brand-badge { width: 22px; height: 22px; border-radius: 6px; background: var(--fg); color: var(--bg); font-size: .72rem; font-weight: 700; display: grid; place-items: center; }
 .nav { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; margin-left: auto; }
 .nav::-webkit-scrollbar { display: none; }
 .nav button { border: 0; background: none; padding: 6px 10px; font-size: .8rem; color: var(--fg); opacity: .78; cursor: pointer; white-space: nowrap; border-radius: 6px; transition: opacity .15s; }
 .nav button:hover { opacity: 1; }
 .nav button[aria-current="page"] { opacity: 1; font-weight: 600; }
+.gshare { display: inline-flex; align-items: center; gap: 6px; flex: none; border: 0; border-radius: 980px; padding: 5px 12px; background: var(--accent-soft); color: var(--link); font-size: .8rem; font-weight: 600; cursor: pointer; transition: filter .15s; }
+.gshare svg { width: 15px; height: 15px; }
+.gshare:hover { filter: brightness(.96); }
+.gshare[aria-current="page"] { background: var(--fg); color: var(--bg); }
+/* Zwischen Handy- und Desktop-Breite ist die Kopfzeile eng: Dort zeigt „Weitersagen“ nur das Symbol, damit „Meine Inhalte“ und „Suche“ sichtbar bleiben */
+@media (min-width: 735px) and (max-width: 979px) {
+  .gnav-in { gap: 12px; }
+  .nav { gap: 0; }
+  .nav button { padding-inline: 5px; font-size: .78rem; }
+  .gshare { padding: 7px; }
+  .gshare span { display: none; }
+}
 
 /* Seite */
-.main { padding-block: 44px 80px; min-width: 0; max-width: 100%; }
+.main { padding-block: 36px 64px; min-width: 0; max-width: 100%; }
 .wrap { max-width: 1024px; margin: 0 auto; padding-inline: 22px; }
 .wrap > * { min-width: 0; }
 .stack { display: flex; flex-direction: column; gap: 12px; }
-.stack-lg { display: flex; flex-direction: column; gap: 44px; }
+.stack-lg { display: flex; flex-direction: column; gap: 36px; }
 .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 .center { justify-content: center; text-align: center; }
 .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
@@ -165,12 +176,13 @@ button { font: inherit; color: inherit; }
 .form-end { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; padding-top: 26px; border-top: 1px solid var(--hair); }
 
 /* Kompass: Richtungen, Fortschritt, Profil */
-/* Startseite: Zweck oben, drei Schritte, fünf Bereiche */
+/* Startseite: Zweck oben, fünf Bereiche, Hinweis aufs Weitersagen */
 .btn.lg { padding: 14px 30px; font-size: 1.08rem; }
 .hero-note { max-width: 34em; }
-.steps.go > div { cursor: pointer; transition: transform .2s, box-shadow .2s; }
-.steps.go > div:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-.step-cta { display: inline-block; margin-top: 10px; color: var(--link); font-size: .9rem; font-weight: 500; }
+.sh.sm { font-size: clamp(1.15rem, 2.2vw, 1.5rem); margin-bottom: 12px; }
+.area.weiter { width: 100%; background: var(--accent-soft); --ac: var(--accent); }
+.area.weiter .area-t span { color: var(--fg-2); }
+details.acc.inst summary { font-size: .95rem; font-weight: 500; padding-block: 12px; }
 .areas { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
 .area { display: flex; align-items: center; gap: 16px; background: var(--tile); border: 0; border-radius: 22px; padding: 20px 18px; min-height: 96px; text-align: left; cursor: pointer; color: var(--fg); transition: transform .2s, box-shadow .2s; }
 .area:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
@@ -187,7 +199,7 @@ button { font: inherit; color: inherit; }
 .crumb button { background: none; border: 0; padding: 4px 0; color: var(--link); cursor: pointer; font-size: .95rem; }
 .crumb button:hover { text-decoration: underline; }
 .page-head p.why { color: var(--fg); }
-details.why.kh { text-align: center; margin-top: -30px; }
+details.why.kh { text-align: center; margin-top: -22px; }
 details.why.kh p { margin-inline: auto; }
 .choices { display: grid; gap: 14px; max-width: 760px; margin-inline: auto; width: 100%; }
 .choice-card { background: var(--tile); border-radius: 22px; padding: 24px; display: flex; flex-direction: column; gap: 8px; text-align: left; min-width: 0; }
@@ -206,6 +218,38 @@ input.such { max-width: 560px; font-size: 1.1rem; padding: 14px 18px; border-rad
 .sheet-h { font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 12px 10px 4px; }
 .sheet-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
 [id] { scroll-margin-top: 64px; }
+/* Weitersagen: QR-Code auf der Seite, groß zum Vorzeigen und als Aushang im Druck. Der Code bleibt immer schwarz auf weiß. */
+.teilen { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; max-width: 760px; width: 100%; margin-inline: auto; }
+.qr { display: block; width: min(260px, 72vw); height: auto; border-radius: 12px; }
+.zeigen { position: fixed; inset: 0; z-index: 60; background: #fff; color: #000; display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 20px; text-align: center; cursor: pointer; overflow-y: auto; }
+.zeigen > :first-child { margin-top: auto; }
+.zeigen > :last-child { margin-bottom: auto; }
+.zeigen .qr { flex: none; width: min(88vw, 60vh); border-radius: 0; }
+/* Handy quer: Code links, Name, Hinweis und „Schließen“ rechts daneben, damit nichts abgeschnitten wird */
+@media (orientation: landscape) and (max-height: 500px) {
+  .zeigen { display: grid; grid-template-columns: auto auto; justify-content: center; align-content: center; align-items: center; column-gap: 28px; }
+  .zeigen .qr { grid-column: 1; grid-row: 1 / span 3; width: min(50vw, 100vh - 40px); width: min(50vw, 100dvh - 40px); }
+  .zeigen > :not(.qr) { grid-column: 2; margin: 0; justify-self: center; }
+}
+.zeigen-n { font-size: 1.6rem; font-weight: 800; letter-spacing: .06em; }
+.zeigen-t { font-size: 1.15rem; font-weight: 600; }
+.zeigen .btn { background: #e8e8ed; color: #1d1d1f; }
+.aushang { display: none; }
+@media print {
+  /* Eigene Seite ohne Rand: Dann lässt der Browser Datum und Web-Adresse am Blattrand weg; der Rand steckt im Aushang selbst */
+  @page aushang { margin: 0; }
+  body:has(.aushang) { background: #fff; }
+  body:has(.aushang) .gnav, body:has(.aushang) .tabbar, body:has(.aushang) .foot, body:has(.aushang) .sheet, body:has(.aushang) .toast, body:has(.aushang) .crumb, body:has(.aushang) .zeigen, body:has(.aushang) .wrap > .stack-lg > :not(.aushang) { display: none !important; }
+  body:has(.aushang) .main { padding: 0; }
+  .aushang { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7mm; min-height: 250mm; box-sizing: border-box; padding: 12mm; page: aushang; text-align: center; color: #000; break-before: page; }
+  body:has(.aushang) .aushang { break-before: auto; }
+  .aushang .qr { width: 95mm; height: 95mm; border-radius: 0; }
+  .aus-n { font-size: 44pt; font-weight: 800; letter-spacing: .06em; }
+  .aus-h { font-size: 24pt; font-weight: 700; line-height: 1.15; max-width: 150mm; }
+  .aus-p { font-size: 14pt; line-height: 1.35; max-width: 140mm; }
+  .aus-s { font-size: 14pt; font-weight: 600; }
+  .aus-f { font-size: 11pt; }
+}
 .kb { display: flex; flex-direction: column; gap: 6px; padding-block: 36px 8px; }
 .kb h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); }
 .kb + .group { border-top: 0; padding-top: 10px; }
@@ -374,9 +418,10 @@ details.acc .body { padding: 0 4px 20px; }
   table.stack-m td { border: 0; padding: 4px 0; }
   table.stack-m td::before { content: attr(data-label); display: block; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
   .gnav-in { gap: 14px; padding-inline: 16px; }
-  .main { padding-block: 28px 56px; }
+  .gshare { margin-left: auto; padding: 8px 14px; font-size: .84rem; }
+  .main { padding-block: 16px 40px; }
   .wrap { padding-inline: 16px; }
-  .stack-lg { gap: 34px; }
+  .stack-lg { gap: 24px; }
   .station-detail { grid-template-columns: 1fr; }
   .tile { padding: 24px 24px 0; min-height: 360px; border-radius: 22px; }
   .rail > * { flex-basis: 84vw; }
@@ -386,29 +431,46 @@ details.acc .body { padding: 0 4px 20px; }
   .iconrow { justify-content: flex-start; }
   .rail { margin-inline: -16px; padding-inline: 16px; scroll-padding-inline: 16px; }
   .iconrow button { flex-basis: 88px; }
-  .crumb { margin: -12px 0 12px; }
-  .steps.go { gap: 8px; }
-  .steps.go > div { display: grid; grid-template-columns: 34px 1fr; column-gap: 10px; padding: 14px 16px; border-radius: 16px; }
-  .steps.go > div::before { grid-row: span 2; margin: 0; font-size: 1.5rem; }
-  .steps.go .step-cta { display: none; }
-  .areas { grid-template-columns: 1fr; gap: 10px; }
-  .area { padding: 16px 14px; min-height: 0; border-radius: 18px; }
-  .area-ic { width: 46px; height: 46px; border-radius: 14px; }
-  .choice-card { padding: 20px; border-radius: 18px; }
-  details.why.kh { margin-top: -22px; }
+  .crumb { margin: -6px 0 10px; }
+  /* Kompakt auf dem Handy: kleinere Überschriften, engere Abstände, schmale Zeilen für die Bereiche */
+  .hero { gap: 12px; padding-block: 4px 0; }
+  .display { font-size: 1.75rem; }
+  .lead { font-size: 1.02rem; }
+  .btn.lg { padding: 12px 26px; font-size: 1.02rem; }
+  .page-head { gap: 8px; }
+  .page-head h1 { font-size: 1.6rem; }
+  .page-head p { font-size: 1rem; }
+  .sh { margin-bottom: 14px; }
+  .sh.sm { margin-bottom: 10px; }
+  .areas { grid-template-columns: 1fr; gap: 8px; }
+  .area { padding: 11px 12px; min-height: 0; border-radius: 16px; gap: 12px; }
+  .area-ic { width: 40px; height: 40px; border-radius: 12px; }
+  .area-ic svg { width: 22px; height: 22px; }
+  .area-ic.big { width: 52px; height: 52px; border-radius: 16px; }
+  .area-ic.big svg { width: 28px; height: 28px; }
+  .area-t { gap: 2px; }
+  .area-t strong { font-size: .95rem; }
+  .area-chev { font-size: 1.3rem; }
+  .area-t span { font-size: .86rem; }
+  .choice-card { padding: 16px; border-radius: 16px; gap: 6px; }
+  .choice-card h3 { font-size: 1.12rem; }
+  .choice-card p { font-size: .95rem; }
+  .foot { padding-top: 16px; }
+  details.why.kh { margin-top: -14px; }
 }
 </style>
 
 <header class="gnav">
   <div class="gnav-in">
-    <button class="brand" data-go="start">Umsteigen</button>
+    <button class="brand" data-go="start">UMDENKEN</button>
     <nav class="nav" id="nav" aria-label="Bereiche"></nav>
+    <button class="gshare" id="gshare" data-go="teilen" aria-label="Weitersagen" title="Weitersagen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="m8.3 10.7 7.4-4.4M8.3 13.3l7.4 4.4"/></svg><span>Weitersagen</span></button>
   </div>
 </header>
 <main class="main" id="main"></main>
 <nav class="tabbar" id="tabbar" aria-label="Bereiche"></nav>
 <div class="sheet" id="sheet" data-act="sheet" hidden></div>
-<footer class="foot">Alle Daten bleiben in deinem Browser, außer freiwilligen Anfragen unter „Argument fehlt?“. Keine Konten. Jede Empfehlung nennt Evidenzstufe und Quellen. Die Inhalte ersetzen keine professionelle Beratung. Bei Gefahr für Leib und Leben wähle die 110.<span id="ver"></span></footer>
+<footer class="foot">Deine Eingaben bleiben auf deinem Gerät, solange du sie nicht selbst abschickst oder teilst. Kein Konto. Empfehlungen nennen Evidenzstufe und Quellen. Kein Ersatz für professionelle Beratung. Bei Gefahr: 110.<span id="ver"></span></footer>
 
 <script src="data/linien.js"></script>
 <script src="data/techniken.js"></script>
@@ -419,4 +481,5 @@ details.acc .body { padding: 0 4px 20px; }
 <script src="data/hilfe.js"></script>
 <script src="data/messung.js"></script>
 <script src="data/argumente.js"></script>
+<script src="qr.js"></script>
 <script src="app.js"></script>

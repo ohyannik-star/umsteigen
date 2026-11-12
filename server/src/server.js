@@ -117,7 +117,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   aufraeumen();
   setInterval(aufraeumen, 864e5).unref();
   starteServer({ config, speicher, erstelleEntwurf, melden, beantwortet: appDaten.beantwortet }).then(() => {
-    console.log('Umsteigen-Server läuft auf Port ' + config.port + (config.mock ? ' im TESTMODUS (keine KI)' : ' mit ' + config.modell) + '. Erlaubt: ' + config.erlaubteOrigins.join(', ') +
+    console.log('UMDENKEN-Server läuft auf Port ' + config.port + (config.mock ? ' im TESTMODUS (keine KI)' : ' mit ' + config.modell) + '. Erlaubt: ' + config.erlaubteOrigins.join(', ') +
       '. Limits: ' + config.limitProStunde + ' pro Stunde und ' + config.limitProTagProAbsender + ' pro Tag je Absender, ' + config.limitProTag + ' pro Tag gesamt' + (config.limitProTag === 0 ? ' (pausiert)' : '') + ', höchstens ' + config.maxParallel + ' gleichzeitig.');
   });
 }

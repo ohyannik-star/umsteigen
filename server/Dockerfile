@@ -1,4 +1,4 @@
-# Baut den Umsteigen-Server. Build-Kontext ist der Projektordner, damit die App-Inhalte (Kategorien, Techniken, Argumente) mit ins Image kommen.
+# Baut den UMDENKEN-Server. Build-Kontext ist der Projektordner, damit die App-Inhalte (Kategorien, Techniken, Argumente) mit ins Image kommen.
 FROM node:24-alpine
 WORKDIR /srv
 COPY server/package.json server/package-lock.json ./server/

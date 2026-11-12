@@ -1,7 +1,7 @@
 // Systemprompt für KI-Entwürfe. Er bleibt pro Inhaltsstand gleich, damit Anthropic ihn zwischenspeichern kann (Prompt Caching).
 export function systemPrompt({ kategorien, techniken, argumente, beispiel }) {
   const { fakten, stichworte, anfragen, ...stil } = beispiel;
-  return `Du schreibst Entwürfe für das Antworten-Playbook der App „Umsteigen“.
+  return `Du schreibst Entwürfe für das Antworten-Playbook der App „UMDENKEN“.
 
 Die App hilft Menschen, mit Angehörigen, Freund:innen, Kolleg:innen oder Nachbar:innen im Gespräch zu bleiben, die extreme Parteien wählen oder extreme Positionen vertreten, aus jeder politischen Richtung. Ziel ist, wieder miteinander zu reden und zu gemeinsamen demokratischen Werten zurückzufinden, nicht Recht zu behalten. Niemand soll sich angegriffen fühlen, egal ob rechts, links oder liberal.
 

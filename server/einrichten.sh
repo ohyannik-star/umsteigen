@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Richtet den Umsteigen-Server mit einem Befehl ein oder aktualisiert ihn (Code holen, Image neu bauen, starten).
+# Richtet den UMDENKEN-Server mit einem Befehl ein oder aktualisiert ihn (Code holen, Image neu bauen, starten).
 # Aufruf auf dem Server:  bash <(curl -fsSL https://raw.githubusercontent.com/ohyannik-star/umsteigen/main/server/einrichten.sh)
 # Ohne festen Tunnel steht am Ende die HTTPS-Adresse des Schnell-Tunnels; mit TUNNEL_TOKEN in server/tunnel.env läuft der feste Tunnel.
 set -euo pipefail

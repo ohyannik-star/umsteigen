@@ -1,4 +1,4 @@
-# Umsteigen-Server: „Argument fehlt“
+# UMDENKEN-Server: „Argument fehlt“
 
 Der Server nimmt Anfragen zu Argumenten an, die im Playbook fehlen. Claude schreibt sofort einen Entwurf im Playbook-Aufbau, ohne Fakten. Die geprüfte Fassung mit belegten Fakten arbeitet ihr später aus und spielt sie als normales App-Update ein. Die App meldet der fragenden Person dann von selbst, dass ihre Anfrage beantwortet ist.
 
@@ -17,7 +17,7 @@ Der Server nimmt Anfragen zu Argumenten an, die im Playbook fehlen. Claude schre
 
 Voraussetzung auf dem Server: Docker mit Compose, git und curl. Der Dienst läuft in einem eigenen, abgeschotteten Container: nur lesbares Dateisystem, keine Sonderrechte, eigener Benutzer (Kennung 10001), kein Zugriff auf andere Ordner, nur auf dem Server selbst erreichbar. Er bekommt keinen Ordner deiner Bots zu sehen.
 
-Vorher auf console.anthropic.com einen eigenen Schlüssel nur für Umsteigen anlegen und ein monatliches Ausgabenlimit setzen, zum Beispiel 20 Dollar. Ein Entwurf kostet grob 12 Cent. Standardmäßig erlaubt der Server höchstens 10 Anfragen pro Tag insgesamt, 3 pro Tag und 2 pro Stunde je Absender und 3 gleichzeitig; das Ausgabenlimit in der Konsole bleibt die feste Obergrenze.
+Vorher auf console.anthropic.com einen eigenen Schlüssel nur für UMDENKEN anlegen und ein monatliches Ausgabenlimit setzen, zum Beispiel 20 Dollar. Ein Entwurf kostet grob 12 Cent. Standardmäßig erlaubt der Server höchstens 10 Anfragen pro Tag insgesamt, 3 pro Tag und 2 pro Stunde je Absender und 3 gleichzeitig; das Ausgabenlimit in der Konsole bleibt die feste Obergrenze.
 
 Das Skript braucht einen Benutzer, der Docker nutzen darf (Gruppe `docker`). Wer das nicht ist: einmal `sudo usermod -aG docker $USER`, ab- und wieder anmelden.
 

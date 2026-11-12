@@ -1,7 +1,7 @@
 {
-  "name": "Umsteigen",
-  "short_name": "Umsteigen",
-  "description": "Fahrplan-Netze für demokratische Gespräche",
+  "name": "UMDENKEN",
+  "short_name": "UMDENKEN",
+  "description": "Im Gespräch bleiben, wenn jemand extreme Ansichten vertritt",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

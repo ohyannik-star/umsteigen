@@ -1,10 +1,13 @@
 // Rendert alle Ansichten mit den echten Daten in einer DOM-Attrappe und meldet Laufzeitfehler. Aufruf: node app/smoke.js
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const handlers = {}, els = {};
-function el() { return { innerHTML: '', dataset: {}, style: {}, value: '', textContent: '', clientWidth: 900, scrollLeft: 0, addEventListener(t, fn) { (this.on = this.on || {})[t] = fn; }, querySelector() { return null; }, querySelectorAll() { return []; }, scrollIntoView() {}, getAttribute() { return '0'; }, setAttribute() {}, remove() {}, appendChild() {}, focus() {}, select() {}, matches() { return false; } }; }
+function el() { return { innerHTML: '', dataset: {}, style: {}, value: '', textContent: '', clientWidth: 900, scrollLeft: 0, addEventListener(t, fn) { (this.on = this.on || {})[t] = fn; }, querySelector() { return null; }, querySelectorAll() { return []; }, scrollIntoView() {}, getAttribute() { return '0'; }, setAttribute() {}, removeAttribute() {}, remove() {}, appendChild() {}, focus() {}, select() {}, matches() { return false; } }; }
 const document = { querySelector: s => els[s] || (els[s] = el()), querySelectorAll: () => [], addEventListener: (t, fn) => { handlers['doc:' + t] = fn; }, createElement: () => el(), body: el() };
 const { webcrypto, createHash } = require('crypto');
-const window = { APP_DATA: {}, UMSTEIGEN_HOSTED: true, UMSTEIGEN_API: 'https://api.test', crypto: webcrypto, TextEncoder, addEventListener: (t, fn) => { handlers['win:' + t] = fn; }, scrollTo() {} };
+// Feste App-Adresse für „Weitersagen“; Drucken, Teilen und Zwischenablage werden nur mitgezählt
+const ADRESSE = 'https://beispiel.test/app/';
+const geraet = { drucke: 0, geteilt: [], kopiert: [] };
+const window = { APP_DATA: {}, UMSTEIGEN_HOSTED: true, UMSTEIGEN_API: 'https://api.test', UMSTEIGEN_URL: ADRESSE, print() { geraet.drucke++; }, crypto: webcrypto, TextEncoder, addEventListener: (t, fn) => { handlers['win:' + t] = fn; }, scrollTo() {} };
 // Speicher im Arbeitsspeicher, vorbelegt mit einer Anfrage, die der geprüfte Eintrag unten beantwortet (dort steht nur ihr Hash)
 const mem = { 'umsteigen:anfragen': JSON.stringify([{ id: 'beantwortet-1', argument: 'Testanfrage', datum: '2026-10-01', status: 'entwurf' }, { id: 'alt-1', argument: 'Lange offene Anfrage', datum: '2026-10-01', status: 'in-arbeit' }]) };
 const localStorage = { getItem: k => (k in mem ? mem[k] : null), setItem: (k, v) => { mem[k] = String(v); }, removeItem: k => { delete mem[k]; }, key: i => Object.keys(mem)[i], get length() { return Object.keys(mem).length; } };
@@ -23,15 +26,27 @@ const ctx = { window, document, localStorage, location: { hash: '' }, navigator:
 vm.createContext(ctx);
 for (const f of ['linien', 'techniken', 'kompass', 'szenarien', 'kampagne', 'leitplanken', 'hilfe', 'messung', 'argumente']) vm.runInContext(fs.readFileSync(path.join(__dirname, 'data', f + '.js'), 'utf8'), ctx, { filename: f + '.js' });
 window.APP_DATA.argumente.argumente[0].anfragen = ['beantwortet-1', 'alt-1'].map(id => createHash('sha256').update(id).digest('hex'));
+if (fs.existsSync(path.join(__dirname, 'qr.js'))) vm.runInContext(fs.readFileSync(path.join(__dirname, 'qr.js'), 'utf8'), ctx, { filename: 'qr.js' });
 vm.runInContext(fs.readFileSync(path.join(__dirname, 'app.js'), 'utf8'), ctx, { filename: 'app.js' });
 const main = els['#main'];
 const fails = [];
+// Der alte App-Name darf in keiner gezeichneten Ansicht mehr stehen, auch nicht aus den Inhalten heraus
+const alterName = new Map();
+function merke(wo) { ['#main', '#sheet', '#tabbar', '#nav'].forEach(k => { const t = els[k] ? els[k].innerHTML.replace(/<[^>]+>/g, ' ') : ''; const fund = t.match(/.{0,40}Umsteigen.{0,30}/); if (fund && !alterName.has(fund[0])) alterName.set(fund[0], wo); }); }
 const anfragen = () => JSON.parse(mem['umsteigen:anfragen'] || '[]');
-function click(d) { try { handlers['doc:click']({ target: { closest: () => ({ dataset: d }) }, preventDefault() {} }); } catch (e) { fails.push(JSON.stringify(d) + ': ' + e.stack.split('\n').slice(0, 2).join(' ')); } }
-function route(r) { ctx.location.hash = '#' + r; try { handlers['win:hashchange'](); } catch (e) { fails.push(r + ': ' + e.stack.split('\n').slice(0, 2).join(' ')); } return main.innerHTML.length; }
+function click(d) { try { handlers['doc:click']({ target: { closest: () => ({ dataset: d }) }, preventDefault() {} }); } catch (e) { fails.push(JSON.stringify(d) + ': ' + e.stack.split('\n').slice(0, 2).join(' ')); } merke(JSON.stringify(d)); }
+function route(r) { ctx.location.hash = '#' + r; try { handlers['win:hashchange'](); } catch (e) { fails.push(r + ': ' + e.stack.split('\n').slice(0, 2).join(' ')); } merke(r); return main.innerHTML.length; }
+// Fehlt der QR-Erzeuger (kurz während eines Updates möglich: alte Seite, neues Skript), bleibt „Weitersagen“ benutzbar: Link teilen ja; QR-Code, Vorzeigen und Aushang nein
+{
+  const erzeuger = window.QR; delete window.QR; route('teilen');
+  if (main.innerHTML.indexOf('data-act="teilen-link"') < 0 || /<svg class="qr"|data-act="zeigen"|data-act="aushang"|class="aushang"/.test(main.innerHTML)) fails.push('Weitersagen ohne QR-Erzeuger ist nicht auf den Link beschränkt');
+  window.QR = erzeuger; route('teilen');
+  if (main.innerHTML.indexOf('<svg class="qr"') < 0) fails.push('Weitersagen zeigt den QR-Code nicht, sobald der Erzeuger da ist');
+  route('start');
+}
 const sizes = {};
 const HUBS = ['verstehen', 'argumentieren', 'vorbereiten', 'aktiv', 'schutz'];
-for (const r of ['start'].concat(HUBS, ['meins', 'suche', 'netz', 'kompass', 'trainer', 'antworten', 'archiv', 'kampagne', 'wissen', 'leitplanken', 'tagebuch'])) sizes[r] = route(r);
+for (const r of ['start'].concat(HUBS, ['meins', 'suche', 'teilen', 'netz', 'kompass', 'trainer', 'antworten', 'archiv', 'kampagne', 'wissen', 'leitplanken', 'tagebuch'])) sizes[r] = route(r);
 const D = window.APP_DATA;
 // Startseite: Zweck, „Hier anfangen“, fünf Bereiche; untere Leiste mit Start, Meine Inhalte, Suche, Mehr
 route('start');
@@ -61,6 +76,72 @@ if (main.innerHTML.indexOf('id="gefahr"') < 0) fails.push('Leitplanken ohne Absc
 click({ go: 'trainer', szenario: window.APP_DATA.szenarien[0].id }); route('trainer');
 if (main.innerHTML.indexOf('Szenario verlassen') < 0) fails.push('Szenario aus der Suche startet nicht');
 click({ act: 'trainer-exit' });
+// QR-Code: Die Module müssen Punkt für Punkt denen eines unabhängigen Erzeugers entsprechen.
+// Vergleichswerte: api.qrserver.com, Fehlerkorrektur Q, Maske 2, Text qtext(n); gespeichert ist der Anfang des SHA-256 über die Zeilen aus 0 und 1.
+const QR = window.QR;
+const qtext = n => 'umdenken beginnt im gespraech. '.repeat(10).slice(0, n);
+const qzeilen = m => m.modules.map(r => r.join('')).join('\n');
+const qhash = m => createHash('sha256').update(qzeilen(m)).digest('hex').slice(0, 16);
+const QR_SOLL = [[1, '9d71470d00442ffb'], [8, '3b77da8a255b383b'], [11, '238a54a93457c543'], [12, 'ccf22ab10ec7c9d9'], [20, 'db60bc72c5168f19'], [21, '8b057cc935738e9d'], [32, '76afffed000e53b0'], [33, 'f8b8206924af5d6a'], [42, '334e108fac26791b'], [46, '82a87c29ed20e0f9'], [47, '4dafcf4a5f7ad74c'], [60, '62d9fa7539b491d0'], [61, 'c74ba550df4f1629'], [74, '3cd875d7eeff4336'], [75, '35115d5262f7cb99'], [86, 'b4dbc78bddc15810'], [87, '45f5effeec00ae6e'], [108, '73844d0b4e1cc062'], [109, '2389139df13a43bb'], [130, '704b72a1505fdf39'], [131, '59c3c22158879f2b'], [151, 'f5a6bf39174d42f4']];
+// Liest die Module aus der Grafik zurück (samt hellem Rand); null, wenn im Pfad etwas Unerwartetes steht
+function svgModule(svg) {
+  const g = +(/viewBox="0 0 (\d+) /.exec(svg) || [])[1], pfad = (/<path d="([^"]*)"/.exec(svg) || [])[1];
+  if (!g || pfad == null || pfad.replace(/M\d+ \d+h\d+v1h-\d+z/g, '') !== '') return null;
+  const zellen = Array.from({ length: g }, () => Array(g).fill(0));
+  for (const t of pfad.matchAll(/M(\d+) (\d+)h(\d+)v1h-(\d+)z/g)) for (let i = 0; i < +t[3]; i++) zellen[+t[2]][+t[1] + i] = 1;
+  return zellen;
+}
+const innen = zellen => zellen.slice(4, -4).map(r => r.slice(4, -4).join('')).join('\n');
+if (!QR || !QR.matrix || !QR.svg) fails.push('QR-Erzeuger fehlt (app/qr.js)');
+else try {
+  QR_SOLL.forEach(([n, soll]) => { const m = QR.matrix(qtext(n), 2); if (!m || qhash(m) !== soll) fails.push('QR-Code für ' + n + ' Zeichen weicht vom Vergleichswert ab'); });
+  if (QR.matrix(qtext(152)) !== null) fails.push('QR-Code: zu langer Text wird nicht abgelehnt');
+  if ((QR.matrix('äääää') || {}).version !== 1 || (QR.matrix('ääääää') || {}).version !== 2) fails.push('QR-Code zählt Umlaute nicht als zwei Bytes');
+  const auto = QR.matrix(qtext(42));
+  if (!auto || !(auto.mask >= 0 && auto.mask <= 7) || qhash(auto) !== qhash(QR.matrix(qtext(42), auto.mask))) fails.push('QR-Code: gewählte Maske passt nicht zum Muster');
+  // Die Grafik gibt genau diese Module wieder, mit vier Modulen hellem Rand ringsum
+  const bild = svgModule(QR.svg(qtext(42), 'Test'));
+  if (!bild || bild.length !== auto.size + 8 || innen(bild) !== qzeilen(auto) || bild.some((r, y) => r.some((v, x) => v && (x < 4 || y < 4 || x >= bild.length - 4 || y >= bild.length - 4)))) fails.push('QR-Grafik weicht von den Modulen ab');
+} catch (e) { fails.push('QR-Erzeuger: ' + e.message); }
+// Weitersagen: aus „Aktiv werden“ erreichbar, mit QR-Code zur eingestellten Adresse
+click({ go: 'aktiv' }); route('aktiv');
+if (main.innerHTML.indexOf('data-go="teilen"') < 0) fails.push('Bereich „Aktiv werden“ ohne Hinweis aufs Weitersagen');
+click({ go: 'teilen' }); route('teilen');
+if (main.innerHTML.indexOf('class="crumb"><button data-go="aktiv"') < 0) fails.push('Weitersagen aus „Aktiv werden“ führt nicht dorthin zurück');
+// Die Adresse steht nirgends als Text, auch nicht im Aushang und im großen QR-Code: Sie steckt nur im QR-Code selbst und im geteilten Link
+const ohneAdresse = wo => { if (main.innerHTML.indexOf('beispiel.test') >= 0) fails.push('Weitersagen zeigt die Adresse als Text (' + wo + ')'); };
+ohneAdresse('Seite und Aushang');
+const seitenQr = (/<svg class="qr"[\s\S]*?<\/svg>/.exec(main.innerHTML) || [])[0];
+if (!seitenQr) fails.push('Weitersagen ohne QR-Code');
+// Vergleichswert: die Module für ADRESSE; ein unabhängiger Lesedienst (api.qrserver.com) hat genau dieses Muster als diese Adresse gelesen
+else { const ist = svgModule(seitenQr); if (!ist || createHash('sha256').update(innen(ist)).digest('hex').slice(0, 16) !== 'bb49e8969f103b8e') fails.push('QR-Code der Seite führt nicht zur eingestellten Adresse'); }
+// Link teilen: ohne Teilen-Funktion des Geräts in die Zwischenablage, sonst über das Gerät, jeweils mit der Adresse
+ctx.navigator.clipboard = { writeText: t => { geraet.kopiert.push(t); return Promise.resolve(); } };
+click({ act: 'teilen-link' });
+if (geraet.kopiert.length !== 1 || geraet.kopiert[0].indexOf(ADRESSE) < 0) fails.push('Link teilen ohne Teilen-Funktion kopiert die Adresse nicht');
+ctx.navigator.share = o => { geraet.geteilt.push(o); return Promise.resolve(); };
+click({ act: 'teilen-link' });
+if (geraet.geteilt.length !== 1 || geraet.geteilt[0].url !== ADRESSE || !geraet.geteilt[0].text || geraet.kopiert.length !== 1) fails.push('Link teilen übergibt die Adresse nicht an das Gerät');
+delete ctx.navigator.share;
+// Groß zeigen: öffnet, schließt mit Escape und mit „Schließen“, und bleibt nach einem Seitenwechsel nicht offen
+const gross = () => main.innerHTML.indexOf('class="zeigen"') >= 0;
+click({ act: 'zeigen' }); if (!gross()) fails.push('„Groß zeigen“ öffnet den QR-Code nicht');
+ohneAdresse('großer QR-Code');
+try { handlers['doc:keydown']({ key: 'Escape', target: {}, preventDefault() {} }); } catch (e) { fails.push('Escape: ' + e.message); }
+if (gross()) fails.push('Escape schließt den großen QR-Code nicht');
+click({ act: 'zeigen' }); click({ act: 'zeigen-zu' }); if (gross()) fails.push('„Schließen“ schließt den großen QR-Code nicht');
+// Solange der große QR-Code offen ist, bleibt der Tabulator bei „Schließen“ und wandert nicht auf die verdeckte Seite
+const tab = () => { let gehalten = 0; handlers['doc:keydown']({ key: 'Tab', target: {}, preventDefault() { gehalten++; } }); return gehalten; };
+if (tab() !== 0) fails.push('Tabulator wird auch ohne großen QR-Code festgehalten');
+click({ act: 'zeigen' }); if (tab() !== 1) fails.push('Tabulator verlässt den großen QR-Code'); click({ act: 'zeigen-zu' });
+click({ act: 'zeigen' }); route('start'); route('teilen'); if (gross()) fails.push('Großer QR-Code steht nach „Zurück“ wieder offen');
+click({ act: 'zeigen' }); click({ go: 'start' }); route('start'); click({ go: 'teilen' }); route('teilen'); if (gross()) fails.push('Großer QR-Code steht nach einem Seitenwechsel wieder offen');
+// Aushang: steht auf der Seite bereit, der Knopf öffnet den Druckdialog
+if (main.innerHTML.indexOf('class="aushang"') < 0) fails.push('Weitersagen ohne Aushang');
+click({ act: 'aushang' }); if (geraet.drucke !== 1) fails.push('„Aushang drucken“ öffnet den Druckdialog nicht');
+// Startseite und Menü „Mehr“ weisen aufs Weitersagen hin
+route('start'); if (main.innerHTML.indexOf('data-go="teilen"') < 0) fails.push('Startseite ohne Hinweis aufs Weitersagen');
+click({ act: 'sheet' }); if (els['#sheet'].innerHTML.indexOf('data-go="teilen"') < 0) fails.push('Menü „Mehr“ ohne Weitersagen'); click({ act: 'sheet' });
 // jede Station einmal anzeigen
 D.linien.forEach(l => { click({ go: 'netz', linie: l.id, station: '' }); l.stationen.forEach(s => click({ go: 'netz', linie: l.id, station: s.id })); });
 sizes.station = main.innerHTML.length;
@@ -68,7 +149,7 @@ sizes.station = main.innerHTML.length;
 route('kompass'); for (let i = 0; i < 20; i++) click({ act: 'k-next' }); click({ act: 'k-step', step: '0' }); click({ act: 'k-prev' }); sizes.kompassWizard = main.innerHTML.length; try { handlers['doc:submit']({ target: { dataset: { form: "kompass" }, querySelector: () => null, querySelectorAll: () => [] }, preventDefault() {} }); } catch (e) { fails.push('kompass-submit: ' + e.message); }
 click({ act: 'kompass-reset' });
 // Trainer: jedes Szenario, immer Option 0, bis zum Ende
-route('trainer'); D.szenarien.forEach(s => { click({ act: 'trainer-start', id: s.id }); for (let i = 0; i < 12; i++) { click({ act: 'trainer-pick', idx: '0' }); click({ act: 'trainer-next' }); if (main.innerHTML.indexOf("Fazit") >= 0 || main.innerHTML.indexOf("Szenario verlassen") < 0) break; } sizes['trainer:' + s.id] = main.innerHTML.length; click({ act: 'trainer-exit' }); });
+route('trainer'); D.szenarien.forEach(s => { click({ act: 'trainer-start', id: s.id }); for (let i = 0; i < 12; i++) { click({ act: 'trainer-pick', idx: '0' }); click({ act: 'trainer-next' }); if (main.innerHTML.indexOf("Fazit") >= 0 || main.innerHTML.indexOf("Szenario verlassen") < 0) break; } if (main.innerHTML.indexOf('Fazit') >= 0 && main.innerHTML.indexOf('data-go="teilen"') < 0) fails.push('Fazit von ' + s.id + ' ohne Hinweis aufs Weitersagen'); sizes['trainer:' + s.id] = main.innerHTML.length; click({ act: 'trainer-exit' }); });
 // Kampagne: alle Tabs, Planer auswerten
 route('kampagne'); ['segmente', 'bausteine', 'phasen', 'kennzahlen', 'planer'].forEach(t => { click({ act: 'kamp-tab', tab: t }); sizes['kampagne:' + t] = main.innerHTML.length; });
 try { handlers['doc:submit']({ target: { dataset: { form: "kampagne" }, querySelector: () => null, querySelectorAll: () => [] }, preventDefault() {} }); } catch (e) { fails.push('kampagne-submit: ' + e.message); }
@@ -148,6 +229,11 @@ click({ go: 'tagebuch', prefill: 'gespraech|zuhoeren' });
   if (main.innerHTML.indexOf('data-id="' + ziel + '"') >= 0) fails.push('Vorgemerkter Eintrag wird noch angezeigt');
   api.deleteFehler = false; click({ act: 'ant-tab', tab: 'anfragen' }); await new Promise(r => setTimeout(r, 50));
   if (anfragen().some(x => x.id === ziel)) fails.push('Löschen wird nicht wiederholt, sobald der Server erreichbar ist');
+  alterName.forEach((wo, fund) => fails.push('Alter App-Name in ' + wo + ': …' + fund + '…'));
+  if (/Umsteigen/.test(fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8'))) fails.push('Alter App-Name in index.html');
+  // Die Seite lädt nichts von fremden Adressen nach (keine Schriften, Skripte oder Bilder von außen): Das gehört zum Versprechen, dass nichts das Gerät verlässt
+  const fremd = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8').match(/(?:href|src)\s*=\s*["']https?:\/\/[^"']+/g);
+  if (fremd) fails.push('index.html lädt von fremden Adressen: ' + fremd.join(', '));
   console.log(Object.entries(sizes).map(([k, v]) => k + '=' + v).join(' '));
   fails.forEach(f => console.log('FEHLER ' + f));
   const empty = Object.entries(sizes).filter(([k, v]) => v < 800).map(([k]) => k);
