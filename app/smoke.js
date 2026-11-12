@@ -22,7 +22,8 @@ function fetchAttrappe(url, opt = {}) {
   if (url === 'https://api.test/api/anfragen/neu-1') { const { id, fakten, ...rest } = window.APP_DATA.argumente.argumente[1]; return antwort(true, { id: 'neu-1', status: 'entwurf', hinweis: '', entwurf: { ...rest, aehnlich: 'medien-luegen', recherche: ['Testpunkt zum Belegen'] } }); }
   return antwort(false, { fehler: 'unbekannt' });
 }
-const ctx = { window, document, localStorage, location: { hash: '' }, navigator: {}, history: {}, console, crypto: webcrypto, TextEncoder, setTimeout: (fn, ms) => setTimeout(fn, Math.min(ms || 0, 5)), clearTimeout, fetch: fetchAttrappe, MouseEvent: function () {}, FormData: function (f) { const w = (f && f._werte) || {}; return { get: k => (w[k] == null ? '' : w[k]) }; } };
+const verlauf = { liste: [{ state: null }], i: 0, get state() { return this.liste[this.i].state; }, pushState(st) { this.liste.splice(this.i + 1); this.liste.push({ state: st }); this.i++; }, back() { if (this.i > 0) { this.i--; if (handlers['win:popstate']) handlers['win:popstate']({ state: this.state }); } } };
+const ctx = { window, document, localStorage, location: { hash: '' }, navigator: {}, history: verlauf, console, crypto: webcrypto, TextEncoder, setTimeout: (fn, ms) => setTimeout(fn, Math.min(ms || 0, 5)), clearTimeout, fetch: fetchAttrappe, MouseEvent: function () {}, FormData: function (f) { const w = (f && f._werte) || {}; return { get: k => (w[k] == null ? '' : w[k]) }; } };
 vm.createContext(ctx);
 for (const f of ['linien', 'techniken', 'kompass', 'szenarien', 'kampagne', 'leitplanken', 'hilfe', 'messung', 'argumente']) vm.runInContext(fs.readFileSync(path.join(__dirname, 'data', f + '.js'), 'utf8'), ctx, { filename: f + '.js' });
 window.APP_DATA.argumente.argumente[0].anfragen = ['beantwortet-1', 'alt-1'].map(id => createHash('sha256').update(id).digest('hex'));
@@ -34,7 +35,7 @@ const fails = [];
 const alterName = new Map();
 function merke(wo) { ['#main', '#sheet', '#tabbar', '#nav'].forEach(k => { const t = els[k] ? els[k].innerHTML.replace(/<[^>]+>/g, ' ') : ''; const fund = t.match(/.{0,40}Umsteigen.{0,30}/); if (fund && !alterName.has(fund[0])) alterName.set(fund[0], wo); }); }
 const anfragen = () => JSON.parse(mem['umsteigen:anfragen'] || '[]');
-function click(d) { try { handlers['doc:click']({ target: { closest: () => ({ dataset: d }) }, preventDefault() {} }); } catch (e) { fails.push(JSON.stringify(d) + ': ' + e.stack.split('\n').slice(0, 2).join(' ')); } merke(JSON.stringify(d)); }
+function click(d, id) { try { handlers['doc:click']({ target: { closest: () => ({ dataset: d, id: id || '' }) }, preventDefault() {} }); } catch (e) { fails.push(JSON.stringify(d) + ': ' + e.stack.split('\n').slice(0, 2).join(' ')); } merke(JSON.stringify(d)); }
 function route(r) { ctx.location.hash = '#' + r; try { handlers['win:hashchange'](); } catch (e) { fails.push(r + ': ' + e.stack.split('\n').slice(0, 2).join(' ')); } merke(r); return main.innerHTML.length; }
 // Fehlt der QR-Erzeuger (kurz während eines Updates möglich: alte Seite, neues Skript), bleibt „Weitersagen“ benutzbar: Link teilen ja; QR-Code, Vorzeigen und Aushang nein
 {
@@ -96,6 +97,10 @@ if (!QR || !QR.matrix || !QR.svg) fails.push('QR-Erzeuger fehlt (app/qr.js)');
 else try {
   QR_SOLL.forEach(([n, soll]) => { const m = QR.matrix(qtext(n), 2); if (!m || qhash(m) !== soll) fails.push('QR-Code für ' + n + ' Zeichen weicht vom Vergleichswert ab'); });
   if (QR.matrix(qtext(152)) !== null) fails.push('QR-Code: zu langer Text wird nicht abgelehnt');
+  const MASKEN = ['d951151ecb365e45', 'e60cb37984531eb1', '033d834a037ef6bf', '4d81bcdb2c81fc24', '9de5756274c70936', '5d9e3f691b6434c0', '63e4a619e5b83c59', '62635727f3dde517'];
+  MASKEN.forEach((soll, k) => { const m = QR.matrix('https://ohyannik-star.github.io/umsteigen/', k); if (!m || qhash(m) !== soll) fails.push('QR-Code mit Maske ' + k + ' weicht vom Vergleichswert ab'); });
+  const eingestellt = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json'), 'utf8')).url;
+  if (!QR.matrix(eingestellt)) fails.push('Die Adresse aus config.json passt in keinen QR-Code');
   if ((QR.matrix('äääää') || {}).version !== 1 || (QR.matrix('ääääää') || {}).version !== 2) fails.push('QR-Code zählt Umlaute nicht als zwei Bytes');
   const auto = QR.matrix(qtext(42));
   if (!auto || !(auto.mask >= 0 && auto.mask <= 7) || qhash(auto) !== qhash(QR.matrix(qtext(42), auto.mask))) fails.push('QR-Code: gewählte Maske passt nicht zum Muster');
@@ -129,13 +134,29 @@ click({ act: 'zeigen' }); if (!gross()) fails.push('„Groß zeigen“ öffnet d
 ohneAdresse('großer QR-Code');
 try { handlers['doc:keydown']({ key: 'Escape', target: {}, preventDefault() {} }); } catch (e) { fails.push('Escape: ' + e.message); }
 if (gross()) fails.push('Escape schließt den großen QR-Code nicht');
-click({ act: 'zeigen' }); click({ act: 'zeigen-zu' }); if (gross()) fails.push('„Schließen“ schließt den großen QR-Code nicht');
+click({ act: 'zeigen' }); click({ act: 'zeigen-zu' }, 'zeigen-zu'); if (gross()) fails.push('„Schließen“ schließt den großen QR-Code nicht');
+// Zurück-Taste schließt nur den großen Code und bleibt auf „Weitersagen“ (zeigt nicht die vorher geöffnete Seite)
+click({ act: 'zeigen' }); verlauf.back();
+if (gross() || main.innerHTML.indexOf('Zeig die App weiter') < 0) fails.push('Zurück-Taste schließt den großen QR-Code nicht auf der Seite „Weitersagen“');
+// Öffnen und Schließen hinterlässt keine zusätzlichen Einträge im Verlauf
+for (let i = 0; i < 3; i++) { click({ act: 'zeigen' }); click({ act: 'zeigen-zu' }, 'zeigen-zu'); }
+if (verlauf.i !== 0) fails.push('Öffnen und Schließen des großen QR-Codes hinterlässt Einträge im Verlauf');
+// Ein Doppeltipp auf „Groß zeigen“ schließt den Code nicht gleich wieder (zweiter Tipp landet auf der Fläche)
+click({ act: 'zeigen' }); click({ act: 'zeigen-zu' });
+if (!gross()) fails.push('Doppeltipp schließt den großen QR-Code sofort wieder');
+// Die Knöpfe tragen ihre Aktionen: Fläche und „Schließen“ schließen, der große Code enthält den QR-Code
+if (!/<div class="zeigen"[^>]*data-act="zeigen-zu"[^>]*>[\s\S]*<svg class="qr"[\s\S]*<button[^>]*id="zeigen-zu"[^>]*data-act="zeigen-zu"/.test(main.innerHTML)) fails.push('Großer QR-Code: Schließen-Fläche, Code oder Knopf fehlt');
+click({ act: 'zeigen-zu' }, 'zeigen-zu');
+if (main.innerHTML.indexOf('id="zeigen-auf" data-act="zeigen"') < 0 || main.innerHTML.indexOf('data-act="aushang"') < 0) fails.push('Knöpfe „Groß zeigen“ oder „Aushang drucken“ ohne Aktion');
+const aushangTeil = (/<div class="aushang">([\s\S]*?)<p class="aus-f">/.exec(main.innerHTML) || [])[1] || '';
+if (aushangTeil.indexOf('<svg class="qr"') < 0) fails.push('Aushang ohne QR-Code');
 // Solange der große QR-Code offen ist, bleibt der Tabulator bei „Schließen“ und wandert nicht auf die verdeckte Seite
 const tab = () => { let gehalten = 0; handlers['doc:keydown']({ key: 'Tab', target: {}, preventDefault() { gehalten++; } }); return gehalten; };
 if (tab() !== 0) fails.push('Tabulator wird auch ohne großen QR-Code festgehalten');
-click({ act: 'zeigen' }); if (tab() !== 1) fails.push('Tabulator verlässt den großen QR-Code'); click({ act: 'zeigen-zu' });
+click({ act: 'zeigen' }); if (tab() !== 1) fails.push('Tabulator verlässt den großen QR-Code'); click({ act: 'zeigen-zu' }, 'zeigen-zu');
 click({ act: 'zeigen' }); route('start'); route('teilen'); if (gross()) fails.push('Großer QR-Code steht nach „Zurück“ wieder offen');
 click({ act: 'zeigen' }); click({ go: 'start' }); route('start'); click({ go: 'teilen' }); route('teilen'); if (gross()) fails.push('Großer QR-Code steht nach einem Seitenwechsel wieder offen');
+click({ act: 'zeigen' }); click({ go: 'teilen' }); if (gross()) fails.push('Großer QR-Code bleibt beim erneuten Öffnen der Seite offen');
 // Aushang: steht auf der Seite bereit, der Knopf öffnet den Druckdialog
 if (main.innerHTML.indexOf('class="aushang"') < 0) fails.push('Weitersagen ohne Aushang');
 click({ act: 'aushang' }); if (geraet.drucke !== 1) fails.push('„Aushang drucken“ öffnet den Druckdialog nicht');
@@ -230,10 +251,24 @@ click({ go: 'tagebuch', prefill: 'gespraech|zuhoeren' });
   api.deleteFehler = false; click({ act: 'ant-tab', tab: 'anfragen' }); await new Promise(r => setTimeout(r, 50));
   if (anfragen().some(x => x.id === ziel)) fails.push('Löschen wird nicht wiederholt, sobald der Server erreichbar ist');
   alterName.forEach((wo, fund) => fails.push('Alter App-Name in ' + wo + ': …' + fund + '…'));
-  if (/Umsteigen/.test(fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8'))) fails.push('Alter App-Name in index.html');
+  const seite = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
+  if (!/<script src="qr\.js"><\/script>\s*<script src="app\.js"><\/script>/.test(seite)) fails.push('index.html lädt qr.js nicht direkt vor app.js');
+  if (!/<button[^>]*id="gshare"[^>]*data-go="teilen"[^>]*\shidden>/.test(seite)) fails.push('Weitersagen-Knopf in index.html fehlt oder ist nicht zunächst versteckt');
+  if (els['#gshare'].hidden !== false) fails.push('app.js zeigt den Weitersagen-Knopf nicht an');
+  // Alter Name: auch in allem, was ausgeliefert wird (Meldungen, Teilen-Titel, Beschriftungen), nicht nur in gezeichneten Ansichten
+  ['index.html', 'app.js', 'qr.js'].concat(fs.readdirSync(path.join(__dirname, 'data')).map(f => 'data/' + f)).forEach(f => { if (/Umsteigen/.test(fs.readFileSync(path.join(__dirname, f), 'utf8'))) fails.push('Alter App-Name in ' + f); });
   // Die Seite lädt nichts von fremden Adressen nach (keine Schriften, Skripte oder Bilder von außen): Das gehört zum Versprechen, dass nichts das Gerät verlässt
-  const fremd = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8').match(/(?:href|src)\s*=\s*["']https?:\/\/[^"']+/g);
-  if (fremd) fails.push('index.html lädt von fremden Adressen: ' + fremd.join(', '));
+  ['index.html', 'app.js'].forEach(f => {
+    const text = fs.readFileSync(path.join(__dirname, f), 'utf8');
+    const fremd = (text.match(/<(?:link|script|img|iframe|source|video|audio|embed|object)\b[^>]*\b(?:href|src)\s*=\s*["'](?:https?:)?\/\/[^"']+/gi) || []).concat(text.match(/@import|url\(\s*["']?(?:https?:)?\/\//gi) || []);
+    if (fremd.length) fails.push(f + ' lädt von fremden Adressen: ' + fremd.join(', '));
+  });
+  // iPhone und iPad im Browser: Wer schon etwas gespeichert hat, erfährt, dass der Browser es nach rund einer Woche ohne Besuch löscht
+  ctx.navigator.userAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X)';
+  route('start'); if (main.innerHTML.indexOf('data-hinweis="ios"') < 0) fails.push('Startseite ohne Hinweis auf die Löschung im iPhone-Browser');
+  route('meins'); if (main.innerHTML.indexOf('data-hinweis="ios"') < 0) fails.push('Meine Inhalte ohne Hinweis auf die Löschung im iPhone-Browser');
+  window.navigator = { standalone: true }; route('start'); if (main.innerHTML.indexOf('data-hinweis="ios"') >= 0) fails.push('Hinweis auf die Löschung erscheint auch in der installierten App'); delete window.navigator;
+  ctx.navigator.userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'; route('start'); if (main.innerHTML.indexOf('data-hinweis="ios"') >= 0) fails.push('Hinweis auf die Löschung erscheint auch außerhalb von iPhone und iPad');
   console.log(Object.entries(sizes).map(([k, v]) => k + '=' + v).join(' '));
   fails.forEach(f => console.log('FEHLER ' + f));
   const empty = Object.entries(sizes).filter(([k, v]) => v < 800).map(([k]) => k);

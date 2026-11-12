@@ -17,11 +17,12 @@ const config = JSON.parse(fs.readFileSync(path.join(app, 'config.json'), 'utf8')
 const url = String(config.url || '').trim();
 if (!/^https:\/\/[^\s"'<>\\]+$/.test(url)) throw new Error('Adresse der App (url in app/config.json) muss mit https:// beginnen: ' + url);
 const adresse = 'window.UMSTEIGEN_URL = ' + JSON.stringify(url) + ';';
+(() => { const c = { window: {} }; vm.createContext(c); vm.runInContext(fs.readFileSync(path.join(app, 'qr.js'), 'utf8'), c); if (!c.window.QR.matrix(url)) throw new Error('Adresse der App ist zu lang für einen QR-Code: ' + url); })();
 const HEAD = '<!doctype html>\n<html lang="de">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n';
 const doc = (body, extraHead) => HEAD + (extraHead || '') + body.replace(/^([\s\S]*?<\/style>)/, '$1\n</head>\n<body>') + '\n</body>\n</html>\n';
 
 // 1) Einzeldatei
-const single = page.replace('<script src="app.js"></script>', '<script>' + adresse + '</script>\n<script src="app.js"></script>').replace(/<script src="([^"]+)"><\/script>/g, (m, src) => '<script>\n' + fs.readFileSync(path.join(app, src), 'utf8').replace(/<\/script/gi, '<\\/script') + '\n</script>');
+const single = page.replace('<script src="app.js"></script>', () => '<script>' + adresse + '</script>\n<script src="app.js"></script>').replace(/<script src="([^"]+)"><\/script>/g, (m, src) => '<script>\n' + fs.readFileSync(path.join(app, src), 'utf8').replace(/<\/script/gi, '<\\/script') + '\n</script>');
 fs.mkdirSync(path.join(root, 'dist'), { recursive: true });
 fs.rmSync(path.join(root, 'dist', 'umsteigen.html'), { force: true }); // Einzeldatei unter dem alten Namen
 fs.writeFileSync(path.join(root, 'dist', 'umdenken.html'), doc(single), 'utf8');
@@ -34,10 +35,12 @@ const d = new Date(), pad = n => String(n).padStart(2, '0');
 const version = d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + '-' + pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds());
 const files = ['app.js', 'qr.js'].concat(fs.readdirSync(path.join(app, 'data')).filter(f => f.endsWith('.js')).map(f => 'data/' + f));
 files.forEach(f => fs.copyFileSync(path.join(app, f), path.join(site, f)));
-require('./make-icons.js').write(site);
-const manifest = { name: 'UMDENKEN', short_name: 'UMDENKEN', description: 'Im Gespräch bleiben, wenn jemand extreme Ansichten vertritt', start_url: './', scope: './', display: 'standalone', background_color: '#f5f5f7', theme_color: '#f5f5f7', lang: 'de', icons: [{ src: 'icon-192.png', sizes: '192x192', type: 'image/png' }, { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }] };
+// App-Symbole aus app/icons (erzeugt mit app/icons/erzeugen.ps1 aus der Vorlage)
+const ICONS = ['icon-192.png', 'icon-512.png', 'icon-maskable-512.png', 'apple-touch-icon.png'];
+ICONS.forEach(f => fs.copyFileSync(path.join(app, 'icons', f), path.join(site, f)));
+const manifest = { name: 'UMDENKEN', short_name: 'UMDENKEN', description: 'Im Gespräch bleiben, wenn jemand extreme Ansichten vertritt', start_url: './', scope: './', display: 'standalone', background_color: '#f5f5f7', theme_color: '#f5f5f7', lang: 'de', icons: [{ src: 'icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' }, { src: 'icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' }, { src: 'icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }] };
 fs.writeFileSync(path.join(site, 'manifest.webmanifest'), JSON.stringify(manifest, null, 2), 'utf8');
-const precache = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'].concat(files);
+const precache = ['./', 'index.html', 'manifest.webmanifest'].concat(ICONS, files);
 const sw = `// UMDENKEN Service Worker, Version ${version}
 const VERSION = 'umsteigen-${version}';
 const FILES = ${JSON.stringify(precache)};
@@ -72,7 +75,7 @@ if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
   (function () {
     var VERSION = '${version}', hadController = !!navigator.serviceWorker.controller, pending = false, regRef = null;
     function note(text, ms) { var t = document.createElement('div'); t.className = 'toast'; t.textContent = text; document.body.appendChild(t); if (ms) setTimeout(function () { t.remove(); }, ms); return t; }
-    function idle() { var a = document.activeElement; return !(a && (a.tagName === 'TEXTAREA' || (a.tagName === 'INPUT' && a.type === 'text'))); }
+    function idle() { if (document.querySelector('.zeigen')) return false; var a = document.activeElement; return !(a && (a.tagName === 'TEXTAREA' || (a.tagName === 'INPUT' && a.type === 'text'))); }
     function applyUpdate() { if (pending && idle()) { pending = false; try { sessionStorage.setItem('umsteigen:updated', '1'); } catch (e) {} location.reload(); } }
     try { if (sessionStorage.getItem('umsteigen:updated')) { sessionStorage.removeItem('umsteigen:updated'); note('Aktualisiert auf Version ' + VERSION, 3500); } } catch (e) {}
     window.addEventListener('hashchange', function () { setTimeout(applyUpdate, 50); });
@@ -87,6 +90,6 @@ if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
   })();
 }
 </script>`;
-const pwa = page.replace('<script src="app.js"></script>', hosted + '\n<script src="app.js"></script>\n' + swScript).replace(/<script src="(data\/[^"?]+\.js|app\.js|qr\.js)"><\/script>/g, (m, src) => '<script src="' + src + '?v=' + version + '"></script>');
+const pwa = page.replace('<script src="app.js"></script>', () => hosted + '\n<script src="app.js"></script>\n' + swScript).replace(/<script src="(data\/[^"?]+\.js|app\.js|qr\.js)"><\/script>/g, (m, src) => '<script src="' + src + '?v=' + version + '"></script>');
 fs.writeFileSync(path.join(site, 'index.html'), doc(pwa, extraHead), 'utf8');
-console.log('geschrieben: dist/umdenken.html (' + Math.round(doc(single).length / 1024) + ' KB), docs/ (Version ' + version + ', ' + (files.length + 6) + ' Dateien), Adresse: ' + url + ', Server: ' + (api || 'keiner, „Argument fehlt?“ ausgeblendet'));
+console.log('geschrieben: dist/umdenken.html (' + Math.round(doc(single).length / 1024) + ' KB), docs/ (Version ' + version + ', ' + (files.length + ICONS.length + 3) + ' Dateien), Adresse: ' + url + ', Server: ' + (api || 'keiner, „Argument fehlt?“ ausgeblendet'));

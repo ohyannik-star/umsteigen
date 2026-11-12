@@ -20,6 +20,7 @@ Eine Web-App für alle, die mit einem Menschen im Gespräch bleiben wollen, der 
 | `app/SCHEMA.md` | Datenvertrag für die Inhalte, verbindlich beim Ändern |
 | `app/validate.js` | Prüft Syntax, Mengen und Querverweise: `node app/validate.js` |
 | `app/build.js` | Baut die Einzeldatei und `docs/`: `node app/build.js` |
+| `app/icons/` | App-Symbole in allen Größen; neu erzeugen aus einer Vorlage mit `app/icons/erzeugen.ps1 -Vorlage <bild>` (Windows PowerShell) |
 | `app/qr.js` | QR-Code-Erzeuger für „Weitersagen“, ohne Zusatzbibliothek |
 | `app/config.json` | Server-Adresse für „Argument fehlt?“ (`api`, leer blendet die Funktion aus) und öffentliche Adresse der App für „Weitersagen“ (`url`) |
 | `server/` | Dienst für „Argument fehlt?“ mit Claude-Entwürfen, Docker-Dateien und Anleitung (`server/README.md`); Tests: `npm test` im Ordner |

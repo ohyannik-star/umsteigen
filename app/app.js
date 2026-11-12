@@ -59,6 +59,7 @@ var API = HOSTED && window.UMSTEIGEN_API ? String(window.UMSTEIGEN_API).replace(
 // Sie wird bewusst nirgends als Text angezeigt: Sie steckt nur im QR-Code und im geteilten Link.
 var ADRESSE = String(window.UMSTEIGEN_URL || 'https://ohyannik-star.github.io/umsteigen/');
 var KURZTEXT = 'Die App ' + NAME + ' hilft dir, mit Menschen im Gespräch zu bleiben, die extreme Ansichten vertreten. Kostenlos und ohne Anmeldung.';
+function iosGeraet() { try { var ua = navigator.userAgent || ''; return /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1); } catch (e) { return false; } }
 function isStandalone() { try { return window.navigator.standalone === true || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches); } catch (e) { return false; } }
 // Teilt über das Gerät; ohne Teilen-Funktion landet der Text (samt Adresse, falls angegeben) in der Zwischenablage.
 function shareText(title, text, url) {
@@ -146,6 +147,13 @@ function go(route, patch) {
   var h = '#' + route;
   if (location.hash !== h) location.hash = h; else render();
 }
+function zeigenZu() {
+  state.zeigen = false; state.focusId = 'zeigen-auf'; render();
+  try { if (history.state && history.state.zeigen) history.back(); } catch (e) {}
+}
+window.addEventListener('popstate', function (e) {
+  if (state.zeigen && !(e.state && e.state.zeigen)) { state.zeigen = false; state.focusId = 'zeigen-auf'; render(); }
+});
 window.addEventListener('hashchange', function () {
   var r = location.hash.replace('#', '');
   if (ROUTES.some(function (x) { return x[0] === r; })) state.route = r;
@@ -170,7 +178,7 @@ function render() {
       '<div class="sheet-h">App</div><button data-go="teilen">' + icon('teilen') + 'Weitersagen</button><button data-go="leitplanken" data-anker="datenschutz">' + icon('leitplanken') + 'Datenschutz</button>' + (HOSTED ? '<button data-act="check-update">' + icon('start') + 'Nach Updates suchen</button>' : '') + '</div>' : '';
   }
   var gs = $('#gshare');
-  if (gs) { if (state.route === 'teilen') gs.setAttribute('aria-current', 'page'); else gs.removeAttribute('aria-current'); }
+  if (gs) { gs.hidden = false; if (state.route === 'teilen') gs.setAttribute('aria-current', 'page'); else gs.removeAttribute('aria-current'); }
   var view = VIEWS[state.route] || VIEWS.start, ziel = crumbZiel(state.route);
   $('#main').innerHTML = '<div class="wrap">' + (ziel ? '<div class="crumb"><button data-go="' + ziel + '">‹ ' + esc(routeName(ziel)) + '</button></div>' : '') + view() + '</div>';
   if (lastRoute !== state.route) { window.scrollTo(0, 0); lastRoute = state.route; }
@@ -196,7 +204,7 @@ function vStart() {
       '<p class="lead">' + NAME + ' hilft dir, im Gespräch zu bleiben. Ohne Belehren, ohne Streit, egal aus welcher politischen Richtung.</p>' +
       '<div class="row center"><button class="btn primary lg" data-go="kompass">' + (res ? 'Deinen Fahrplan öffnen' : 'Hier anfangen') + '</button></div>' +
       '<p class="small muted hero-note">Die Person muss nichts ausfüllen. Deine Eingaben bleiben auf deinem Gerät' + (API ? ', außer Anfragen, die du selbst abschickst' : '') + '.</p></section>' +
-    anfBanner() +
+    anfBanner() + iosHinweis() +
     '<section><h2 class="sh sm">Wobei brauchst du Hilfe?</h2><div class="areas">' + bereiche + weiterZeile('Mit QR-Code, Link oder Aushang.') + '</div></section>' +
     (HOSTED && !isStandalone() ? '<details class="acc inst"><summary>Als App aufs Handy holen</summary><div class="body"><p class="small">iPhone: In Safari auf das Teilen-Symbol tippen (Quadrat mit Pfeil nach oben), dann „Zum Home-Bildschirm“ und „Hinzufügen“. Android: In Chrome auf die drei Punkte tippen, dann „Zum Startbildschirm hinzufügen“ oder „App installieren“. Danach läuft ' + NAME + ' wie eine App, auch offline.</p><p class="small">Wichtig beim iPhone: Die App auf dem Home-Bildschirm fängt leer an. Was du vorher in Safari eingetragen hast, holst du über „Meine Inhalte“ und „Sichern und übertragen“ herüber.</p></div></details>' : '') +
   '</div>';
@@ -250,6 +258,11 @@ function vHub(h) {
 }
 
 /* ---------- Meine Inhalte ---------- */
+function hatInhalte() { return !!(store.get('kompass', null) || archGet().eintraege.length || store.get('tagebuch', []).length || fallGet().argumente.length || anfSichtbar().length); }
+function iosHinweis() {
+  if (!HOSTED || isStandalone() || !iosGeraet() || !hatInhalte()) return '';
+  return '<div class="note warn" data-hinweis="ios"><strong>Wichtig auf iPhone und iPad</strong>Im Browser löscht das Gerät deine Einträge, wenn du die Seite etwa eine Woche lang nicht öffnest. Auf dem Home-Bildschirm bleiben sie erhalten. So ziehst du um: unter „Meine Inhalte“ › „Sichern und übertragen“ sichern, die App zum Home-Bildschirm hinzufügen und dort wieder einspielen.</div>';
+}
 function vMeins() {
   var res = store.get('kompass', null), ar = archGet(), tb = store.get('tagebuch', []), anf = anfSichtbar(), f = fallGet();
   var wege = [
@@ -259,7 +272,7 @@ function vMeins() {
     API || anf.length ? { go: 'antworten', daten: { anttab: 'anfragen' }, titel: 'Meine Anfragen', text: anf.length ? anz(anf.length, 'Anfrage', 'Anfragen') + ' zu fehlenden Argumenten.' : 'Fehlt dir ein Argument, kannst du es anfragen. Hier siehst du dann Entwurf und Antwort.', cta: 'Öffnen' } : null,
     { go: 'tagebuch', daten: { anker: 'sicherung' }, titel: 'Sichern und übertragen', text: 'Nimm Fall, Archiv und Tagebuch auf ein anderes Gerät mit.', cta: 'Sicherung öffnen' }
   ];
-  return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Nur auf diesem Gerät</div><h1>Meine Inhalte</h1><p class="why">Alles, was du gespeichert hast, an einem Ort.</p></div><div class="choices">' + wege.filter(Boolean).map(wegKarte).join('') + '</div></div>';
+  return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Nur auf diesem Gerät</div><h1>Meine Inhalte</h1><p class="why">Alles, was du gespeichert hast, an einem Ort.</p></div>' + iosHinweis() + '<div class="choices">' + wege.filter(Boolean).map(wegKarte).join('') + '</div></div>';
 }
 
 /* ---------- Suche ---------- */
@@ -312,7 +325,7 @@ function vTeilen() {
       '<div class="row center">' + (qr ? '<button class="btn primary" id="zeigen-auf" data-act="zeigen">Groß zeigen</button>' : '') + '<button class="btn" data-act="teilen-link">Link teilen</button></div></section>' +
     '<div class="choices">' +
       '<div class="choice-card"><h3>Was du dazu sagen kannst</h3><div class="say"><span class="say-t">„' + esc(KURZTEXT) + '“</span></div></div>' +
-      (qr ? '<div class="choice-card"><h3>Zum Aufhängen und Auslegen</h3><p>Ein Aushang mit QR-Code für Infostand, Vereinsheim oder Schwarzes Brett.</p><div class="row"><button class="btn" data-act="aushang">Aushang drucken</button></div><p class="small muted">Tipp: Im Druckfenster „Kopf- und Fußzeilen“ ausschalten, sonst druckt der Browser Datum und Web-Adresse mit.</p></div>' : '') +
+      (qr ? '<div class="choice-card"><h3>Zum Aufhängen und Auslegen</h3><p>Ein Aushang mit QR-Code für Infostand, Vereinsheim oder Schwarzes Brett.</p><div class="row"><button class="btn" data-act="aushang">Aushang drucken</button></div><p class="small muted">Tipp: Am Computer klappt das Drucken immer, am Handy nicht in jedem Browser. Im Druckfenster „Kopf- und Fußzeilen“ ausschalten, sonst druckt der Browser Datum und Web-Adresse mit.</p></div>' : '') +
       '<div class="note"><strong>Gut zu wissen</strong>Beim Vorzeigen sieht niemand deine Notizen. Empfiehl die App, aber dräng sie niemandem auf. Und zeig sie nicht der Person, um die du dich sorgst: Das wirkt schnell wie ein Vorwurf.</div>' +
     '</div>' + (qr ? aushang : '') + (qr && state.zeigen ? gross : '') + '</div>';
 }
@@ -1041,8 +1054,9 @@ document.addEventListener('click', function (e) {
   else if (a === 'arch-del-yes') { var ad = archGet(); ad.eintraege = ad.eintraege.filter(function (x) { return x.id !== d.id; }); ad.pins = ad.pins.filter(function (x) { return x !== d.id; }); archSet(ad); state.confirmDel = null; render(); toast('Eintrag gelöscht'); }
   else if (a === 'copy-text') { copyText(d.text || ''); }
   else if (a === 'sheet') { state.sheet = !state.sheet; render(); }
-  else if (a === 'zeigen') { state.zeigen = true; render(); }
-  else if (a === 'zeigen-zu') { state.zeigen = false; state.focusId = 'zeigen-auf'; render(); }
+  else if (a === 'zeigen') { state.zeigen = true; state.zeigenSeit = Date.now(); try { if (!(history.state && history.state.zeigen)) history.pushState({ zeigen: 1 }, ''); } catch (err) {} render(); }
+  // Ein zweiter Tipp direkt nach dem Öffnen landet auf der Fläche und soll nicht gleich wieder schließen; „Schließen“ wirkt immer
+  else if (a === 'zeigen-zu') { if (el.id !== 'zeigen-zu' && Date.now() - (state.zeigenSeit || 0) < 600) return; zeigenZu(); }
   else if (a === 'teilen-link') { shareText(NAME, KURZTEXT, ADRESSE); }
   else if (a === 'aushang') { if (typeof window.print === 'function') window.print(); else toast('Drucken geht hier nicht. Öffne die App dafür am Computer.'); }
   else if (a === 'check-update') { if (state.sheet) { state.sheet = false; render(); } if (window.umsteigenUpdate) window.umsteigenUpdate(); else toast('Diese Version prüft nicht automatisch. Seite neu laden.'); }
@@ -1068,7 +1082,7 @@ document.addEventListener('click', function (e) {
   else if (a === 'tb-clear-yes') { store.del('tagebuch'); state.confirmClear = false; render(); toast('Alle Einträge gelöscht'); }
 });
 document.addEventListener('keydown', function (e) {
-  if (e.key === 'Escape' && state.zeigen) { state.zeigen = false; state.focusId = 'zeigen-auf'; render(); return; }
+  if (e.key === 'Escape' && state.zeigen) { zeigenZu(); return; }
   if (e.key === 'Tab' && state.zeigen) { e.preventDefault(); var zu = $('#zeigen-zu'); if (zu) zu.focus(); return; }
   if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('[role="button"][data-go], [role="button"][data-act]')) { e.preventDefault(); e.target.dispatchEvent(new MouseEvent('click', { bubbles: true })); }
 });

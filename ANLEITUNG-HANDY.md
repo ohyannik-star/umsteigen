@@ -45,7 +45,8 @@ Neue Inhalte oder Funktionen kommen so zu deiner Freundin:
 
 1. Im Projekt `node app/build.js` ausführen. Das erzeugt den Ordner `docs/` neu, mit einer neuen Versionsnummer.
 2. Hochladen: im Projektordner `git add -A`, dann `git commit -m "Update"` und `git push`. Oder im Browser auf github.com im Ordner docs über **Add file**, **Upload files** wieder den gesamten Inhalt von `docs/` hineinziehen; vorhandene Dateien werden ersetzt. Es darf nichts fehlen, sonst läuft die App nicht ohne Netz.
-3. Beim nächsten Öffnen lädt die App im Hintergrund die neue Version und zeigt unten „Neue Version verfügbar. Jetzt laden". Ein Tipp genügt.
+3. Beim nächsten Öffnen lädt die App die neue Version im Hintergrund, startet einmal von selbst neu und zeigt unten kurz „Aktualisiert auf Version …“.
+4. Auf dem iPhone behält ein schon installiertes Symbol seinen alten Namen und sein altes Bild; das neue erscheint nur bei neu hinzugefügten Symbolen. Wer das Symbol erneuern will: zuerst unter „Meine Inhalte“ › „Sichern und übertragen“ sichern, dann Symbol löschen, neu hinzufügen und die Sicherung dort wieder einspielen. Sonst sind die Einträge weg, denn die App auf dem Home-Bildschirm hat ihren eigenen Speicher.
 
 ## 4. Daten sichern und zwischen Geräten übertragen
 

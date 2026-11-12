@@ -63,7 +63,7 @@ button { font: inherit; color: inherit; }
 .gshare:hover { filter: brightness(.96); }
 .gshare[aria-current="page"] { background: var(--fg); color: var(--bg); }
 /* Zwischen Handy- und Desktop-Breite ist die Kopfzeile eng: Dort zeigt „Weitersagen“ nur das Symbol, damit „Meine Inhalte“ und „Suche“ sichtbar bleiben */
-@media (min-width: 735px) and (max-width: 979px) {
+@media (min-width: 734.01px) and (max-width: 979.99px) {
   .gnav-in { gap: 12px; }
   .nav { gap: 0; }
   .nav button { padding-inline: 5px; font-size: .78rem; }
@@ -228,7 +228,7 @@ input.such { max-width: 560px; font-size: 1.1rem; padding: 14px 18px; border-rad
 /* Handy quer: Code links, Name, Hinweis und „Schließen“ rechts daneben, damit nichts abgeschnitten wird */
 @media (orientation: landscape) and (max-height: 500px) {
   .zeigen { display: grid; grid-template-columns: auto auto; justify-content: center; align-content: center; align-items: center; column-gap: 28px; }
-  .zeigen .qr { grid-column: 1; grid-row: 1 / span 3; width: min(50vw, 100vh - 40px); width: min(50vw, 100dvh - 40px); }
+  .zeigen .qr { grid-column: 1; grid-row: 1 / span 3; width: min(50vw, 100vh - 40px); width: min(50vw, 100dvh - 40px, 100vw - 250px); }
   .zeigen > :not(.qr) { grid-column: 2; margin: 0; justify-self: center; }
 }
 .zeigen-n { font-size: 1.6rem; font-weight: 800; letter-spacing: .06em; }
@@ -464,7 +464,7 @@ details.acc .body { padding: 0 4px 20px; }
   <div class="gnav-in">
     <button class="brand" data-go="start">UMDENKEN</button>
     <nav class="nav" id="nav" aria-label="Bereiche"></nav>
-    <button class="gshare" id="gshare" data-go="teilen" aria-label="Weitersagen" title="Weitersagen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="m8.3 10.7 7.4-4.4M8.3 13.3l7.4 4.4"/></svg><span>Weitersagen</span></button>
+    <button class="gshare" id="gshare" data-go="teilen" aria-label="Weitersagen" title="Weitersagen" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="m8.3 10.7 7.4-4.4M8.3 13.3l7.4 4.4"/></svg><span>Weitersagen</span></button>
   </div>
 </header>
 <main class="main" id="main"></main>
