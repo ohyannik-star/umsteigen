@@ -182,8 +182,7 @@ button { font: inherit; color: inherit; }
 
 /* Kompass: Richtungen, Fortschritt, Profil */
 /* Startseite: Zweck oben, fünf Bereiche, Hinweis aufs Weitersagen */
-.btn.lg { padding: 14px 30px; font-size: 1.08rem; }
-.hero-note { max-width: 34em; }
+.btn.lg { padding: 18px 48px; font-size: 1.25rem; font-weight: 600; }
 .sh.sm { font-size: clamp(1.15rem, 2.2vw, 1.5rem); margin-bottom: 12px; }
 .area.weiter { width: 100%; background: var(--accent-soft); --ac: var(--accent); }
 .area.weiter .area-t span { color: var(--fg-2); }
@@ -441,7 +440,7 @@ details.acc .body { padding: 0 4px 20px; }
   .hero { gap: 12px; padding-block: 4px 0; }
   .display { font-size: 1.75rem; }
   .lead { font-size: 1.02rem; }
-  .btn.lg { padding: 12px 26px; font-size: 1.02rem; }
+  .btn.lg { padding: 16px 44px; font-size: 1.18rem; }
   .page-head { gap: 8px; }
   .page-head h1 { font-size: 1.6rem; }
   .page-head p { font-size: 1rem; }
@@ -17199,8 +17198,7 @@ function vStart() {
   return '<div class="stack-lg">' +
     '<section class="hero"><h1 class="display">Jemand aus deinem Umfeld vertritt extreme Ansichten?</h1>' +
       '<p class="lead">' + NAME + ' hilft dir, im Gespräch zu bleiben. Ohne Belehren, ohne Streit, egal aus welcher politischen Richtung.</p>' +
-      '<div class="row center"><button class="btn primary lg" data-go="kompass">' + (res ? 'Deinen Fahrplan öffnen' : 'Hier anfangen') + '</button></div>' +
-      '<p class="small muted hero-note">Die Person muss nichts ausfüllen. Deine Eingaben bleiben auf deinem Gerät' + (API ? ', außer Anfragen, die du selbst abschickst' : '') + '.</p></section>' +
+      '<div class="row center"><button class="btn primary lg" data-go="kompass">' + (res ? 'Deinen Fahrplan öffnen' : 'Hier anfangen') + '</button></div></section>' +
     anfBanner() + iosHinweis() +
     '<section><h2 class="sh sm">Wobei brauchst du Hilfe?</h2><div class="areas">' + bereiche + weiterZeile('Mit QR-Code, Link oder Aushang.') + '</div></section>' +
     (HOSTED && !isStandalone() ? '<details class="acc inst"><summary>Als App aufs Handy holen</summary><div class="body"><p class="small">iPhone: In Safari auf das Teilen-Symbol tippen (Quadrat mit Pfeil nach oben), dann „Zum Home-Bildschirm“ und „Hinzufügen“. Android: In Chrome auf die drei Punkte tippen, dann „Zum Startbildschirm hinzufügen“ oder „App installieren“. Danach läuft ' + NAME + ' wie eine App, auch offline.</p><p class="small">Wichtig beim iPhone: Die App auf dem Home-Bildschirm fängt leer an. Was du vorher in Safari eingetragen hast, holst du über „Meine Inhalte“ und „Sichern und übertragen“ herüber.</p></div></details>' : '') +

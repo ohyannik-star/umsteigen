@@ -202,8 +202,7 @@ function vStart() {
   return '<div class="stack-lg">' +
     '<section class="hero"><h1 class="display">Jemand aus deinem Umfeld vertritt extreme Ansichten?</h1>' +
       '<p class="lead">' + NAME + ' hilft dir, im Gespräch zu bleiben. Ohne Belehren, ohne Streit, egal aus welcher politischen Richtung.</p>' +
-      '<div class="row center"><button class="btn primary lg" data-go="kompass">' + (res ? 'Deinen Fahrplan öffnen' : 'Hier anfangen') + '</button></div>' +
-      '<p class="small muted hero-note">Die Person muss nichts ausfüllen. Deine Eingaben bleiben auf deinem Gerät' + (API ? ', außer Anfragen, die du selbst abschickst' : '') + '.</p></section>' +
+      '<div class="row center"><button class="btn primary lg" data-go="kompass">' + (res ? 'Deinen Fahrplan öffnen' : 'Hier anfangen') + '</button></div></section>' +
     anfBanner() + iosHinweis() +
     '<section><h2 class="sh sm">Wobei brauchst du Hilfe?</h2><div class="areas">' + bereiche + weiterZeile('Mit QR-Code, Link oder Aushang.') + '</div></section>' +
     (HOSTED && !isStandalone() ? '<details class="acc inst"><summary>Als App aufs Handy holen</summary><div class="body"><p class="small">iPhone: In Safari auf das Teilen-Symbol tippen (Quadrat mit Pfeil nach oben), dann „Zum Home-Bildschirm“ und „Hinzufügen“. Android: In Chrome auf die drei Punkte tippen, dann „Zum Startbildschirm hinzufügen“ oder „App installieren“. Danach läuft ' + NAME + ' wie eine App, auch offline.</p><p class="small">Wichtig beim iPhone: Die App auf dem Home-Bildschirm fängt leer an. Was du vorher in Safari eingetragen hast, holst du über „Meine Inhalte“ und „Sichern und übertragen“ herüber.</p></div></details>' : '') +
