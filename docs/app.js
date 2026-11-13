@@ -147,7 +147,7 @@ function go(route, patch) {
   if (patch) Object.keys(patch).forEach(function (k) { state[k] = patch[k]; });
   if (route !== state.route && istOben(state.route)) state.from = state.route;
   if (route === 'suche' && state.route !== 'suche') state.focusId = 'such-q';
-  state.route = route; state.sheet = false; state.zeigen = false;
+  state.route = route; state.sheet = false; state.zeigen = false; state.stLoeschen = false;
   var h = '#' + route;
   if (location.hash !== h) location.hash = h; else render();
 }
@@ -185,7 +185,7 @@ function render() {
   if (gs) { gs.hidden = false; if (state.route === 'teilen') gs.setAttribute('aria-current', 'page'); else gs.removeAttribute('aria-current'); }
   var view = VIEWS[state.route] || VIEWS.start, ziel = crumbZiel(state.route);
   // Bei den Thesen führt „‹ Zurück“ in der Seite selbst; ein zweiter Zurück-Link darüber würde verwirren
-  if (state.route === 'selbsttest' && state.st && state.st.teil === 'thesen') ziel = null;
+  if (state.route === 'selbsttest' && state.st && (state.st.teil === 'thesen' || ((state.st.teil === 'fakten' || state.st.teil === 'gespraech') && !stQuizFertig(state.st, state.st.teil)))) ziel = null;
   $('#main').innerHTML = '<div class="wrap">' + (ziel ? '<div class="crumb"><button data-go="' + ziel + '">‹ ' + esc(routeName(ziel)) + '</button></div>' : '') + view() + '</div>';
   if (lastRoute !== state.route) { window.scrollTo(0, 0); lastRoute = state.route; }
   if (AFTER[state.route]) AFTER[state.route]();
@@ -346,25 +346,37 @@ function vTeilen() {
 // Sie gehen nie in die Sicherung (backupAll) und nie über das Netz.
 var ST_POS = { zu: 'stimmt zu', ab: 'lehnt ab', neutral: 'neutral', offen: 'keine klare Aussage' };
 var ST_DU = { zu: 'Du: stimme zu', ab: 'Du: stimme nicht zu', neutral: 'Du: neutral', skip: 'Du: übersprungen' };
-function stLeer() { return { teil: null, i: 0, a: {}, w: {}, s: {}, staerkeFertig: false, gespeichert: false }; }
+function stLeer() { return { teil: null, i: 0, a: {}, w: {}, s: {}, f: {}, g: {}, qi: 0, staerkeFertig: false, gespeichert: false }; }
 function stState() {
   if (!state.st) {
     var g = store.get('selbsttest', null); state.st = stLeer();
-    if (g) { state.st.a = g.a || {}; state.st.w = g.w || {}; state.st.s = g.s || {}; state.st.staerkeFertig = !!g.staerkeFertig; state.st.gespeichert = true; }
+    if (g) { state.st.a = g.a || {}; state.st.w = g.w || {}; state.st.s = g.s || {}; state.st.f = g.f || {}; state.st.g = g.g || {}; state.st.staerkeFertig = !!g.staerkeFertig; state.st.gespeichert = true; }
   }
   return state.st;
 }
-function stMerken() { var st = stState(); if (st.gespeichert) store.set('selbsttest', { a: st.a, w: st.w, s: st.s, staerkeFertig: st.staerkeFertig }); }
+function stMerken() { var st = stState(); if (st.gespeichert) store.set('selbsttest', { a: st.a, w: st.w, s: st.s, f: st.f, g: st.g, staerkeFertig: st.staerkeFertig }); }
+// Gewählte Antworten einer Frage in Teil 1 als Liste. Frühere Fassungen speicherten genau eine Antwort als Text.
+function stWahl(st, f) { var v = st.s[f.id]; return v == null || v === '' ? [] : Array.isArray(v) ? v : [v]; }
 function stParteienAbc() { return ST.parteien.slice().sort(function (x, y) { return x.name < y.name ? -1 : x.name > y.name ? 1 : 0; }); }
 function stQuelle(p, id) { var q = p.quellen || []; for (var i = 0; i < q.length; i++) if (!id || q[i].id === id) return q[i]; return q[0] || { titel: 'Wahlprogramm 2025', url: '' }; }
 function stUnd(namen) { return namen.length < 2 ? namen.join('') : namen.slice(0, -1).join(', ') + ' und ' + namen[namen.length - 1]; }
-function stTyp(s) {
+function stTyp(st) {
   var punkte = {};
   ST.staerken.typen.forEach(function (t) { punkte[t.id] = 0; });
-  ST.staerken.fragen.forEach(function (f) { var o = findIn(f.optionen, s[f.id]); if (o) Object.keys(o.typ).forEach(function (k) { punkte[k] = (punkte[k] || 0) + o.typ[k]; }); });
+  ST.staerken.fragen.forEach(function (f) {
+    var gew = stWahl(st, f).map(function (id) { return findIn(f.optionen, id); }).filter(Boolean);
+    gew.forEach(function (o) { Object.keys(o.typ).forEach(function (k) { punkte[k] = (punkte[k] || 0) + o.typ[k] * 60 / gew.length; }); });
+  });
   // Reihenfolge der Typen entscheidet bei Gleichstand (Kraft zuerst)
   var reihe = ST.staerken.typen.slice().sort(function (x, y) { return punkte[y.id] - punkte[x.id]; });
   return { typ: reihe[0], zweit: reihe[1] && punkte[reihe[1].id] > 0 ? reihe[1] : null };
+}
+// Belastung: Kraft vorn (kraft), oder eine andere Stärke vorn, aber starke Belastung bei s4 oder Kraft auf Platz zwei (belastet)
+function stBelastung(st) {
+  var F = ST.staerken.fragen;
+  if (!st.staerkeFertig || !F.every(function (f) { return stWahl(st, f).length; })) return { kraft: false, belastet: false };
+  var r = stTyp(st), s4 = stWahl(st, { id: 's4' }), kraft = r.typ.id === 'kraft';
+  return { kraft: kraft, belastet: !kraft && (s4.indexOf('c') >= 0 || s4.indexOf('d') >= 0 || !!(r.zweit && r.zweit.id === 'kraft')) };
 }
 function stErgebnis(st) {
   var beantwortet = 0;
@@ -393,22 +405,30 @@ function vSelbsttest() {
   if (st.teil === 'staerken') return stStaerkenView(st);
   if (st.teil === 'thesen' && ST.thesen.length) return stThesenView(st);
   if (st.teil === 'ergebnis' && ST.thesen.length) return stErgebnisView(st);
+  if ((st.teil === 'fakten' || st.teil === 'gespraech') && ST_QUIZ[st.teil].daten().length) return stQuizView(st, st.teil);
+  if (st.teil === 'auswertung') return stAuswertungView(st);
   var N = ST.thesen.length, angefangen = ST.thesen.some(function (t) { return st.a[t.id]; });
+  var quizCta = function (art) { var p = stPunkte(st, art); return p.fertig ? 'Dein Ergebnis: ' + p.pct + ' von 100' : p.n ? 'Weitermachen' : 'Starten'; };
+  var nF = ST_QUIZ.fakten.daten().length, nG = ST_QUIZ.gespraech.daten().length;
+  var etwas = st.staerkeFertig || angefangen || stPunkte(st, 'fakten').n || stPunkte(st, 'gespraech').n;
   var karte = function (teil, titel, text, cta) { return '<div class="choice-card" role="button" tabindex="0" data-act="st-teil" data-teil="' + teil + '"><h3>' + esc(titel) + '</h3><p>' + esc(text) + '</p><span class="choice-cta">' + esc(cta) + ' ›</span></div>'; };
-  return '<div class="stack-lg">' + kopf('Selbsttest', 'Wo stehe ich?', 'Bevor du andere verstehst: Wo stehst du selbst? Zwei kurze Teile, zusammen etwa zehn Minuten.', '') +
+  return '<div class="stack-lg">' + kopf('Selbsttest', 'Wo stehe ich?', 'Bevor du andere verstehst: Wo stehst du selbst? Vier kurze Teile, jeder für sich. Am Ende siehst du alles in einer Auswertung.', '') +
     '<div class="choices">' +
       karte('staerken', 'Teil 1: Was liegt dir?', ST.staerken.fragen.length + ' Fragen. Du erfährst, was deine Stärke im Gespräch ist und wo du in der App am besten anfängst.', st.staerkeFertig ? 'Dein Ergebnis ansehen' : 'Starten') +
       (N ? karte('thesen', 'Teil 2: Wo stehst du politisch?', N + ' Thesen. Du siehst, wie weit sich deine Antworten mit den Wahlprogrammen der Parteien decken, die bei der Bundestagswahl 2025 mindestens 1 % der Zweitstimmen bekommen haben. CDU und CSU haben ein gemeinsames Programm und stehen deshalb zusammen.', angefangen ? 'Weitermachen' : 'Starten')
         : '<div class="choice-card"><h3>Teil 2: Wo stehst du politisch?</h3><p>Kommt bald.</p></div>') +
-      '<div class="note"><strong>Gut zu wissen</strong>Keine Wahlempfehlung: Der Test zeigt nur, wo sich deine Antworten mit den Wahlprogrammen decken. Deine Antworten werden nur auf diesem Gerät ausgewertet und nur gespeichert, wenn du es willst.</div>' +
+      (nF ? karte('fakten', 'Teil 3: Politik und Wirklichkeit', nF + ' Fragen zu Zahlen, die viele Menschen falsch einschätzen, egal welche Partei sie wählen. Jede Antwort mit amtlicher Quelle. Du bekommst Punkte von 100.', quizCta('fakten')) : '') +
+      (nG ? karte('gespraech', 'Teil 4: Gesprächs-Check', nG + ' Situationen aus dem Alltag: Jemand sagt etwas Schwieriges. Was antwortest du? Du siehst sofort, wie deine Antwort wirkt, und bekommst Punkte von 100.', quizCta('gespraech')) : '') +
+      (etwas ? karte('auswertung', 'Deine Auswertung', 'Alles auf einen Blick: deine Stärke, deine politische Nähe, deine Punkte und was du als Nächstes tun kannst.', 'Ansehen') : '') +
+      '<div class="note"><strong>Gut zu wissen</strong>Keine Wahlempfehlung: Teil 2 zeigt nur, wo sich deine Antworten mit den Wahlprogrammen decken. Die Punkte in Teil 3 und 4 sind kein IQ-Test: Sie zeigen nur, wie du bei diesen Fragen abschneidest. Deine Antworten werden nur auf diesem Gerät ausgewertet und nur gespeichert, wenn du es willst.</div>' +
     '</div></div>';
 }
 function stStaerkenView(st) {
-  var F = ST.staerken.fragen, fehlt = F.filter(function (f) { return !st.s[f.id]; }).length;
+  var F = ST.staerken.fragen, fehlt = F.filter(function (f) { return !stWahl(st, f).length; }).length;
   if (st.staerkeFertig && !fehlt) {
-    var r = stTyp(st.s), t = r.typ;
+    var r = stTyp(st), t = r.typ;
     // Starke Belastung (Frage s4) oder Kraft auf Platz zwei: Hinweis auf Selbstschutz, auch wenn eine andere Stärke vorne liegt
-    var belastet = t.id !== 'kraft' && (st.s.s4 === 'c' || st.s.s4 === 'd' || (r.zweit && r.zweit.id === 'kraft'));
+    var belastet = stBelastung(st).belastet;
     return '<div class="stack-lg">' + kopf('Teil 1', 'Deine Stärke', 'Dein Ergebnis und wo du in der App am besten anfängst.', '') +
       '<section class="panel stack choices"><div class="eyebrow">Deine Stärke</div><h2>' + esc(t.name) + '</h2><p>' + esc(t.staerke) + '</p>' +
         '<div class="note"><strong>Darauf kannst du achten</strong>' + esc(t.tipp) + '</div>' +
@@ -419,10 +439,10 @@ function stStaerkenView(st) {
       '</section></div>';
   }
   var fragen = F.map(function (f, n) {
-    return '<div class="group" role="group" aria-labelledby="st-f-' + esc(f.id) + '"><div class="eyebrow">Frage ' + (n + 1) + ' von ' + F.length + '</div><div class="group-title" id="st-f-' + esc(f.id) + '">' + esc(f.text) + '</div><div class="choice">' +
-      f.optionen.map(function (o) { var an = st.s[f.id] === o.id; return '<button type="button" id="st-o-' + esc(f.id) + '-' + esc(o.id) + '" data-act="st-wahl" data-f="' + esc(f.id) + '" data-o="' + esc(o.id) + '" aria-pressed="' + an + '"' + (an ? ' class="pick"' : '') + '>' + esc(o.text) + '</button>'; }).join('') + '</div></div>';
+    return '<div class="group" role="group" aria-labelledby="st-f-' + esc(f.id) + '"><div class="eyebrow">Frage ' + (n + 1) + ' von ' + F.length + '</div><div class="group-title" id="st-f-' + esc(f.id) + '">' + esc(f.text) + '</div><p class="small muted">' + (f.einzeln ? 'Eine Antwort' : 'Mehrere Antworten möglich') + '</p><div class="choice">' +
+      f.optionen.map(function (o) { var an = stWahl(st, f).indexOf(o.id) >= 0; return '<button type="button" id="st-o-' + esc(f.id) + '-' + esc(o.id) + '" data-act="st-wahl" data-f="' + esc(f.id) + '" data-o="' + esc(o.id) + '" aria-pressed="' + an + '"' + (an ? ' class="pick"' : '') + '>' + esc(o.text) + '</button>'; }).join('') + '</div></div>';
   }).join('');
-  return '<div class="stack-lg">' + kopf('Teil 1', 'Was liegt dir?', 'Wähle jeweils die Antwort, die am ehesten passt. Es gibt kein Richtig oder Falsch.', '') +
+  return '<div class="stack-lg">' + kopf('Teil 1', 'Was liegt dir?', 'Tippe alles an, was auf dich zutrifft: Mehrere Antworten sind möglich. Jede Frage zählt gleich viel, egal wie viele Antworten du wählst. Es gibt kein Richtig oder Falsch.', '') +
     '<div class="panel">' + fragen + '<div class="form-end"><button class="btn primary" data-act="st-auswerten">Auswerten</button>' +
       (state.stHinweis ? '<span class="small">' + esc(state.stHinweis) + '</span>' : (fehlt ? '<span class="small muted">Noch ' + anz(fehlt, 'Frage', 'Fragen') + ' offen</span>' : '')) +
       '<button class="link" data-act="st-start">Zur Übersicht</button></div></div></div>';
@@ -474,16 +494,148 @@ function stErgebnisView(st) {
       }).join('') + '</div></details>';
   }).join('');
   var quellen = stParteienAbc().map(function (p) { return '<li><strong>' + esc(p.name) + '</strong>' + (p.lang && p.lang.toLowerCase() !== p.name.toLowerCase() ? ' – ' + esc(p.lang) : '') + ' (' + esc(p.ergebnis) + '): ' + (p.quellen || []).map(function (q) { return '<a href="' + esc(q.url) + '" target="_blank" rel="noopener">' + esc(q.titel) + '</a>'; }).join(', ') + '</li>'; }).join('');
-  var loeschen = state.stLoeschen ? '<span class="row"><span class="small">Wirklich alle Antworten aus beiden Teilen löschen? Das lässt sich nicht rückgängig machen.</span><button class="btn sm danger" data-act="st-loeschen-ja">Ja, alles löschen</button><button class="btn sm" data-act="st-loeschen-nein">Abbrechen</button></span>' : '<button class="btn danger" data-act="st-loeschen">Alle Antworten löschen</button>';
+  return stErgebnis2View(st, r, kopfzeile, balken, offen, gemein, vergleich, quellen);
+}
+function stSpeicherZeile(st, extra) {
+  var loeschen = state.stLoeschen ? '<span class="row"><span class="small">Wirklich alle Antworten aus allen Teilen löschen? Das lässt sich nicht rückgängig machen.</span><button class="btn sm danger" data-act="st-loeschen-ja">Ja, alles löschen</button><button class="btn sm" data-act="st-loeschen-nein">Abbrechen</button></span>' : '<button class="btn danger" data-act="st-loeschen">Alle Antworten löschen</button>';
+  return '<div class="row">' + extra + (st.gespeichert ? '<span class="small muted">Auf diesem Gerät gespeichert</span>' : '<button class="btn" data-act="st-speichern">Auf diesem Gerät speichern</button>') + loeschen + '<button class="link" data-act="st-start">Zur Übersicht</button></div>' +
+    (st.gespeichert ? '' : '<p class="small muted">Gespeichert wird nur im Browser dieses Geräts. Wer das Gerät benutzt, kann deine Antworten dann sehen. In deiner Sicherung unter „Meine Inhalte“ sind sie nicht enthalten.</p>');
+}
+function stErgebnis2View(st, r, kopfzeile, balken, offen, gemein, vergleich, quellen) {
   return '<div class="stack-lg">' + kopfzeile +
     '<div class="note warn"><strong>Keine Wahlempfehlung</strong>Der Vergleich zeigt nur, wo sich deine Antworten zu ' + anz(r.beantwortet, 'These', 'Thesen') + ' mit den Wahlprogrammen decken. Er sagt nichts darüber aus, wie eine Partei als Ganzes zu bewerten ist.</div>' +
     '<div class="card"><div class="bars st-bars">' + balken + '</div>' + (offen.length ? '<p class="small muted" style="margin-top:10px">Zu manchen Thesen sagt ein Programm nichts Klares. Dann bekommt die Partei die Hälfte der Punkte, egal wie du geantwortet hast; das zählt weder als Übereinstimmung noch als Widerspruch und zieht ihren Wert in Richtung 50 %. Anzahl solcher Thesen bei deinen Antworten: ' + esc(offen.join(' · ')) + '.</p>' : '') + '</div>' +
-    '<div class="row"><button class="btn" data-act="st-neu">Antworten ändern</button>' + (st.gespeichert ? '<span class="small muted">Auf diesem Gerät gespeichert</span>' : '<button class="btn" data-act="st-speichern">Auf diesem Gerät speichern</button>') + loeschen + '<button class="link" data-act="st-start">Zur Übersicht</button></div>' +
-    (st.gespeichert ? '' : '<p class="small muted">Gespeichert wird nur im Browser dieses Geräts. Wer das Gerät benutzt, kann deine Antworten dann sehen. In deiner Sicherung unter „Meine Inhalte“ sind sie nicht enthalten.</p>') +
+    stSpeicherZeile(st, '<button class="btn" data-act="st-neu">Antworten ändern</button><button class="btn" data-act="st-teil" data-teil="auswertung">Zur Gesamtauswertung</button>') +
     gemein +
     '<section class="stack" id="vergleich"><h2 class="sh sm">Thesen im Vergleich</h2><p class="small muted">Tippe auf eine These: Du siehst, wie jede Partei sie in ihrem Wahlprogramm sieht, mit Zitat und Seite, wo das Programm etwas Klares sagt.</p><div class="faq">' + vergleich + '</div></section>' +
     '<details class="acc"><summary>So wird gerechnet</summary><div class="body stack"><p>Für jede These wird deine Antwort mit der Position der Partei verglichen: gleiche Antwort 2 Punkte, eine Seite neutral 1 Punkt, entgegengesetzt 0 Punkte. Thesen, die dir besonders wichtig sind, zählen doppelt. Übersprungene Thesen zählen nicht. Sagt ein Programm zu einer These nichts Klares, bekommt die Partei dafür die Hälfte der Punkte (1 von 2, bei doppelt gewichteten Thesen 2 von 4), egal wie du geantwortet hast. Das zählt weder als Übereinstimmung noch als Widerspruch. Je öfter das bei einer Partei vorkommt, desto näher liegt ihr Wert bei 50 %.</p><p>Die Einordnungen stammen aus den Wahlprogrammen zur Bundestagswahl 2025. Jede Zustimmung, Ablehnung und neutrale Position ist mit einem wörtlichen Zitat und der Seite in der PDF-Datei belegt; wo ein Programm nichts Klares sagt, steht „keine klare Aussage“. Jede Einordnung wurde ein zweites Mal mit dem Programmtext abgeglichen. Die Parteien selbst haben sie nicht geprüft. Fehler sind trotzdem möglich: Lies im Zweifel das Zitat im Programm nach. Stand: ' + esc(ST.stand) + '.</p></div></details>' +
     '<details class="acc"><summary>Parteien und Quellen</summary><div class="body stack"><p class="small">Dabei sind alle Parteien, die bei der Bundestagswahl 2025 mindestens 1 % der Zweitstimmen erhalten haben, in alphabetischer Reihenfolge. Ergebnisse: © Die Bundeswahlleiterin, Wiesbaden 2025, endgültiges Ergebnis der Bundestagswahl 2025 (<a href="https://www.bundeswahlleiterin.de/bundestagswahlen/2025/ergebnisse/bund-99.html" target="_blank" rel="noopener">bundeswahlleiterin.de</a>), Datenlizenz Deutschland – Namensnennung – Version 2.0 (<a href="https://www.govdata.de/dl-de/by-2-0" target="_blank" rel="noopener">govdata.de/dl-de/by-2-0</a>); Prozentwerte gerundet. Zitate aus den Wahlprogrammen der jeweiligen Parteien; das Urheberrecht liegt bei den Parteien.</p><ul class="small">' + quellen + '</ul></div></details>' +
+  '</div>';
+}
+
+/* ---------- Selbsttest Teil 3 und 4: Faktencheck und Gesprächs-Check ---------- */
+// Teil 3 misst Wissen über amtlich belegte Zahlen, nie Meinungen. Teil 4 misst, wie gut eine Antwort ein Gespräch offen hält
+// (2 öffnet, 1 geht, 0 schließt Türen), nach den Techniken der App. Beide ergeben Punkte von 100, gerechnet über die beantworteten Fragen.
+var ST_QUIZ = {
+  fakten: { key: 'f', teil: 'Teil 3', titel: 'Politik und Wirklichkeit', wort: ['Frage', 'Fragen'], daten: function () { return (ST && ST.fakten) || []; } },
+  gespraech: { key: 'g', teil: 'Teil 4', titel: 'Gesprächs-Check', wort: ['Situation', 'Situationen'], daten: function () { return (ST && ST.gespraech) || []; } }
+};
+function stBeste(it) { var b = 0; it.optionen.forEach(function (o, i) { if ((o.wert || 0) > (it.optionen[b].wert || 0)) b = i; }); return b; }
+function stQuizWert(art, it, n) { return art === 'fakten' ? (n === it.richtig ? 2 : 0) : ((it.optionen[n] || {}).wert || 0); }
+function stPunkte(st, art) {
+  var q = ST_QUIZ[art], L = q.daten(), a = st[q.key] || {}, n = 0, p = 0, schwach = [];
+  L.forEach(function (it) { var x = a[it.id]; if (x == null) return; n++; var w = stQuizWert(art, it, x); p += w; if (w < 2) schwach.push(it); });
+  return { n: n, von: L.length, pct: n ? Math.round(100 * p / (2 * n)) : null, fertig: L.length > 0 && n === L.length, schwach: schwach };
+}
+function stQuizFertig(st, art) { return ST_QUIZ[art] ? (st.qi || 0) >= ST_QUIZ[art].daten().length : true; }
+function stStufe(art, pct) {
+  if (art === 'fakten') return pct >= 85 ? 'Sehr gut informiert' : pct >= 60 ? 'Gut informiert' : pct >= 35 ? 'Teils gut informiert' : 'Viel Neues entdeckt';
+  return pct >= 85 ? 'Sehr gesprächsstark' : pct >= 60 ? 'Gesprächsstark' : pct >= 35 ? 'Auf gutem Weg' : 'Da geht noch einiges';
+}
+// Feste, aber gemischte Reihenfolge der Antworten im Gesprächs-Check, damit die beste nicht immer an derselben Stelle steht
+function stReihe(it) {
+  var h = 0; for (var i = 0; i < it.id.length; i++) h = (h * 31 + it.id.charCodeAt(i)) % 9973;
+  return it.optionen.map(function (o, i) { return { i: i, k: (h * (i + 7) * 2654435761) % 1000 }; }).sort(function (x, y) { return x.k - y.k || x.i - y.i; }).map(function (x) { return x.i; });
+}
+function stQuelleLink(it) {
+  var q = it.quelle || {};
+  if (!q.titel) return '';
+  return '<p class="small">Quelle: ' + (q.url ? '<a href="' + esc(q.url) + '" target="_blank" rel="noopener">' + esc(q.titel) + '</a>' : esc(q.titel)) + (it.stand ? ', Stand ' + esc(it.stand) : '') + '</p>';
+}
+function stQuizView(st, art) {
+  var q = ST_QUIZ[art], L = q.daten(), N = L.length;
+  if (stQuizFertig(st, art)) return stQuizErgebnisView(st, art);
+  var i = Math.max(st.qi || 0, 0), it = L[i], gew = st[q.key][it.id], fertig = gew != null, beste = art === 'fakten' ? it.richtig : stBeste(it);
+  var reihe = art === 'fakten' ? it.optionen.map(function (o, n) { return n; }) : stReihe(it);
+  var opts = reihe.map(function (n) {
+    var o = it.optionen[n], text = typeof o === 'string' ? o : o.text, cls = '', mark = '';
+    if (fertig && n === beste) { cls = 'st-richtig'; mark = art === 'fakten' ? 'Richtig' : 'Am besten'; }
+    else if (fertig && n === gew) { cls = 'st-falsch'; mark = 'Deine Antwort'; }
+    return '<button type="button" data-act="st-quiz" data-wert="' + n + '"' + (fertig ? ' disabled aria-pressed="' + (n === gew) + '"' : '') + (cls ? ' class="' + cls + '"' : '') + '>' + (mark ? '<span class="st-mark">' + mark + '</span>' : '') + esc(text) + '</button>';
+  }).join('');
+  var fb = '';
+  if (fertig && art === 'fakten') {
+    var richtig = gew === it.richtig;
+    fb = '<div class="note ' + (richtig ? 'good' : 'bad') + ' stack" id="st-fb" tabindex="-1"><strong>' + (richtig ? 'Richtig' : 'Nicht ganz. Richtig ist: ' + esc(it.optionen[it.richtig])) + '</strong><p>' + esc(it.erklaerung) + '</p>' + stQuelleLink(it) + '</div>';
+  } else if (fertig) {
+    var o = it.optionen[gew], w = o.wert || 0, b = it.optionen[beste];
+    var tech = b.technik && technikById(b.technik);
+    fb = '<div class="note ' + (w === 2 ? 'good' : w === 1 ? 'warn' : 'bad') + ' stack" id="st-fb" tabindex="-1"><strong>' + (w === 2 ? 'Gut gewählt: Das hält das Gespräch offen' : w === 1 ? 'Geht, aber es gibt Besseres' : 'Das schließt eher Türen') + '</strong><p>' + esc(o.feedback) + '</p>' +
+      (w < 2 ? '<p><strong>Besser:</strong> „' + esc(b.text) + '“ ' + esc(b.feedback) + '</p>' : '') +
+      (tech ? '<div class="row"><span class="small muted">Technik:</span>' + technikChips([b.technik]) + '</div>' : '') + '</div>';
+  }
+  var frage = art === 'fakten'
+    ? '<div class="tag">' + esc(it.thema) + '</div><h2 id="st-frage" tabindex="-1">' + esc(it.frage) + '</h2>' + (fertig ? '' : '<p class="small muted">Was schätzt du? Eine Antwort.</p>')
+    : '<p class="muted">' + esc(it.situation) + '</p><div class="bubble"><div class="who">Die Person sagt</div><span id="st-frage" tabindex="-1">„' + esc(it.aussage) + '“</span></div><p class="small muted">Was antwortest du?</p>';
+  return '<div class="stack-lg st">' +
+    '<div class="st-kopf"><span class="small muted" title="' + esc(q.titel) + '">' + esc(q.teil) + '</span><span class="small muted">' + esc(q.wort[0]) + ' ' + (i + 1) + ' von ' + N + '</span><button class="link" data-act="st-start">Übersicht</button></div>' +
+    '<div class="progress-bar"><span style="width:' + Math.round(100 * i / N) + '%"></span></div>' +
+    '<section class="panel stack">' + frage + '<div class="choice">' + opts + '</div>' + fb +
+      (fertig ? '<div><button class="btn primary" id="st-quiz-weiter" data-act="st-quiz-weiter">' + (i + 1 < N ? 'Weiter' : 'Zum Ergebnis') + '</button></div>' : '') +
+    '</section></div>';
+}
+function stQuizErgebnisView(st, art) {
+  var q = ST_QUIZ[art], p = stPunkte(st, art);
+  if (!p.n) return '<div class="stack-lg">' + kopf(q.teil, q.titel, '', '') + '<div class="empty">Noch keine Antworten. <button class="link" data-act="st-quiz-neu" data-teil="' + art + '">Starten</button></div></div>';
+  var nachlesen = p.schwach.map(function (it) {
+    if (art === 'fakten') return '<li><strong>' + esc(it.thema) + ':</strong> ' + esc(it.frage) + ' Richtig: ' + esc(it.optionen[it.richtig]) + '.</li>';
+    var b = it.optionen[stBeste(it)];
+    return '<li><strong>„' + esc(it.aussage) + '“</strong> Besser: „' + esc(b.text) + '“</li>';
+  }).join('');
+  var erklaer = art === 'fakten'
+    ? 'Diese Zahlen schätzen viele Menschen falsch ein, ganz gleich, welche Partei sie wählen. Die Punkte zeigen nur dein Wissen bei diesen Fragen, nicht deine Haltung und nicht deine Intelligenz.'
+    : 'Die Punkte zeigen, wie oft du eine Antwort gewählt hast, die das Gespräch offen hält: 2 Punkte für die beste Antwort, 1 für eine brauchbare, 0 für eine, die eher Türen schließt. Sie sagen nichts darüber, wer politisch recht hat.';
+  return '<div class="stack-lg">' + kopf(q.teil, q.titel, 'Dein Ergebnis', '') +
+    '<section class="panel stack"><div class="st-score" id="st-ergebnis" tabindex="-1">' + p.pct + ' von 100</div><div class="st-score-l">' + esc(stStufe(art, p.pct)) + '</div><p class="small muted">' + esc(erklaer) + '</p>' +
+      '<p>' + (p.n - p.schwach.length) + ' von ' + anz(p.n, q.wort[0], q.wort[1]) + (art === 'fakten' ? ' richtig.' : ' mit der besten Antwort.') + '</p></section>' +
+    (nachlesen ? '<section class="stack"><h2 class="sh sm">' + (art === 'fakten' ? 'Das lohnt sich nachzulesen' : 'Hier lohnt sich ein zweiter Blick') + '</h2><ul class="stack">' + nachlesen + '</ul></section>' : '') +
+    (art === 'gespraech' ? '<div class="row"><button class="btn" data-go="trainer">Im Gesprächstrainer üben</button><button class="btn" data-go="wissen">Gesprächstechniken ansehen</button></div>' : '') +
+    stSpeicherZeile(st, '<button class="btn primary" data-act="st-teil" data-teil="auswertung">Zur Gesamtauswertung</button><button class="btn" data-act="st-quiz-neu" data-teil="' + art + '">Noch einmal</button>') +
+  '</div>';
+}
+function stAuswertungView(st) {
+  var offen = function (teil, text) { return '<p class="muted">Noch nicht gemacht.</p><div><button class="btn" data-act="st-teil" data-teil="' + teil + '">' + esc(text) + '</button></div>'; };
+  var karte = function (eyebrow, inhalt) { return '<section class="panel stack"><div class="eyebrow">' + esc(eyebrow) + '</div>' + inhalt + '</section>'; };
+  // Teil 1
+  var F = ST.staerken.fragen, k1;
+  if (st.staerkeFertig && F.every(function (f) { return stWahl(st, f).length; })) {
+    var t = stTyp(st).typ;
+    k1 = '<h2>' + esc(t.name) + '</h2><p>' + esc(t.staerke) + '</p>' + (stBelastung(st).belastet ? '<div class="note warn"><strong>Achte auch auf dich</strong>Einige deiner Antworten zeigen, dass dich diese Gespräche gerade viel Kraft kosten. Pausen sind erlaubt.</div>' : '') + '<div><button class="btn" data-go="' + esc(t.hub) + '">' + esc(t.cta) + '</button></div>';
+  } else k1 = offen('staerken', 'Teil 1 starten');
+  // Teil 2: die drei Parteien mit der größten Übereinstimmung, ohne Wertung
+  var k2, r = ST.thesen.length ? stErgebnis(st) : null, bearbeitet = ST.thesen.filter(function (t) { return st.a[t.id]; }).length;
+  if (r && bearbeitet === ST.thesen.length && !r.beantwortet) k2 = '<p class="muted">Alle Thesen übersprungen. Ohne Antworten gibt es keinen Vergleich.</p><div><button class="btn" data-act="st-neu">Noch einmal von vorn</button></div>';
+  else if (r && bearbeitet && bearbeitet < ST.thesen.length) k2 = '<p class="muted">Angefangen: ' + bearbeitet + ' von ' + ST.thesen.length + ' Thesen.</p><div><button class="btn" data-act="st-teil" data-teil="thesen">Weitermachen</button></div>';
+  else if (r && r.beantwortet) {
+    k2 = '<h2>Größte Übereinstimmung</h2><div class="bars st-bars">' + r.liste.slice(0, 3).map(function (x) { return '<div class="bar" data-partei="' + esc(x.p.id) + '"><span class="bar-l">' + esc(x.p.name) + '</span><span class="bar-t"><i style="width:' + (x.pct || 0) + '%"></i></span><span class="bar-v">' + (x.pct == null ? '–' : x.pct + ' %') + '</span></div>'; }).join('') + '</div>' +
+      '<p class="small muted">Keine Wahlempfehlung: Das zeigt nur, wo sich deine Antworten zu ' + anz(r.beantwortet, 'These', 'Thesen') + ' mit den Wahlprogrammen decken.</p><div><button class="btn" data-act="st-teil" data-teil="thesen">Alle Parteien und Belege</button></div>';
+  } else k2 = '<p class="small muted">Keine Wahlempfehlung: Teil 2 zeigt nur, wo sich deine Antworten mit den Wahlprogrammen decken.</p>' + offen('thesen', 'Teil 2 starten');
+  // Teil 3 und 4
+  var quizKarte = function (art) {
+    var p = stPunkte(st, art), q = ST_QUIZ[art];
+    if (!q.daten().length) return '<p class="muted">Kommt bald.</p>';
+    if (!p.fertig) return (p.n ? '<p class="muted">Angefangen: ' + p.n + ' von ' + p.von + '.</p><div><button class="btn" data-act="st-teil" data-teil="' + art + '">Weitermachen</button></div>' : offen(art, q.teil + ' starten'));
+    // Faktencheck: Themen der falschen Antworten. Gesprächs-Check: die Techniken hinter den besseren Antworten. Jedes nur einmal.
+    var themen = [];
+    p.schwach.forEach(function (it) { var x = art === 'fakten' ? it.thema : it.optionen[stBeste(it)].technik; if (x && themen.indexOf(x) < 0 && (art === 'fakten' || technikById(x))) themen.push(x); });
+    var hinweis = !p.schwach.length ? '<p class="small">Alles getroffen.</p>'
+      : art === 'fakten' ? '<p class="small"><strong>Nachlesen lohnt sich:</strong> ' + esc(themen.join(' · ')) + '</p>'
+      : themen.length ? '<div class="stack"><p class="small"><strong>Diese Techniken helfen dir weiter:</strong></p><div class="row">' + technikChips(themen) + '</div></div>' : '';
+    return '<div class="st-score">' + p.pct + ' von 100</div><div class="st-score-l">' + esc(stStufe(art, p.pct)) + '</div>' + hinweis +
+      '<div><button class="btn" data-act="st-teil" data-teil="' + art + '">Antworten ansehen</button></div>';
+  };
+  // Nächste Schritte: zuerst Selbstschutz, dann die schwächere Seite, dann die Stärke
+  var pf = stPunkte(st, 'fakten'), pg = stPunkte(st, 'gespraech'), schritte = [], bl = stBelastung(st), schutz = bl.kraft || bl.belastet;
+  if (schutz) schritte.push('<li><button class="link" data-go="schutz">Mich schützen &amp; Grenzen setzen</button>: Sorg zuerst für dich. Pausen sind erlaubt, und du musst gerade kein schwieriges Gespräch führen.</li>');
+  if (!schutz && pg.fertig && pg.pct < 70) schritte.push('<li><button class="link" data-go="trainer">Im Gesprächstrainer üben</button>: Situationen durchspielen und sofort sehen, wie eine Antwort wirkt.</li>');
+  if (pf.fertig && pf.pct < 70) schritte.push('<li><button class="link" data-go="antworten">Antworten mit Belegen</button>: Fertige Antworten auf häufige Behauptungen, jede mit Quelle.</li>');
+  if (!schutz && pg.fertig && pg.pct >= 70 && pf.fertig && pf.pct >= 70) schritte.push('<li><button class="link" data-go="kompass">Person verstehen</button>: Du bist gut vorbereitet. Finde heraus, was die Person bewegt, um die du dich sorgst.</li>');
+  schritte.push('<li><button class="link" data-go="teilen">Weitersagen</button>: Zeig ' + NAME + ' Menschen, denen es geht wie dir. Den Selbsttest finden sie unter „Wo stehe ich?“.</li>');
+  return '<div class="stack-lg">' + kopf('Selbsttest', 'Deine Auswertung', 'Alles aus den vier Teilen auf einen Blick.', '') +
+    '<div class="st-gesamt">' + karte('Teil 1 · Deine Stärke', k1) + karte('Teil 2 · Politische Nähe', k2) + karte('Teil 3 · Politik und Wirklichkeit', quizKarte('fakten')) + karte('Teil 4 · Gesprächsführung', quizKarte('gespraech')) + '</div>' +
+    '<div class="note"><strong>Gut zu wissen</strong>Die Punkte sind kein IQ-Test und keine Bewertung deiner Person. Sie zeigen nur, wie du bei diesen Fragen abgeschnitten hast. Deine Antworten verlassen dieses Gerät nicht. ' + (st.gespeichert ? 'Weil du sie gespeichert hast, kann sie jeder sehen, der dieses Gerät benutzt. Mit „Alle Antworten löschen“ entfernst du sie.' : 'Speicherst du sie, kann sie jeder sehen, der dieses Gerät benutzt.') + '</div>' +
+    '<section class="stack"><h2 class="sh sm">Deine nächsten Schritte</h2><ul class="stack">' + schritte.join('') + '</ul></section>' +
+    stSpeicherZeile(st, '') +
   '</div>';
 }
 
@@ -1212,10 +1364,18 @@ document.addEventListener('click', function (e) {
   else if (a === 'arch-del-yes') { var ad = archGet(); ad.eintraege = ad.eintraege.filter(function (x) { return x.id !== d.id; }); ad.pins = ad.pins.filter(function (x) { return x !== d.id; }); archSet(ad); state.confirmDel = null; render(); toast('Eintrag gelöscht'); }
   else if (a === 'copy-text') { copyText(d.text || ''); }
   else if (a === 'sheet') { state.sheet = !state.sheet; render(); }
+  if (a && a.indexOf('st-') === 0 && a.indexOf('st-loeschen') !== 0) state.stLoeschen = false;
+  if (a === 'st-teil' && (d.teil === 'fakten' || d.teil === 'gespraech')) { var stQ = stState(), LQ = ST_QUIZ[d.teil].daten(), aQ = stQ[ST_QUIZ[d.teil].key], iQ = 0; while (iQ < LQ.length && aQ[LQ[iQ].id] != null) iQ++; stQ.teil = d.teil; stQ.qi = iQ; state.stHinweis = null; if (iQ < LQ.length) state.stFokus = 'st-frage'; render(); window.scrollTo(0, 0); }
+  else if (a === 'st-quiz') { var stA = stState(), artA = stA.teil, qA = ST_QUIZ[artA], itA = qA && qA.daten()[stA.qi], nA = parseInt(d.wert, 10); if (!itA || stA[qA.key][itA.id] != null || !(nA >= 0 && nA < itA.optionen.length)) return; stA[qA.key][itA.id] = nA; state.stFokus = 'st-fb'; stMerken(); render(); }
+  else if (a === 'st-quiz-weiter') { var stB = stState(), qB = ST_QUIZ[stB.teil]; if (!qB) return; stB.qi++; state.stFokus = stB.qi < qB.daten().length ? 'st-frage' : 'st-ergebnis'; render(); window.scrollTo(0, 0); }
+  else if (a === 'st-quiz-neu') { var stN = stState(), qN = ST_QUIZ[d.teil]; if (!qN) return; stN[qN.key] = {}; stN.teil = d.teil; stN.qi = 0; state.stFokus = 'st-frage'; stMerken(); render(); window.scrollTo(0, 0); }
   else if (a === 'st-teil') { var st0 = stState(); state.stHinweis = null; if (d.teil === 'thesen') { var offenI = -1; ST.thesen.forEach(function (t, n) { if (offenI < 0 && !st0.a[t.id]) offenI = n; }); if (offenI < 0 && ST.thesen.length) st0.teil = 'ergebnis'; else { st0.teil = 'thesen'; st0.i = Math.max(offenI, 0); } } else st0.teil = d.teil; render(); window.scrollTo(0, 0); }
   else if (a === 'st-start') { stState().teil = null; state.stHinweis = null; render(); window.scrollTo(0, 0); }
-  else if (a === 'st-wahl') { stState().s[d.f] = d.o; state.stHinweis = null; state.stFokus = 'st-o-' + d.f + '-' + d.o; stMerken(); render(); }
-  else if (a === 'st-auswerten') { var st1 = stState(), fehlt1 = ST.staerken.fragen.filter(function (f) { return !st1.s[f.id]; }).length; if (fehlt1) { state.stHinweis = 'Es fehlen noch ' + anz(fehlt1, 'Antwort', 'Antworten') + '.'; render(); return; } st1.staerkeFertig = true; stMerken(); render(); window.scrollTo(0, 0); }
+  else if (a === 'st-wahl') { var stW = stState(), fW = findIn(ST.staerken.fragen, d.f); if (!fW) return; var gw = stWahl(stW, fW).slice(), pW = gw.indexOf(d.o); var oW = findIn(fW.optionen, d.o); if (!oW) return;
+    if (fW.einzeln || oW.exklusiv) gw = pW >= 0 && !fW.einzeln ? [] : [d.o];
+    else if (pW >= 0) gw.splice(pW, 1);
+    else { gw = gw.filter(function (id) { var x = findIn(fW.optionen, id); return x && !x.exklusiv; }); gw.push(d.o); } stW.s[d.f] = gw; state.stHinweis = null; state.stFokus = 'st-o-' + d.f + '-' + d.o; stMerken(); render(); }
+  else if (a === 'st-auswerten') { var st1 = stState(), fehlt1 = ST.staerken.fragen.filter(function (f) { return !stWahl(st1, f).length; }).length; if (fehlt1) { state.stHinweis = 'Es fehlen noch ' + anz(fehlt1, 'Antwort', 'Antworten') + '.'; render(); return; } st1.staerkeFertig = true; stMerken(); render(); window.scrollTo(0, 0); }
   else if (a === 'st-staerken-neu') { stState().staerkeFertig = false; render(); window.scrollTo(0, 0); }
   else if (a === 'st-antwort') { var st2 = stState(), t2 = ST.thesen[st2.i]; if (!t2) return; st2.a[t2.id] = d.wert; st2.i++; if (st2.i >= ST.thesen.length) st2.teil = 'ergebnis'; else state.stFokus = 'st-these'; stMerken(); render(); window.scrollTo(0, 0); }
   else if (a === 'st-weiter') { var st6 = stState(); st6.i++; if (st6.i >= ST.thesen.length) st6.teil = 'ergebnis'; else state.stFokus = 'st-these'; render(); window.scrollTo(0, 0); }

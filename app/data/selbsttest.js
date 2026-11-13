@@ -8,19 +8,19 @@ window.APP_DATA.selbsttest = {
   stand: '2026-11-12',
   staerken: {
     fragen: [
-      { id: 's1', text: 'Jemand haut eine steile These raus. Was tust du als Erstes?', optionen: [
+      { id: 's1', text: 'Jemand haut eine steile These raus. Was tust du dann?', optionen: [
         { id: 'a', text: 'Ich frage nach, wie die Person darauf kommt.', typ: { zuhoeren: 2 } },
         { id: 'b', text: 'Ich überlege, welche Fakten dagegen sprechen.', typ: { fakten: 2 } },
         { id: 'c', text: 'Ich merke mir den Satz und überlege später in Ruhe, was ich sage.', typ: { planen: 2 } },
         { id: 'd', text: 'Ich schaue, wer noch dabei ist und wie die anderen reagieren.', typ: { bruecken: 2 } },
         { id: 'e', text: 'Ich werde innerlich unruhig oder wütend.', typ: { kraft: 2 } }
       ] },
-      { id: 's2', text: 'Was fällt dir am leichtesten?', optionen: [
+      { id: 's2', text: 'Was fällt dir leicht?', optionen: [
         { id: 'a', text: 'Zuhören, ohne gleich zu widersprechen', typ: { zuhoeren: 2 } },
         { id: 'b', text: 'Zusammenhänge erklären', typ: { fakten: 2 } },
         { id: 'c', text: 'Ein Gespräch vorbereiten', typ: { planen: 2 } },
         { id: 'd', text: 'Andere für eine Sache gewinnen', typ: { bruecken: 2 } },
-        { id: 'e', text: 'Ehrlich gesagt: gerade nichts davon', typ: { kraft: 2 } }
+        { id: 'e', exklusiv: true, text: 'Ehrlich gesagt: gerade nichts davon', typ: { kraft: 2 } }
       ] },
       { id: 's3', text: 'Nach einem schwierigen Gespräch …', optionen: [
         { id: 'a', text: '… denke ich darüber nach, was die Person wirklich bewegt.', typ: { zuhoeren: 2 } },
@@ -29,26 +29,26 @@ window.APP_DATA.selbsttest = {
         { id: 'd', text: '… rede ich mit anderen darüber, wie wir damit umgehen.', typ: { bruecken: 2 } },
         { id: 'e', text: '… brauche ich erst einmal Abstand.', typ: { kraft: 2 } }
       ] },
-      { id: 's4', text: 'Wie viel Kraft kosten dich diese Gespräche gerade?', optionen: [
+      { id: 's4', einzeln: true, text: 'Wie viel Kraft kosten dich diese Gespräche gerade?', optionen: [
         { id: 'a', text: 'Kaum, ich bleibe gelassen.', typ: { zuhoeren: 1, fakten: 1 } },
         { id: 'b', text: 'Etwas, aber es geht.', typ: { planen: 1, bruecken: 1 } },
         { id: 'c', text: 'Viel. Ich gehe ihnen lieber aus dem Weg.', typ: { kraft: 2 } },
         { id: 'd', text: 'So viel, dass ich schlecht schlafe oder ständig daran denke.', typ: { kraft: 4 } }
       ] },
-      { id: 's5', text: 'Worüber würdest du am liebsten mehr wissen?', optionen: [
+      { id: 's5', text: 'Worüber würdest du gern mehr wissen?', optionen: [
         { id: 'a', text: 'Warum Menschen so denken, wie sie denken', typ: { zuhoeren: 2 } },
         { id: 'b', text: 'Was an bestimmten Behauptungen dran ist', typ: { fakten: 2 } },
         { id: 'c', text: 'Welche Sätze im Gespräch wirklich helfen', typ: { planen: 2 } },
         { id: 'd', text: 'Was man in Nachbarschaft, Verein oder Schule tun kann', typ: { bruecken: 2 } },
         { id: 'e', text: 'Wie ich mich selbst schütze', typ: { kraft: 2 } }
       ] },
-      { id: 's6', text: 'Mit wem willst du vor allem im Gespräch bleiben?', optionen: [
+      { id: 's6', text: 'Mit wem willst du im Gespräch bleiben?', optionen: [
         { id: 'a', text: 'Mit einem Menschen, der mir nahesteht', typ: { zuhoeren: 1, planen: 1 } },
         { id: 'b', text: 'Mit Leuten, die im Netz oder im Bekanntenkreis Falsches verbreiten', typ: { fakten: 2 } },
         { id: 'c', text: 'Mit vielen: in Nachbarschaft, Verein, Schule oder Betrieb', typ: { bruecken: 2 } },
-        { id: 'd', text: 'Im Moment eigentlich mit niemandem', typ: { kraft: 2 } }
+        { id: 'd', exklusiv: true, text: 'Im Moment eigentlich mit niemandem', typ: { kraft: 2 } }
       ] },
-      { id: 's7', text: 'Welcher Satz passt am ehesten zu dir?', optionen: [
+      { id: 's7', text: 'Welche Sätze passen zu dir?', optionen: [
         { id: 'a', text: '„Ich will verstehen, nicht recht haben.“', typ: { zuhoeren: 2 } },
         { id: 'b', text: '„Was stimmt, gehört auf den Tisch.“', typ: { fakten: 2 } },
         { id: 'c', text: '„Gut vorbereitet ist halb gewonnen.“', typ: { planen: 2 } },
@@ -82,6 +82,662 @@ window.APP_DATA.selbsttest = {
     { id: 'fw', name: 'Freie Wähler', lang: 'FREIE WÄHLER', ergebnis: '1,5 %', quellen: [{ id: 'fw', titel: 'Verantwortung für Deutschland. Bundestagswahlprogramm 2025–2029', url: 'https://ni.freiewaehler.eu/template/elemente/71/Verantwortung%20f%C3%BCr%20Deutschland_FREIE%20W%C3%84HLER%20Wahlprogramm%202025.pdf', seiten: 114, sha256: '5ea80dcf85a75654586c27ae06fdba73e144e063f845b8bbb736138e322d28c3' }] },
     { id: 'gruene', name: 'Grüne', lang: 'Bündnis 90/Die Grünen', ergebnis: '11,6 %', quellen: [{ id: 'gruene', titel: 'Zusammen wachsen. Regierungsprogramm 2025', url: 'https://cms.gruene.de/uploads/assets/20250318_Regierungsprogramm_DIGITAL_DINA5.pdf', seiten: 160, sha256: 'bf8d15021d8cc2695cb97d0d4a4bc9b7b93de54b86d491d8536b1325354dc213' }] },
     { id: 'spd', name: 'SPD', lang: 'Sozialdemokratische Partei Deutschlands', ergebnis: '16,4 %', quellen: [{ id: 'spd', titel: 'Mehr für Dich. Besser für Deutschland. Regierungsprogramm der SPD für die Bundestagswahl 2025', url: 'https://www.spd.de/fileadmin/Dokumente/Beschluesse/Programm/SPD_Programm_bf.pdf', seiten: 68, sha256: '05aeb9eb19fd423288d94de1d15cabcddbcb9bb1ecf65237657d10e4839b9d7e' }] }
+  ],
+  // Teil 3 „Politik und Wirklichkeit“: nur amtlich belegte Zahlen, jede an der Quelle gegengeprüft (Stand 2026-11-13).
+  // Die Themen sind so gewählt, dass Menschen aus jeder politischen Richtung manche Zahlen falsch einschätzen. Gemessen wird Wissen, keine Meinung.
+  fakten: [
+    {
+      "id": "einwanderungsgeschichte-anteil",
+      "thema": "Migration",
+      "frage": "Wie viele Menschen in Deutschland sind selbst eingewandert oder haben zwei eingewanderte Eltern?",
+      "optionen": [
+        "etwa 8 % (jede 12. Person)",
+        "etwa 15 % (jede 7. Person)",
+        "etwa 26 % (jede 4. Person)",
+        "etwa 45 % (fast jede 2. Person)"
+      ],
+      "richtig": 2,
+      "erklaerung": "2025 hatten laut Mikrozensus 21,8 Millionen Menschen eine Einwanderungsgeschichte. Das sind 26,3 Prozent der Bevölkerung. 2024 waren es 25,8 Prozent.",
+      "quelle": {
+        "titel": "Destatis, Pressemitteilung Nr. 128 vom April 2026: 21,8 Millionen Menschen mit Einwanderungsgeschichte im Jahr 2025",
+        "url": "https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/04/PD26_128_125.html"
+      },
+      "stand": "2025 (Mikrozensus, Erstergebnis April 2026)"
+    },
+    {
+      "id": "pks-straftaten-trend-2025",
+      "thema": "Kriminalität",
+      "frage": "Wie hat sich die Zahl der von der Polizei erfassten Straftaten 2025 im Vergleich zu 2024 entwickelt?",
+      "optionen": [
+        "stark gesunken (etwa −25 %)",
+        "gesunken (etwa −6 %)",
+        "leicht gestiegen (etwa +2 %)",
+        "deutlich gestiegen (etwa +10 %)"
+      ],
+      "richtig": 1,
+      "erklaerung": "Die Polizei erfasste 2025 rund 5,51 Millionen Straftaten. Das sind 5,6 Prozent weniger als 2024. Ein Teil des Rückgangs hängt mit der Teillegalisierung von Cannabis zusammen.",
+      "quelle": {
+        "titel": "Bundeskriminalamt: Polizeiliche Kriminalstatistik 2025 im Überblick",
+        "url": "https://www.bka.de/DE/AktuelleInformationen/StatistikenLagebilder/PolizeilicheKriminalstatistik/PKS2025/Polizeiliche_Kriminalstatistik_2025/Polizeiliche_Kriminalstatistik_2025_node.html"
+      },
+      "stand": "2025 (veröffentlicht 20.04.2026)"
+    },
+    {
+      "id": "gewalt-tatverdaechtige-nichtdeutsch",
+      "thema": "Kriminalität",
+      "frage": "Welcher Anteil der Tatverdächtigen bei Gewaltkriminalität hatte 2025 keinen deutschen Pass?",
+      "optionen": [
+        "etwa 10 %",
+        "etwa 25 %",
+        "etwa 43 %",
+        "etwa 65 %"
+      ],
+      "richtig": 2,
+      "erklaerung": "2025 hatten 42,9 Prozent der Tatverdächtigen bei Gewaltkriminalität keinen deutschen Pass. Die Polizeistatistik zählt Verdächtige, keine Verurteilten. Mitgezählt werden auch Menschen, die nicht in Deutschland wohnen, etwa Durchreisende.",
+      "quelle": {
+        "titel": "Bundesregierung: Polizeiliche Kriminalstatistik 2025 – Leichter Rückgang der Straftaten",
+        "url": "https://www.bundesregierung.de/breg-de/aktuelles/polizeiliche-kriminalstatistik-2025-2422020"
+      },
+      "stand": "2025 (PKS, veröffentlicht 20.04.2026)"
+    },
+    {
+      "id": "asyl-erstantraege-2025",
+      "thema": "Asyl",
+      "frage": "Wie viele Asyl-Erstanträge gab es 2025 in Deutschland?",
+      "optionen": [
+        "rund 113.000",
+        "rund 230.000",
+        "rund 340.000",
+        "rund 450.000"
+      ],
+      "richtig": 0,
+      "erklaerung": "2025 stellten 113.236 Menschen erstmals einen Asylantrag. Das ist rund die Hälfte von 2024 mit 229.751 Erstanträgen.",
+      "quelle": {
+        "titel": "BAMF: Asylzahlen Gesamtjahr und Dezember 2025 (Meldung vom 12.01.2026)",
+        "url": "https://www.bamf.de/SharedDocs/Meldungen/DE/2026/260112-asylzahlen-dezember-und-gesamtjahr-2025.html"
+      },
+      "stand": "Gesamtjahr 2025"
+    },
+    {
+      "id": "arbeitslose-oktober-2026",
+      "thema": "Arbeitsmarkt",
+      "frage": "Wie viele Menschen waren im Oktober 2026 in Deutschland arbeitslos gemeldet?",
+      "optionen": [
+        "rund 5,5 Millionen",
+        "rund 3,0 Millionen",
+        "rund 1,5 Millionen",
+        "rund 0,8 Millionen"
+      ],
+      "richtig": 1,
+      "erklaerung": "Im Oktober 2026 waren 2,955 Millionen Menschen arbeitslos gemeldet. Die Arbeitslosenquote lag bei 6,3 Prozent, 0,1 Punkte höher als ein Jahr zuvor.",
+      "quelle": {
+        "titel": "Bundesagentur für Arbeit: Arbeitsmarkt im Oktober 2026 (Presseinfo 41/2026)",
+        "url": "https://www.arbeitsagentur.de/presse/2026-41-arbeitsmarkt-im-oktober-2026"
+      },
+      "stand": "Oktober 2026"
+    },
+    {
+      "id": "rentenniveau-2026",
+      "thema": "Rente",
+      "frage": "Das „Rentenniveau vor Steuern“ vergleicht eine Standardrente (45 Beitragsjahre mit Durchschnittsverdienst) mit dem aktuellen Durchschnittslohn, beides nach Abzug der Sozialabgaben. Wie hoch ist es 2026?",
+      "optionen": [
+        "etwa 30 %",
+        "etwa 40 %",
+        "etwa 48 %",
+        "etwa 70 %"
+      ],
+      "richtig": 2,
+      "erklaerung": "Das Rentenniveau vor Steuern liegt 2026 bei 48,0 Prozent. Eine gesetzliche Haltelinie sichert diesen Wert bis 2031. Das ist eine Rechengröße, nicht die persönliche Rente: Wer weniger verdient oder weniger Jahre einzahlt, bekommt weniger.",
+      "quelle": {
+        "titel": "Deutsche Rentenversicherung: Rentenanpassung 2026 – Renten steigen im Juli um 4,24 Prozent",
+        "url": "https://www.deutsche-rentenversicherung.de/DRV/DE/Ueber-uns-und-Presse/Presse/Meldungen/2026/260305-rentenanpassung-2026.html"
+      },
+      "stand": "2026"
+    },
+    {
+      "id": "bundeshaushalt-groesster-posten-2026",
+      "thema": "Bundeshaushalt",
+      "frage": "Wofür gibt der Bund 2026 am meisten Geld aus?",
+      "optionen": [
+        "Zahlungen an die Rentenversicherung",
+        "Verteidigung",
+        "Bürgergeld (seit Juli 2026: Grundsicherungsgeld)",
+        "Zinsen für Schulden"
+      ],
+      "richtig": 0,
+      "erklaerung": "2026 plant der Bund rund 127 Milliarden Euro für die Rentenversicherung ein. Danach kommt Verteidigung: im Haushalt rund 108 Milliarden Euro aus Wehretat und Sondervermögen. Nach der breiteren NATO-Rechnung, die etwa auch Militärhilfe für die Ukraine mitzählt, ist der Abstand kleiner, die Rente liegt aber auch dann vorn. Für Zinsen sind es rund 30 Milliarden Euro, für Bürgergeld, seit Juli 2026 Grundsicherungsgeld, rund 28 Milliarden Euro.",
+      "quelle": {
+        "titel": "Deutscher Bundestag, hib 653/2026: 201 Milliarden Euro für den Sozialetat 2027 (mit Vergleichswerten 2026); Bundesregierung: Fragen und Antworten zum Bundeshaushalt 2026",
+        "url": "https://www.bundestag.de/presse/hib/kurzmeldungen-1205416"
+      },
+      "stand": "Bundeshaushalt 2026 (beschlossen 28.11.2025)"
+    },
+    {
+      "id": "buergergeld-anteil-bundeshaushalt-2026",
+      "thema": "Bundeshaushalt",
+      "frage": "Welcher Anteil des Bundeshaushalts 2026 ist für das Bürgergeld eingeplant? Seit Juli 2026 heißt es Grundsicherungsgeld. Gemeint ist das Geld selbst, ohne Wohnkosten.",
+      "optionen": [
+        "etwa 1 %",
+        "etwa 5 %",
+        "etwa 15 %",
+        "etwa 30 %"
+      ],
+      "richtig": 1,
+      "erklaerung": "Für 2026 sind rund 28 Milliarden Euro für Bürgergeld eingeplant, seit Juli 2026 heißt es Grundsicherungsgeld. Der ganze Bundeshaushalt umfasst 524,5 Milliarden Euro. Das sind gut 5 Prozent. Dazu kommen rund 13 Milliarden Euro Bundesanteil an den Wohnkosten.",
+      "quelle": {
+        "titel": "Deutscher Bundestag, hib 653/2026: 201 Milliarden Euro für den Sozialetat 2027 (mit Vergleichswerten 2026)",
+        "url": "https://www.bundestag.de/presse/hib/kurzmeldungen-1205416"
+      },
+      "stand": "Bundeshaushalt 2026 (beschlossen 28.11.2025)"
+    },
+    {
+      "id": "grundsicherung-ohne-deutschen-pass",
+      "thema": "Sozialleistungen",
+      "frage": "Welcher Anteil der Menschen, die Bürgergeld bekommen (seit Juli 2026: Grundsicherungsgeld), hat keinen deutschen Pass?",
+      "optionen": [
+        "etwa 12 %",
+        "etwa 25 %",
+        "etwa 46 %",
+        "etwa 70 %"
+      ],
+      "richtig": 2,
+      "erklaerung": "Im Juli 2026 bekamen 5,08 Millionen Menschen diese Leistung, 2,33 Millionen davon ohne deutschen Pass. Das sind rund 46 Prozent. Wer neben dem deutschen noch einen anderen Pass hat, zählt als Deutsche oder Deutscher.",
+      "quelle": {
+        "titel": "Bundesagentur für Arbeit, Statistik: Migrationsmonitor Deutschland, Tabelle 1.1 (Regelleistungsberechtigte)",
+        "url": "https://statistik.arbeitsagentur.de/SiteGlobals/Forms/Suche/Einzelheftsuche/Einzelheftsuche_Formular.html?nn=23088&topic_f=migrationsmonitor"
+      },
+      "stand": "Juli 2026"
+    },
+    {
+      "id": "treibhausgase-anteil-welt",
+      "thema": "Klima",
+      "frage": "Wie groß ist Deutschlands Anteil an den weltweiten Treibhausgas-Emissionen?",
+      "optionen": [
+        "etwa 0,1 %",
+        "etwa 0,5 %",
+        "etwa 1,2 %",
+        "etwa 6 %"
+      ],
+      "richtig": 2,
+      "erklaerung": "2025 stieß Deutschland laut EU-Datenbank EDGAR rund 660 Millionen Tonnen CO₂-Äquivalente aus. Das sind 1,22 Prozent der weltweiten Emissionen. In Deutschland lebt rund 1 Prozent der Weltbevölkerung. Das Umweltbundesamt rechnet etwas anders und kommt auf 649 Millionen Tonnen.",
+      "quelle": {
+        "titel": "EU-Kommission, Joint Research Centre: EDGAR – GHG emissions of all world countries, 2026 Report",
+        "url": "https://edgar.jrc.ec.europa.eu/report_2026"
+      },
+      "stand": "2025 (Bericht 2026, veröffentlicht September 2026)"
+    },
+    {
+      "id": "treibhausgase-seit-1990",
+      "thema": "Klima",
+      "frage": "Wie haben sich Deutschlands Treibhausgas-Emissionen von 1990 bis 2025 verändert?",
+      "optionen": [
+        "um etwa 80 % gesunken",
+        "um etwa 48 % gesunken",
+        "um etwa 15 % gesunken",
+        "um etwa 10 % gestiegen"
+      ],
+      "richtig": 1,
+      "erklaerung": "2025 lagen die Emissionen bei rund 649 Millionen Tonnen CO₂-Äquivalenten. Das sind 48 Prozent weniger als 1990. Das gesetzliche Ziel für 2030 sind minus 65 Prozent.",
+      "quelle": {
+        "titel": "Umweltbundesamt, Pressemitteilung 08/2026: Treibhausgasdaten zeigen, Klimaschutz braucht neuen Schub",
+        "url": "https://www.umweltbundesamt.de/presse/pressemitteilungen/treibhausgasdaten-zeigen-klimaschutz-braucht-neuen"
+      },
+      "stand": "2025 (veröffentlicht 14.03.2026)"
+    },
+    {
+      "id": "erneuerbare-stromanteil-2025",
+      "thema": "Energie",
+      "frage": "Welcher Anteil des Stromverbrauchs in Deutschland kam 2025 aus erneuerbaren Energien?",
+      "optionen": [
+        "etwa 55 %",
+        "etwa 40 %",
+        "etwa 25 %",
+        "etwa 10 %"
+      ],
+      "richtig": 0,
+      "erklaerung": "2025 deckten erneuerbare Energien 55,1 Prozent des Bruttostromverbrauchs. 2024 waren es 54,4 Prozent.",
+      "quelle": {
+        "titel": "Umweltbundesamt: Indikator Anteil erneuerbarer Energien am Bruttostromverbrauch",
+        "url": "https://www.umweltbundesamt.de/indikator-anteil-erneuerbare-am"
+      },
+      "stand": "2025"
+    },
+    {
+      "id": "vermoegen-reichste-zehn-prozent",
+      "thema": "Verteilung",
+      "frage": "Welcher Anteil des gesamten Nettovermögens gehört den reichsten 10 Prozent der Haushalte?",
+      "optionen": [
+        "etwa 20 %",
+        "etwa 35 %",
+        "etwa 54 %",
+        "etwa 85 %"
+      ],
+      "richtig": 2,
+      "erklaerung": "2023 besaßen die reichsten 10 Prozent der Haushalte 54 Prozent des Nettovermögens. Die untere Hälfte besaß rund 3 Prozent, Rentenansprüche nicht mitgerechnet.",
+      "quelle": {
+        "titel": "Deutsche Bundesbank, Monatsbericht April 2025: Vermögen und Finanzen privater Haushalte – Vermögensbefragung 2023",
+        "url": "https://publikationen.bundesbank.de/publikationen-de/berichte-studien/monatsberichte/monatsbericht-april-2025-954594?article=vermoegen-und-finanzen-privater-haushalte-in-deutschland-ergebnisse-der-vermoegensbefragung-2023--954598"
+      },
+      "stand": "2023 (veröffentlicht April 2025)"
+    },
+    {
+      "id": "einkommensteuer-obere-zehn-prozent",
+      "thema": "Steuern",
+      "frage": "Welchen Anteil der Lohn- und Einkommensteuer zahlen die 10 Prozent der Steuerpflichtigen mit den höchsten Einkünften?",
+      "optionen": [
+        "etwa 10 %",
+        "etwa 25 %",
+        "etwa 40 %",
+        "etwa 57 %"
+      ],
+      "richtig": 3,
+      "erklaerung": "Laut Bundesfinanzministerium zahlen die oberen 10 Prozent 2026 rund 57 Prozent der Lohn- und Einkommensteuer. Das ist eine Schätzung. Ehepaare zählen dabei als ein Steuerpflichtiger. Andere Steuern wie die Mehrwertsteuer sind nicht eingerechnet.",
+      "quelle": {
+        "titel": "Bundesministerium der Finanzen: Datensammlung zur Steuerpolitik 2026, Tabelle 2.2",
+        "url": "https://www.bundesfinanzministerium.de/Content/DE/Downloads/Broschueren_Bestellservice/datensammlung-zur-steuerpolitik-2026.pdf"
+      },
+      "stand": "2026 (Schätzung; Datensammlung Ausgabe 2026, Stand 31.12.2025)"
+    },
+    {
+      "id": "wahlbeteiligung-bundestagswahl-2025",
+      "thema": "Demokratie",
+      "frage": "Wie hoch war die Wahlbeteiligung bei der Bundestagswahl 2025?",
+      "optionen": [
+        "etwa 61 %",
+        "etwa 68 %",
+        "etwa 74 %",
+        "etwa 82 %"
+      ],
+      "richtig": 3,
+      "erklaerung": "Bei der Bundestagswahl am 23. Februar 2025 lag die Wahlbeteiligung bei 82,5 Prozent. Das war der höchste Wert seit 1987.",
+      "quelle": {
+        "titel": "Die Bundeswahlleiterin, Pressemitteilung Nr. 29/25: Endgültiges Ergebnis der Bundestagswahl 2025",
+        "url": "https://www.bundeswahlleiterin.de/info/presse/mitteilungen/bundestagswahl-2025/29_25_endgueltiges-ergebnis.html"
+      },
+      "stand": "Bundestagswahl 23.02.2025 (endgültiges Ergebnis 14.03.2025)"
+    },
+    {
+      "id": "lebenserwartung-2025",
+      "thema": "Gesundheit",
+      "frage": "Wie hoch war 2025 die Lebenserwartung bei Geburt in Deutschland?",
+      "optionen": [
+        "Frauen 81 / Männer 81 Jahre",
+        "Frauen 80 / Männer 74 Jahre",
+        "Frauen 88 / Männer 85 Jahre",
+        "Frauen 84 / Männer 79 Jahre"
+      ],
+      "richtig": 3,
+      "erklaerung": "2025 lag die Lebenserwartung bei Geburt bei 83,6 Jahren für Frauen und 79,1 Jahren für Männer. Beides sind neue Höchstwerte.",
+      "quelle": {
+        "titel": "Destatis, Pressemitteilung Nr. 236 vom Juli 2026: Lebenserwartung 2025 auf neue Höchstwerte gestiegen",
+        "url": "https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/07/PD26_236_12621.html"
+      },
+      "stand": "2025 (veröffentlicht Juli 2026)"
+    }
+  ],
+  // Teil 4 „Gesprächs-Check“: wert 2 hält das Gespräch offen, 1 geht, 0 schließt eher Türen. Genau eine Antwort pro Situation hat wert 2.
+  // Bewertet wird die Wirkung auf das Gespräch nach den Techniken in techniken.js, nie die politische Position.
+  gespraech: [
+    {
+      "id": "gc01-onkel-kaffeetisch",
+      "situation": "Dein Onkel sitzt beim Geburtstag neben dir am Kaffeetisch.",
+      "aussage": "Die Ausländer kriegen alles hinterhergeworfen, und wir Deutschen zahlen dafür.",
+      "optionen": [
+        {
+          "text": "Geflüchtete im Asylverfahren bekommen weniger Geld als Deutsche, die Grundsicherung bekommen.",
+          "wert": 1,
+          "feedback": "Der Fakt stimmt, und widersprechen ist okay. Er kommt aber zu früh. Dein Onkel fühlt sich korrigiert, nicht gehört. Frag erst nach, was ihn ärgert.",
+          "technik": "fragen-statt-fakten"
+        },
+        {
+          "text": "Was meinst du mit „alles“? Wo merkst du das bei dir im Alltag?",
+          "wert": 2,
+          "feedback": "Eine offene Frage nach dem Konkreten lädt zum Erzählen ein. Oft zeigt sich dann, was ihn wirklich ärgert. Darüber könnt ihr reden, und deine Sicht sagst du danach.",
+          "technik": "fragen-statt-fakten"
+        },
+        {
+          "text": "So was sagen nur Rassisten. Schäm dich.",
+          "wert": 0,
+          "feedback": "Ein Etikett plus Beschämung. Dein Onkel geht in Abwehr und hört nichts mehr. Beschämung erzeugt Trotz, kein Nachdenken.",
+          "technik": "soziale-normen"
+        }
+      ]
+    },
+    {
+      "id": "gc02-kollege-meinungsfreiheit",
+      "situation": "Ein Kollege sitzt mit dir in der Mittagspause im Pausenraum.",
+      "aussage": "Heute bist du ja gleich ein Nazi, wenn du sagst, was du denkst. Meinungsfreiheit gibt's nicht mehr.",
+      "optionen": [
+        {
+          "text": "Sagen darfst du fast alles. Nur Widerspruch musst du dann aushalten.",
+          "wert": 1,
+          "feedback": "Inhaltlich vertretbar, klingt aber wie ein Konter. Er fühlt sich bestätigt, dass keiner zuhört. Frag lieber erst nach, was passiert ist.",
+          "technik": "fragen-statt-fakten"
+        },
+        {
+          "text": "Na ja, wer so redet wie du, muss sich nicht wundern.",
+          "wert": 0,
+          "feedback": "Das ist ein versteckter Vorwurf. Er hört: Du bist genau so einer. Damit bestätigst du sein Gefühl, abgestempelt zu werden.",
+          "technik": "aktives-zuhoeren"
+        },
+        {
+          "text": "Ist dir das selbst passiert? Erzähl mal, was da los war.",
+          "wert": 2,
+          "feedback": "Du nimmst sein Erlebnis ernst, ohne seiner Aussage zuzustimmen. Hinter dem Satz steckt oft Kränkung. Wer sich gehört fühlt, wird ruhiger und offener.",
+          "technik": "aktives-zuhoeren"
+        },
+        {
+          "text": "Dann sag halt nichts mehr. Ist mir echt egal.",
+          "wert": 0,
+          "feedback": "Damit gibst du das Gespräch auf. Er nimmt mit: Keiner will mich hören. Genau dieses Gefühl treibt Menschen zu Gruppen, die ihm recht geben.",
+          "technik": "beduerfnisse-adressieren"
+        }
+      ]
+    },
+    {
+      "id": "gc03-wg-enteignung",
+      "situation": "Deine Mitbewohnerin steht mit dir in der WG-Küche beim Abwasch.",
+      "aussage": "Reiche gehören enteignet, alle. Wer Eigentum verteidigt, steht auf der falschen Seite.",
+      "optionen": [
+        {
+          "text": "Enteignung hat ja in der DDR super geklappt.",
+          "wert": 0,
+          "feedback": "Spott und ein schneller Vergleich. Sie fühlt sich lächerlich gemacht und verteidigt ihre Sicht jetzt erst recht. Über die Sache redet ihr nicht mehr.",
+          "technik": "fragen-statt-fakten"
+        },
+        {
+          "text": "Was regt dich daran gerade so auf? Und wen meinst du genau mit „Reiche“?",
+          "wert": 2,
+          "feedback": "Du fragst nach dem Gefühl und nach dem Konkreten. So erklärt sie selbst, was sie meint, statt sich zu verteidigen. Danach kannst du sagen, wo du anders denkst.",
+          "technik": "fragen-statt-fakten"
+        },
+        {
+          "text": "Das bringt doch nichts. Die Reichen ziehen dann einfach ins Ausland.",
+          "wert": 1,
+          "feedback": "Ein Gegenargument. Ob es stimmt, ist hier nicht der Punkt: Es kommt zu früh. Sie hört nur Widerspruch und sucht das nächste Argument. Erst fragen, dann argumentieren.",
+          "technik": "fragen-statt-fakten"
+        },
+        {
+          "text": "Du hast ja noch nie richtig gearbeitet. Warte mal ab, bis du Steuern zahlst.",
+          "wert": 0,
+          "feedback": "Das stellt dich über sie und beschämt sie. Wer von oben herab behandelt wird, macht dicht. Das Gespräch wird zum Machtkampf.",
+          "technik": "soziale-normen"
+        }
+      ]
+    },
+    {
+      "id": "gc04-neffe-gewalt",
+      "situation": "Dein Neffe, 19, erzählt dir beim Spaziergang von einer Demo am Wochenende.",
+      "aussage": "Gegen Faschos hilft nur Gewalt. Wer da noch redet, ist naiv.",
+      "optionen": [
+        {
+          "text": "Du klingst genau wie die, gegen die du demonstrierst.",
+          "wert": 0,
+          "feedback": "Die Gleichsetzung trifft ihn tief. Er fühlt sich beleidigt und hört deinen Punkt nicht mehr. Eine Grenze geht auch ohne Kränkung.",
+          "technik": "grenzen-setzen"
+        },
+        {
+          "text": "Gewalt ist strafbar. Das weißt du hoffentlich.",
+          "wert": 1,
+          "feedback": "Die Grenze ist richtig. Aber der Ton belehrt, und es fehlt ein Angebot. Sag klar, wo du stehst, und frag dann, was ihn so wütend macht.",
+          "technik": "grenzen-setzen"
+        },
+        {
+          "text": "Gewalt ist für mich keine Lösung, egal gegen wen. Aber ich will verstehen, was dich so wütend macht. Was hast du da erlebt?",
+          "wert": 2,
+          "feedback": "Du setzt eine klare Grenze und bleibst trotzdem im Gespräch. Er merkt: Du nimmst ihn ernst, aber nicht jede Idee. Diese Mischung hält die Tür offen.",
+          "technik": "grenzen-setzen"
+        },
+        {
+          "text": "Ach, das ist nur eine Phase. Das wächst sich raus.",
+          "wert": 0,
+          "feedback": "So nimmst du ihn nicht ernst. Junge Menschen suchen Anerkennung. Wer abgetan wird, sucht sie dort, wo man ihm zustimmt.",
+          "technik": "beduerfnisse-adressieren"
+        }
+      ]
+    },
+    {
+      "id": "gc05-freundin-impfung",
+      "situation": "Eine alte Freundin ruft dich abends an.",
+      "aussage": "Die Impfung war ein Menschenversuch. Die Wahrheit kommt jetzt langsam raus.",
+      "optionen": [
+        {
+          "text": "Die Impfung hat nachweislich viele Leben gerettet.",
+          "wert": 1,
+          "feedback": "Der Satz stimmt, und widersprechen ist okay. Ohne Vorlauf klingt er aber wie ein Urteil. Fakten kommen besser an, wenn sie sich vorher gehört fühlt.",
+          "technik": "debunking-sandwich"
+        },
+        {
+          "text": "Wie sicher bist du dir da, von 0 bis 10? Und was hat dich so sicher gemacht?",
+          "wert": 2,
+          "feedback": "Du fragst nach dem Wie, nicht nach dem Was. Sie prüft ihre eigenen Gründe, statt sich zu verteidigen. Das fühlt sich für sie nicht wie ein Angriff an.",
+          "technik": "street-epistemology"
+        },
+        {
+          "text": "Das ist komplett widerlegt. Hier: die Zulassungsstudien, die Daten vom Paul-Ehrlich-Institut, drei Faktenchecks …",
+          "wert": 0,
+          "feedback": "Eine Flut an Links überfordert und wirkt wie Belehrung. Sie sucht dann Gegenlinks. Faktenduelle gewinnt niemand, auch wenn du recht hast.",
+          "technik": "fragen-statt-fakten"
+        },
+        {
+          "text": "Oh je, hast du wieder zu viel Telegram gelesen?",
+          "wert": 0,
+          "feedback": "Spott trifft die Person, nicht die Behauptung. Sie fühlt sich belächelt, wie schon so oft. Das schiebt sie eher zu denen, die sie ernst nehmen.",
+          "technik": "aktives-zuhoeren"
+        }
+      ]
+    },
+    {
+      "id": "gc06-schwager-misstrauen",
+      "situation": "Dein Schwager steht mit dir am Grill im Garten.",
+      "aussage": "Ich trau keinem mehr. Medien, Ärzte, Politik: Damals in der Pandemie haben uns alle belogen.",
+      "optionen": [
+        {
+          "text": "Klingt, als wärst du damals richtig enttäuscht worden. Was hat dich am meisten getroffen?",
+          "wert": 2,
+          "feedback": "Du sprichst das Gefühl hinter dem Satz an, ohne ihm recht zu geben. Oft stecken Enttäuschung oder Ohnmacht dahinter. Wenn er darüber redet, wird das Gespräch ehrlicher.",
+          "technik": "beduerfnisse-adressieren"
+        },
+        {
+          "text": "Fehler gab es damals, klar. Aber dass alle lügen, ist doch Unsinn.",
+          "wert": 1,
+          "feedback": "Fehler zuzugeben schafft Nähe. Das „Unsinn“ danach nimmt sie wieder weg. Lass das Urteil weg und frag stattdessen nach.",
+          "technik": "aktives-zuhoeren"
+        },
+        {
+          "text": "Dann trau halt keinem. Aber jammer nicht, wenn du mal krank wirst.",
+          "wert": 0,
+          "feedback": "Das ist Trotz mit einer kleinen Drohung. Er fühlt sich bestätigt: Mit mir redet keiner normal. Das Misstrauen wird größer, nicht kleiner.",
+          "technik": "beduerfnisse-adressieren"
+        }
+      ]
+    },
+    {
+      "id": "gc07-nachbar-russland",
+      "situation": "Dein Nachbar spricht dich am Gartenzaun an.",
+      "aussage": "Die NATO hat Russland doch provoziert. Putin hat sich nur gewehrt. Unsere Medien zeigen eh nur eine Seite.",
+      "optionen": [
+        {
+          "text": "Russland hat die Ukraine angegriffen, nicht umgekehrt.",
+          "wert": 1,
+          "feedback": "Das ist ein Fakt, und du darfst ihn klar sagen. Allein bleibt er aber ein Konter. Häng eine Frage dran, dann bleibt das Gespräch offen.",
+          "technik": "soziale-normen"
+        },
+        {
+          "text": "Du bist doch ein Putin-Troll.",
+          "wert": 0,
+          "feedback": "Ein Etikett beendet jedes Gespräch. Er fühlt sich abgestempelt und zieht sich zurück. Den Medien, die du meinst, traut er danach noch weniger.",
+          "technik": "aktives-zuhoeren"
+        },
+        {
+          "text": "Wie bist du zu dem Bild gekommen? Was liest oder schaust du so, und woran merkst du, ob eine Quelle stimmt?",
+          "wert": 2,
+          "feedback": "Du fragst nach seinem Weg zu der Meinung, ohne seine Quellen schlechtzumachen. So denkt er selbst darüber nach, wie er prüft. Das öffnet mehr als ein Streit über Schuld.",
+          "technik": "fragen-statt-fakten"
+        },
+        {
+          "text": "Dann zieh doch nach Moskau, wenn's da so toll ist.",
+          "wert": 0,
+          "feedback": "Das ist Spott und Rauswurf zugleich. Er hört: Du gehörst nicht dazu. Genau dieses Gefühl macht solche Erzählungen attraktiv.",
+          "technik": "beduerfnisse-adressieren"
+        }
+      ]
+    },
+    {
+      "id": "gc08-cousin-gottes-gesetz",
+      "situation": "Dein Cousin, 20, hat seit einem Jahr neue Freunde aus einer Online-Gruppe und spricht dich beim Familientreffen an.",
+      "aussage": "Eure Gesetze gelten für mich nicht. Nur Gottes Gesetz zählt, alles andere ist Unglaube.",
+      "optionen": [
+        {
+          "text": "Hier gilt aber das Grundgesetz. Für alle.",
+          "wert": 1,
+          "feedback": "Die Haltung ist richtig, und du darfst sie zeigen. Allein wirkt sie aber wie eine Zurechtweisung. Frag auch, was ihm die neue Gruppe gibt.",
+          "technik": "grenzen-setzen"
+        },
+        {
+          "text": "Das ist doch Steinzeitdenken.",
+          "wert": 0,
+          "feedback": "Spott trifft seinen Glauben und damit seine Identität. Er fühlt sich angegriffen und rückt näher an die, die ihm sagen, die Welt sei gegen ihn.",
+          "technik": "beduerfnisse-adressieren"
+        },
+        {
+          "text": "Ich merke, dass dir dein Glaube sehr wichtig geworden ist. Erzähl mal: Was gibt dir die neue Gruppe, was du vorher nicht hattest?",
+          "wert": 2,
+          "feedback": "Du respektierst seinen Glauben, ohne seiner Aussage zuzustimmen. Die Frage zielt auf die Gruppe, nicht auf die Religion: auf Halt und Zugehörigkeit. Darüber kann er reden.",
+          "technik": "motivational-interviewing"
+        },
+        {
+          "text": "Mit so jemandem will ich nichts mehr zu tun haben.",
+          "wert": 0,
+          "feedback": "Ein Kontaktabbruch nimmt ihm einen Menschen außerhalb der Gruppe. Gerade solche Kontakte helfen später beim Ausstieg. Eine Pause ist in Ordnung, ein Abbruch als erste Reaktion nicht.",
+          "technik": "grenzen-setzen"
+        }
+      ]
+    },
+    {
+      "id": "gc09-kantine-suende",
+      "situation": "Du sitzt mit einer Kollegin und eurem Kollegen Tim in der Kantine, und Tim erzählt gerade von seiner Hochzeit mit seinem Mann.",
+      "aussage": "Also ehrlich, Homosexualität ist Sünde. So steht's in der Bibel, da kann ich nichts machen.",
+      "optionen": [
+        {
+          "text": "Das ist homophob, und du bist es auch.",
+          "wert": 0,
+          "feedback": "Ein Etikett macht aus der Aussage einen Angriff auf ihre Person. Sie verteidigt sich und ihren Glauben. Tim hilft das im Moment wenig.",
+          "technik": "grenzen-setzen"
+        },
+        {
+          "text": "Viele Christen lesen die Bibel da heute anders.",
+          "wert": 1,
+          "feedback": "Du zeigst, dass es auch anders geht. Aber jetzt streitet ihr über Bibelauslegung, und Tim sitzt ungeschützt daneben. Erst die Grenze, dann das Gespräch.",
+          "technik": "soziale-normen"
+        },
+        {
+          "text": "Die Bibel verbietet auch Scampi. Isst du die etwa?",
+          "wert": 0,
+          "feedback": "Ein schlagfertiger Witz, aber er macht sie lächerlich. Sie fühlt sich vorgeführt und blockt ab. Tim wird damit nicht geschützt.",
+          "technik": "grenzen-setzen"
+        },
+        {
+          "text": "Dein Glaube ist deine Sache. Aber Tim freut sich gerade über seine Hochzeit, da find ich den Satz nicht okay. Wenn du magst, reden wir zwei später in Ruhe.",
+          "wert": 2,
+          "feedback": "Du lässt ihren Glauben stehen und stellst dich trotzdem neben Tim. Die Grenze gilt dem Moment, nicht ihrer Religion. Das Gesprächsangebot hält die Beziehung.",
+          "technik": "grenzen-setzen"
+        }
+      ]
+    },
+    {
+      "id": "gc10-tochter-klima",
+      "situation": "Deine Tochter, 17, kommt nach einer Protestaktion zu dir in die Küche.",
+      "aussage": "Ihr habt unsere Zukunft verkauft. Mit eurer Generation muss man nicht mehr reden, nur noch blockieren.",
+      "optionen": [
+        {
+          "text": "Ich versteh, dass du wütend bist. Aber Blockieren bringt doch nichts.",
+          "wert": 1,
+          "feedback": "Der erste Satz öffnet, das „aber“ schließt wieder. Sie hört vor allem: Du liegst falsch. Frag lieber erst, was sie gerade umtreibt.",
+          "technik": "aktives-zuhoeren"
+        },
+        {
+          "text": "Du machst dir echt Sorgen um deine Zukunft, oder? Erzähl mal, was dich gerade am meisten umtreibt.",
+          "wert": 2,
+          "feedback": "Du benennst die Sorge hinter der Wut und lädst zum Reden ein. Sie fühlt sich ernst genommen. Danach könnt ihr über Wege reden, die ihr beide okay findet.",
+          "technik": "beduerfnisse-adressieren"
+        },
+        {
+          "text": "Aber das neue Handy wolltest du trotzdem, du Heldin.",
+          "wert": 0,
+          "feedback": "Spott über einen Widerspruch beschämt. Sie fühlt sich lächerlich gemacht und zieht sich zurück. Ihre Sorge bleibt, nur redet sie nicht mehr mit dir darüber.",
+          "technik": "aktives-zuhoeren"
+        },
+        {
+          "text": "Wenn du so mit mir redest, kannst du gleich ausziehen.",
+          "wert": 0,
+          "feedback": "Eine Drohung mit Rauswurf, und das bei einer Jugendlichen. Sie lernt: Ehrlich sein lohnt sich nicht. Eine Grenze geht ohne Drohung: So nicht, aber ich hör dir zu.",
+          "technik": "grenzen-setzen"
+        }
+      ]
+    },
+    {
+      "id": "gc11-freund-gehirngewaschen",
+      "situation": "Dein bester Freund sitzt nach dem Fußball neben dir im Auto.",
+      "aussage": "Du bist doch selbst gehirngewaschen. Du glaubst alles, was im Fernsehen kommt.",
+      "optionen": [
+        {
+          "text": "Und du glaubst alles, was auf YouTube läuft.",
+          "wert": 0,
+          "feedback": "Du schlägst zurück, und es wird ein Schlagabtausch. Keiner hört mehr zu. Am Ende geht es nur noch darum, wer gewinnt.",
+          "technik": "aktives-zuhoeren"
+        },
+        {
+          "text": "Kann sein, dass ich auch blinde Flecken habe. Woran würdest du die bei mir merken? Und wie prüfst du das bei dir?",
+          "wert": 2,
+          "feedback": "Du nimmst den Vorwurf gelassen und zeigst Offenheit. Das macht es ihm leichter, auch offen zu sein. Die Frage zurück lädt ein, gemeinsam über Quellen nachzudenken.",
+          "technik": "street-epistemology"
+        },
+        {
+          "text": "Stimmt nicht. Ich lese ganz verschiedene Quellen.",
+          "wert": 1,
+          "feedback": "Verständlich, dass du dich verteidigst. Es bleibt aber bei Behauptung gegen Behauptung. Mit einer Gegenfrage kommt ihr weiter.",
+          "technik": "aktives-zuhoeren"
+        },
+        {
+          "text": "Mit dir kann man echt nicht mehr reden.",
+          "wert": 0,
+          "feedback": "Damit gibst du das Gespräch auf. Wenn dir gerade die Kraft fehlt, sag lieber: Lass uns ein andermal weiterreden. Das schützt dich und die Freundschaft.",
+          "technik": "selbstfuersorge"
+        }
+      ]
+    },
+    {
+      "id": "gc12-schwester-chat-nachts",
+      "situation": "Deine Schwester schreibt dir nachts nach einem Streit eine Nachricht aufs Handy.",
+      "aussage": "Leute wie du sind schuld, dass alles den Bach runtergeht. Du bist ein Verräter. Du widerst mich an.",
+      "optionen": [
+        {
+          "text": "Das verletzt mich. So schreibe ich heute nicht weiter. Ich hab dich trotzdem lieb. Lass uns morgen telefonieren.",
+          "wert": 2,
+          "feedback": "Du schützt dich und sagst klar, was dich verletzt. Die Tür bleibt trotzdem offen. Nachts im Chat wird kein Streit besser, morgen am Telefon schon eher.",
+          "technik": "grenzen-setzen"
+        },
+        {
+          "text": "Schreib so was nicht. Gute Nacht.",
+          "wert": 1,
+          "feedback": "Die Grenze ist richtig, und es ist gut, dass du aufhörst. Es fehlt aber das Signal, dass du später weiterreden willst. Ein Satz dazu reicht.",
+          "technik": "grenzen-setzen"
+        },
+        {
+          "text": "Dann sind wir eben keine Geschwister mehr.",
+          "wert": 0,
+          "feedback": "Ein Abbruch im Streit ist schwer zurückzunehmen. Er bestätigt ihr Bild, dass du gegen sie bist. Pause ja, Abbruch als Druckmittel nein.",
+          "technik": "grenzen-setzen"
+        },
+        {
+          "text": "Du spinnst doch. Lass dich mal untersuchen.",
+          "wert": 0,
+          "feedback": "Das macht aus ihrer Meinung eine Krankheit. Sie fühlt sich gedemütigt, der Streit wird lauter. Und dir geht es danach auch nicht besser.",
+          "technik": "selbstfuersorge"
+        }
+      ]
+    }
   ],
   thesen: [
     {

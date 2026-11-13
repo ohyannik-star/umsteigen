@@ -261,6 +261,15 @@ input.such { max-width: 560px; font-size: 1.1rem; padding: 14px 18px; border-rad
 .st-bars .bar { grid-template-columns: minmax(120px, 190px) 1fr 3.4em; }
 .st-bars .bar-v { white-space: nowrap; }
 .st-kopf { gap: 10px; }
+.choice button.st-richtig, .choice button.st-richtig[disabled] { box-shadow: inset 0 0 0 2px var(--good); opacity: 1; }
+.choice button.st-falsch, .choice button.st-falsch[disabled] { box-shadow: inset 0 0 0 2px var(--bad); opacity: 1; }
+.choice button .st-mark { float: right; margin-left: 10px; font-weight: 600; }
+.choice button.st-richtig .st-mark { color: var(--good-ink); } .choice button.st-falsch .st-mark { color: var(--bad-ink); }
+.st-score { font-size: clamp(2.4rem, 7vw, 3.4rem); font-weight: 700; letter-spacing: -.02em; line-height: 1.05; }
+.st-score-l { font-size: 1.15rem; font-weight: 600; }
+.st-gesamt { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.st-gesamt .st-score { font-size: 2.2rem; }
+@media (max-width: 734px) { .st-gesamt { grid-template-columns: 1fr; } }
 @media (max-width: 734px) { .st-antw { grid-template-columns: 1fr; } .st-kopf { margin-bottom: -12px; } .st-bars .bar { grid-template-columns: 1fr 3.4em; } }
 /* Weitersagen: QR-Code auf der Seite, groß zum Vorzeigen und als Aushang im Druck. Der Code bleibt immer schwarz auf weiß. */
 .teilen { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; max-width: 760px; width: 100%; margin-inline: auto; }
@@ -521,23 +530,23 @@ details.acc .body { padding: 0 4px 20px; }
 <div class="sheet" id="sheet" data-act="sheet" hidden></div>
 <footer class="foot">Deine Eingaben bleiben auf deinem Gerät, solange du sie nicht selbst abschickst oder teilst. Kein Konto. Empfehlungen nennen Evidenzstufe und Quellen. Kein Ersatz für professionelle Beratung. Bei Gefahr: 110.<span id="ver"></span></footer>
 
-<script src="data/linien.js?v=20261113-115840"></script>
-<script src="data/techniken.js?v=20261113-115840"></script>
-<script src="data/kompass.js?v=20261113-115840"></script>
-<script src="data/szenarien.js?v=20261113-115840"></script>
-<script src="data/kampagne.js?v=20261113-115840"></script>
-<script src="data/leitplanken.js?v=20261113-115840"></script>
-<script src="data/hilfe.js?v=20261113-115840"></script>
-<script src="data/messung.js?v=20261113-115840"></script>
-<script src="data/argumente.js?v=20261113-115840"></script>
-<script src="data/selbsttest.js?v=20261113-115840"></script>
-<script src="qr.js?v=20261113-115840"></script>
-<script>window.UMSTEIGEN_HOSTED = true; window.UMSTEIGEN_VERSION = '20261113-115840'; window.UMSTEIGEN_URL = "https://ohyannik-star.github.io/umsteigen/";</script>
-<script src="app.js?v=20261113-115840"></script>
+<script src="data/linien.js?v=20261113-125420"></script>
+<script src="data/techniken.js?v=20261113-125420"></script>
+<script src="data/kompass.js?v=20261113-125420"></script>
+<script src="data/szenarien.js?v=20261113-125420"></script>
+<script src="data/kampagne.js?v=20261113-125420"></script>
+<script src="data/leitplanken.js?v=20261113-125420"></script>
+<script src="data/hilfe.js?v=20261113-125420"></script>
+<script src="data/messung.js?v=20261113-125420"></script>
+<script src="data/argumente.js?v=20261113-125420"></script>
+<script src="data/selbsttest.js?v=20261113-125420"></script>
+<script src="qr.js?v=20261113-125420"></script>
+<script>window.UMSTEIGEN_HOSTED = true; window.UMSTEIGEN_VERSION = '20261113-125420'; window.UMSTEIGEN_URL = "https://ohyannik-star.github.io/umsteigen/";</script>
+<script src="app.js?v=20261113-125420"></script>
 <script>
 if ('serviceWorker' in navigator && /^https?:/.test(location.protocol)) {
   (function () {
-    var VERSION = '20261113-115840', hadController = !!navigator.serviceWorker.controller, pending = false, regRef = null;
+    var VERSION = '20261113-125420', hadController = !!navigator.serviceWorker.controller, pending = false, regRef = null;
     function note(text, ms) { var t = document.createElement('div'); t.className = 'toast'; t.textContent = text; document.body.appendChild(t); if (ms) setTimeout(function () { t.remove(); }, ms); return t; }
     function idle() { if (document.querySelector('.zeigen')) return false; var a = document.activeElement; return !(a && (a.tagName === 'TEXTAREA' || (a.tagName === 'INPUT' && a.type === 'text'))); }
     function applyUpdate() { if (pending && idle()) { pending = false; try { sessionStorage.setItem('umsteigen:updated', '1'); } catch (e) {} location.reload(); } }

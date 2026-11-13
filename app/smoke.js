@@ -174,6 +174,16 @@ click({ act: 'sheet' }); if (els['#sheet'].innerHTML.indexOf('data-go="teilen"')
   if (bars !== D.selbsttest.parteien.length) fails.push('Selbsttest mit echten Daten zeigt ' + bars + ' statt ' + D.selbsttest.parteien.length + ' Parteien');
   if (vgl < D.selbsttest.thesen.length) fails.push('Selbsttest mit echten Daten: Vergleich unvollständig (' + vgl + ')');
   sizes['selbsttest:ergebnis'] = main.innerHTML.length;
+  // Faktencheck und Gesprächs-Check mit den echten Daten: jede Frage hat Rückmeldung, am Ende Punkte von 100
+  for (const [art, L] of [['fakten', D.selbsttest.fakten || []], ['gespraech', D.selbsttest.gespraech || []]]) {
+    if (!L.length) { fails.push('Selbsttest ohne Daten für ' + art); continue; }
+    click({ act: 'st-teil', teil: art });
+    L.forEach((it, n) => { click({ act: 'st-quiz', wert: String(n % it.optionen.length) }); if (!/class="note (good|warn|bad) stack"/.test(main.innerHTML)) fails.push(art + ' ' + it.id + ': keine Rückmeldung'); click({ act: 'st-quiz-weiter' }); });
+    if (!/\d+ von 100/.test(main.innerHTML)) fails.push(art + ': kein Ergebnis in Punkten');
+    sizes['selbsttest:' + art] = main.innerHTML.length;
+  }
+  click({ act: 'st-teil', teil: 'auswertung' }); sizes['selbsttest:auswertung'] = main.innerHTML.length;
+  if ((main.innerHTML.match(/von 100/g) || []).length < 2) fails.push('Auswertung zeigt nicht beide Punktzahlen');
   click({ act: 'st-loeschen' }); click({ act: 'st-loeschen-ja' }); route('start');
 }
 // jede Station einmal anzeigen

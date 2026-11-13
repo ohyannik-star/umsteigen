@@ -247,6 +247,15 @@ input.such { max-width: 560px; font-size: 1.1rem; padding: 14px 18px; border-rad
 .st-bars .bar { grid-template-columns: minmax(120px, 190px) 1fr 3.4em; }
 .st-bars .bar-v { white-space: nowrap; }
 .st-kopf { gap: 10px; }
+.choice button.st-richtig, .choice button.st-richtig[disabled] { box-shadow: inset 0 0 0 2px var(--good); opacity: 1; }
+.choice button.st-falsch, .choice button.st-falsch[disabled] { box-shadow: inset 0 0 0 2px var(--bad); opacity: 1; }
+.choice button .st-mark { float: right; margin-left: 10px; font-weight: 600; }
+.choice button.st-richtig .st-mark { color: var(--good-ink); } .choice button.st-falsch .st-mark { color: var(--bad-ink); }
+.st-score { font-size: clamp(2.4rem, 7vw, 3.4rem); font-weight: 700; letter-spacing: -.02em; line-height: 1.05; }
+.st-score-l { font-size: 1.15rem; font-weight: 600; }
+.st-gesamt { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.st-gesamt .st-score { font-size: 2.2rem; }
+@media (max-width: 734px) { .st-gesamt { grid-template-columns: 1fr; } }
 @media (max-width: 734px) { .st-antw { grid-template-columns: 1fr; } .st-kopf { margin-bottom: -12px; } .st-bars .bar { grid-template-columns: 1fr 3.4em; } }
 /* Weitersagen: QR-Code auf der Seite, groß zum Vorzeigen und als Aushang im Druck. Der Code bleibt immer schwarz auf weiß. */
 .teilen { display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center; max-width: 760px; width: 100%; margin-inline: auto; }

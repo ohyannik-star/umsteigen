@@ -76,6 +76,31 @@ ok(H.length >= 12, `nur ${H.length} Anlaufstellen`);
 H.forEach(h => warn(h.url, `Anlaufstelle ${h.id}: ohne URL`));
 ok(M && M.stufen && M.stufen.length >= 4, 'Messung: Stufen fehlen');
 
+// Selbsttest Teil 3 (Faktencheck) und Teil 4 (Gesprächs-Check)
+{
+  const sctx = { window: {} }; vm.createContext(sctx);
+  vm.runInContext(fs.readFileSync(path.join(dir, 'selbsttest.js'), 'utf8'), sctx, { filename: 'selbsttest.js' });
+  const ST = sctx.window.APP_DATA.selbsttest, FA = ST.fakten || [], GE = ST.gespraech || [], ids = new Set();
+  ok(FA.length >= 10, 'Faktencheck: weniger als 10 Fragen');
+  ok(GE.length >= 8, 'Gesprächs-Check: weniger als 8 Situationen');
+  FA.forEach(f => {
+    ok(f.id && !ids.has(f.id), 'Faktencheck: ID fehlt oder doppelt: ' + f.id); ids.add(f.id);
+    ok(f.thema && f.frage && f.erklaerung && f.stand, 'Faktencheck ' + f.id + ': Feld fehlt');
+    ok(Array.isArray(f.optionen) && f.optionen.length === 4 && f.optionen.every(o => typeof o === 'string' && o) && new Set(f.optionen).size === 4, 'Faktencheck ' + f.id + ': keine 4 verschiedenen Antworten');
+    ok(Number.isInteger(f.richtig) && f.richtig >= 0 && f.richtig < 4, 'Faktencheck ' + f.id + ': richtige Antwort fehlt');
+    ok(f.quelle && f.quelle.titel && /^https:\/\//.test(f.quelle.url || ''), 'Faktencheck ' + f.id + ': Quelle ohne Titel oder https-Adresse');
+  });
+  GE.forEach(g => {
+    ok(g.id && !ids.has(g.id), 'Gesprächs-Check: ID fehlt oder doppelt: ' + g.id); ids.add(g.id);
+    ok(g.situation && g.aussage, 'Gesprächs-Check ' + g.id + ': Feld fehlt');
+    ok(Array.isArray(g.optionen) && g.optionen.length >= 3 && g.optionen.length <= 4, 'Gesprächs-Check ' + g.id + ': 3 oder 4 Antworten nötig');
+    ok((g.optionen || []).filter(o => o.wert === 2).length === 1, 'Gesprächs-Check ' + g.id + ': nicht genau eine beste Antwort');
+    (g.optionen || []).forEach(o => { ok(o.text && o.feedback && [0, 1, 2].indexOf(o.wert) >= 0, 'Gesprächs-Check ' + g.id + ': Antwort unvollständig'); if (o.technik) ok(tech.has(o.technik), 'Gesprächs-Check ' + g.id + ': Technik ' + o.technik + ' unbekannt'); });
+  });
+  // Die richtige Antwort soll nicht immer an derselben Stelle stehen
+  const pos = new Set(FA.map(f => f.richtig)); ok(FA.length < 4 || pos.size >= 3, 'Faktencheck: richtige Antwort steht fast immer an derselben Stelle');
+}
+
 console.log(`Linien ${L.length} (${L.reduce((n, l) => n + l.stationen.length, 0)} Stationen), Techniken ${T.length}, Kompass-Fragen ${K ? K.fragen.length : 0}, Szenarien ${S.length}, Bausteine ${C ? (C.bausteine || []).length : 0}, Anlaufstellen ${H.length}`);
 warns.forEach(w => console.log('WARNUNG ' + w));
 errors.forEach(e => console.log('FEHLER ' + e));
