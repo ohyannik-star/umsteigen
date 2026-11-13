@@ -1,6 +1,6 @@
-// UMDENKEN Service Worker, Version 20261112-230150
-const VERSION = 'umsteigen-20261112-230150';
-const FILES = ["./","index.html","manifest.webmanifest","icon-192.png","icon-512.png","icon-maskable-512.png","apple-touch-icon.png","app.js","qr.js","data/argumente.js","data/hilfe.js","data/kampagne.js","data/kompass.js","data/leitplanken.js","data/linien.js","data/messung.js","data/szenarien.js","data/techniken.js"];
+// UMDENKEN Service Worker, Version 20261113-115840
+const VERSION = 'umsteigen-20261113-115840';
+const FILES = ["./","index.html","manifest.webmanifest","icon-192.png","icon-512.png","icon-maskable-512.png","apple-touch-icon.png","app.js","qr.js","data/argumente.js","data/hilfe.js","data/kampagne.js","data/kompass.js","data/leitplanken.js","data/linien.js","data/messung.js","data/selbsttest.js","data/szenarien.js","data/techniken.js"];
 self.addEventListener('install', e => { e.waitUntil(caches.open(VERSION).then(c => Promise.all(FILES.map(f => fetch(f, { cache: 'reload' }).then(r => { if (!r.ok) throw new Error(f); return c.put(f, r); })))).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== VERSION).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {

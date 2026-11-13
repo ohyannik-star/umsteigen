@@ -13,6 +13,7 @@ var LEIT = D.leitplanken || null;
 var HILFE = Array.isArray(D.hilfe) ? D.hilfe : [];
 var MESSUNG = D.messung || null;
 var ARG = D.argumente && D.argumente.argumente ? D.argumente : null;
+var ST = D.selbsttest && D.selbsttest.staerken && D.selbsttest.parteien ? D.selbsttest : null;
 var LINE_COLORS = ['#0a5fa7', '#c2410c', '#15803d', '#7c3aed', '#be185d', '#0e7490', '#b45309'];
 var EBENE = { individuum: 'Einzelperson', masse: 'Viele Menschen', beide: 'Beide Ebenen' };
 
@@ -58,7 +59,8 @@ var API = HOSTED && window.UMSTEIGEN_API ? String(window.UMSTEIGEN_API).replace(
 // Öffentliche Adresse der App für „Weitersagen“ (QR-Code und Link). Die gebaute App bekommt sie aus app/config.json.
 // Sie wird bewusst nirgends als Text angezeigt: Sie steckt nur im QR-Code und im geteilten Link.
 var ADRESSE = String(window.UMSTEIGEN_URL || 'https://ohyannik-star.github.io/umsteigen/');
-var KURZTEXT = 'Die App ' + NAME + ' hilft dir, mit Menschen im Gespräch zu bleiben, die extreme Ansichten vertreten. Kostenlos und ohne Anmeldung.';
+var SLOGAN = 'Nicht nur umdenken, sondern auch rumsprechen.';
+var KURZTEXT = SLOGAN + ' Die App ' + NAME + ' hilft dir, mit Menschen im Gespräch zu bleiben, die extreme Ansichten vertreten. Kostenlos und ohne Anmeldung.';
 function iosGeraet() { try { var ua = navigator.userAgent || ''; return /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1); } catch (e) { return false; } }
 function isStandalone() { try { return window.navigator.standalone === true || (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches); } catch (e) { return false; } }
 // Teilt über das Gerät; ohne Teilen-Funktion landet der Text (samt Adresse, falls angegeben) in der Zwischenablage.
@@ -73,7 +75,7 @@ function downloadText(name, text) {
 }
 function backupAll() {
   var daten = {};
-  try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && k.indexOf(APP + ':') === 0) daten[k.slice(APP.length + 1)] = JSON.parse(localStorage.getItem(k)); } } catch (e) {}
+  try { for (var i = 0; i < localStorage.length; i++) { var k = localStorage.key(i); if (k && k.indexOf(APP + ':') === 0 && k !== APP + ':selbsttest') daten[k.slice(APP.length + 1)] = JSON.parse(localStorage.getItem(k)); } } catch (e) {}
   return JSON.stringify({ app: APP, version: 1, datum: today(), daten: daten });
 }
 function restoreAll(text) {
@@ -81,6 +83,7 @@ function restoreAll(text) {
   if (Array.isArray(o)) { var cur = store.get('tagebuch', []), ids = {}; cur.forEach(function (x) { ids[x.id] = 1; }); o.forEach(function (x) { if (x && x.alias && x.notiz && !ids[x.id]) cur.push({ id: x.id || uid(), alias: x.alias, datum: x.datum || today(), linie: x.linie || '', station: x.station || '', stufe: x.stufe || '', notiz: x.notiz, naechster: x.naechster || '' }); }); store.set('tagebuch', cur); return; }
   if (!o || o.app !== APP || !o.daten) throw new Error('format');
   Object.keys(o.daten).forEach(function (k) {
+    if (k === 'selbsttest') return; // Selbsttest-Antworten bleiben nur auf dem Gerät, auf dem sie entstanden sind
     // Anfragen zusammenführen statt überschreiben, damit Nummern und vorgemerkte Löschungen auf diesem Gerät erhalten bleiben.
     if (k === 'anfragen' && Array.isArray(o.daten[k])) { var hier = store.get('anfragen', []), ids = {}; hier.forEach(function (x) { ids[x.id] = 1; }); store.set('anfragen', hier.concat(o.daten[k].filter(function (x) { return x && x.id && !ids[x.id]; }))); return; }
     store.set(k, o.daten[k]);
@@ -103,6 +106,7 @@ var ICONS = {
   aktiv: '<circle cx="9" cy="8" r="3"/><circle cx="17.5" cy="9.5" r="2.3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 14.3c2.8.3 5 2.6 5 5.7"/>',
   meins: '<path d="M4 7a2 2 0 0 1 2-2h3.5l2 2H18a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/>',
   suche: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',
+  selbsttest: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/>',
   teilen: '<circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="m8.3 10.7 7.4-4.4M8.3 13.3l7.4 4.4"/>'
 };
 ICONS.argumentieren = ICONS.antworten; ICONS.schutz = ICONS.leitplanken;
@@ -114,7 +118,7 @@ function group(title, hint, rows, eyebrow) { return '<div class="group">' + (eye
 /* ---------- Zustand und Routing ---------- */
 var ROUTES = [
   ['start', 'Start'], ['verstehen', 'Verstehen & Einordnen'], ['argumentieren', 'Argumentieren & Reagieren'], ['vorbereiten', 'Gespräche vorbereiten'], ['aktiv', 'Aktiv werden & Vernetzen'], ['schutz', 'Mich schützen & Grenzen setzen'], ['meins', 'Meine Inhalte'], ['suche', 'Suche'],
-  ['kompass', 'Person verstehen'], ['antworten', 'Antworten'], ['trainer', 'Trainer'], ['netz', 'Netzplan'], ['wissen', 'Techniken'], ['kampagne', 'Kampagne'], ['leitplanken', 'Leitplanken'], ['archiv', 'Archiv'], ['tagebuch', 'Tagebuch'], ['teilen', 'Weitersagen']
+  ['kompass', 'Person verstehen'], ['antworten', 'Antworten'], ['trainer', 'Trainer'], ['netz', 'Netzplan'], ['wissen', 'Techniken'], ['kampagne', 'Kampagne'], ['leitplanken', 'Leitplanken'], ['archiv', 'Archiv'], ['tagebuch', 'Tagebuch'], ['teilen', 'Weitersagen'], ['selbsttest', 'Wo stehe ich?']
 ];
 function routeName(r) { for (var i = 0; i < ROUTES.length; i++) if (ROUTES[i][0] === r) return ROUTES[i][1]; return r; }
 // Die fünf Bereiche der Startseite. Jeder führt auf eine einfache Seite mit höchstens drei Wegen.
@@ -127,8 +131,8 @@ var HUBS = {
   schutz: { kurz: 'Schützen', farbe: '#0e7490', teaser: 'Auf dich achten, Hilfe holen.', warum: 'Solche Gespräche kosten Kraft. Hier steht, wie du auf dich achtest und wer dir hilft.' }
 };
 // Wohin der Zurück-Link einer Werkzeugseite führt, wenn man sie nicht über einen Bereich geöffnet hat
-var PARENT = { kompass: 'verstehen', antworten: 'argumentieren', trainer: 'vorbereiten', netz: 'vorbereiten', wissen: 'vorbereiten', kampagne: 'aktiv', leitplanken: 'schutz', archiv: 'meins', tagebuch: 'meins' };
-var TOOL_IDS = ['kompass', 'antworten', 'trainer', 'netz', 'wissen', 'kampagne', 'leitplanken', 'archiv', 'tagebuch'];
+var PARENT = { selbsttest: 'verstehen', kompass: 'verstehen', antworten: 'argumentieren', trainer: 'vorbereiten', netz: 'vorbereiten', wissen: 'vorbereiten', kampagne: 'aktiv', leitplanken: 'schutz', archiv: 'meins', tagebuch: 'meins' };
+var TOOL_IDS = ['selbsttest', 'kompass', 'antworten', 'trainer', 'netz', 'wissen', 'kampagne', 'leitplanken', 'archiv', 'tagebuch'];
 function istOben(r) { return r === 'start' || r === 'meins' || r === 'suche' || !!HUBS[r]; }
 function crumbZiel(r) { if (HUBS[r]) return 'start'; if (istOben(r)) return null; return state.from && istOben(state.from) ? state.from : (PARENT[r] || 'start'); }
 function navBereich(r) { if (istOben(r)) return r; return state.from && istOben(state.from) && state.from !== 'start' ? state.from : (PARENT[r] || 'start'); }
@@ -180,6 +184,8 @@ function render() {
   var gs = $('#gshare');
   if (gs) { gs.hidden = false; if (state.route === 'teilen') gs.setAttribute('aria-current', 'page'); else gs.removeAttribute('aria-current'); }
   var view = VIEWS[state.route] || VIEWS.start, ziel = crumbZiel(state.route);
+  // Bei den Thesen führt „‹ Zurück“ in der Seite selbst; ein zweiter Zurück-Link darüber würde verwirren
+  if (state.route === 'selbsttest' && state.st && state.st.teil === 'thesen') ziel = null;
   $('#main').innerHTML = '<div class="wrap">' + (ziel ? '<div class="crumb"><button data-go="' + ziel + '">‹ ' + esc(routeName(ziel)) + '</button></div>' : '') + view() + '</div>';
   if (lastRoute !== state.route) { window.scrollTo(0, 0); lastRoute = state.route; }
   if (AFTER[state.route]) AFTER[state.route]();
@@ -202,9 +208,14 @@ function vStart() {
   return '<div class="stack-lg">' +
     '<section class="hero"><h1 class="display">Jemand aus deinem Umfeld vertritt extreme Ansichten?</h1>' +
       '<p class="lead">' + NAME + ' hilft dir, im Gespräch zu bleiben. Ohne Belehren, ohne Streit, egal aus welcher politischen Richtung.</p>' +
-      '<div class="row center"><button class="btn primary lg" data-go="kompass">' + (res ? 'Deinen Fahrplan öffnen' : 'Hier anfangen') + '</button></div></section>' +
+      // Zwei Tests nebeneinander, in den Farben des Logos: blau für die Person, rot für dich selbst
+      '<div class="hero-tests">' +
+        '<div class="hero-test"><button class="test-knopf blau" data-go="kompass">' + (res ? 'Dein Fahrplan' : 'Person verstehen') + '</button><span class="small muted">' + (res ? 'Test zur Person: dein Ergebnis' : 'Test zur Person') + '</span></div>' +
+        (ST ? '<div class="hero-test"><button class="test-knopf rot" data-go="selbsttest">Selbsttest</button><span class="small muted">Test zu dir: Wo stehst du?</span></div>' : '') +
+      '</div></section>' +
     anfBanner() + iosHinweis() +
-    '<section><h2 class="sh sm">Wobei brauchst du Hilfe?</h2><div class="areas">' + bereiche + weiterZeile('Mit QR-Code, Link oder Aushang.') + '</div></section>' +
+    '<section><h2 class="sh sm">Wobei brauchst du Hilfe?</h2><div class="areas">' + bereiche +
+      weiterZeile('Mit QR-Code, Link oder Aushang.') + '</div></section>' +
     (HOSTED && !isStandalone() ? '<details class="acc inst"><summary>Als App aufs Handy holen</summary><div class="body"><p class="small">iPhone: In Safari auf das Teilen-Symbol tippen (Quadrat mit Pfeil nach oben), dann „Zum Home-Bildschirm“ und „Hinzufügen“. Android: In Chrome auf die drei Punkte tippen, dann „Zum Startbildschirm hinzufügen“ oder „App installieren“. Danach läuft ' + NAME + ' wie eine App, auch offline.</p><p class="small">Wichtig beim iPhone: Die App auf dem Home-Bildschirm fängt leer an. Was du vorher in Safari eingetragen hast, holst du über „Meine Inhalte“ und „Sichern und übertragen“ herüber.</p></div></details>' : '') +
   '</div>';
 }
@@ -269,7 +280,7 @@ function vMeins() {
     { go: 'archiv', titel: 'Archiv', text: (ar.eintraege.length ? anz(ar.eintraege.length, 'gespeicherter Eintrag', 'gespeicherte Einträge') : 'Noch nichts gespeichert') + ' und deine Rettungssätze für den Blackout.', cta: 'Öffnen' },
     { go: 'tagebuch', titel: 'Tagebuch', text: tb.length ? anz(tb.length, 'Notiz', 'Notizen') + ' zu deinen Gesprächen.' : 'Noch keine Notizen. Nach einem Gespräch kurz festhalten, was gewirkt hat.', cta: 'Öffnen' },
     API || anf.length ? { go: 'antworten', daten: { anttab: 'anfragen' }, titel: 'Meine Anfragen', text: anf.length ? anz(anf.length, 'Anfrage', 'Anfragen') + ' zu fehlenden Argumenten.' : 'Fehlt dir ein Argument, kannst du es anfragen. Hier siehst du dann Entwurf und Antwort.', cta: 'Öffnen' } : null,
-    { go: 'tagebuch', daten: { anker: 'sicherung' }, titel: 'Sichern und übertragen', text: 'Nimm Fall, Archiv und Tagebuch auf ein anderes Gerät mit.', cta: 'Sicherung öffnen' }
+    { go: 'tagebuch', daten: { anker: 'sicherung' }, titel: 'Sichern und übertragen', text: 'Nimm alles, was du in der App gespeichert hast, auf ein anderes Gerät mit. Die Antworten aus dem Selbsttest bleiben hier.', cta: 'Sicherung öffnen' }
   ];
   return '<div class="stack-lg"><div class="page-head"><div class="eyebrow">Nur auf diesem Gerät</div><h1>Meine Inhalte</h1><p class="why">Alles, was du gespeichert hast, an einem Ort.</p></div>' + iosHinweis() + '<div class="choices">' + wege.filter(Boolean).map(wegKarte).join('') + '</div></div>';
 }
@@ -317,9 +328,9 @@ function qrCode() { if (!QR_BILD) QR_BILD = window.QR ? window.QR.svg(ADRESSE, '
 function vTeilen() {
   var qr = qrCode();
   // Aushang: nur im Druck sichtbar. Großer QR-Code: deckt die ganze Seite ab, damit beim Vorzeigen nichts anderes zu sehen ist.
-  var aushang = '<div class="aushang"><div class="aus-n">' + NAME + '</div><div class="aus-h">Jemand aus deinem Umfeld vertritt extreme Ansichten?</div><p class="aus-p">Diese App hilft dir, im Gespräch zu bleiben. Ohne Belehren, ohne Streit, egal aus welcher politischen Richtung.</p>' + qr + '<p class="aus-s">Handy-Kamera auf den Code halten und den Link antippen.</p><p class="aus-f">Kostenlos · Ohne Anmeldung · Ohne Werbung</p></div>';
+  var aushang = '<div class="aushang"><div class="aus-n">' + NAME + '</div><div class="aus-h">Jemand aus deinem Umfeld vertritt extreme Ansichten?</div><p class="aus-p">Diese App hilft dir, im Gespräch zu bleiben. Ohne Belehren, ohne Streit, egal aus welcher politischen Richtung.</p>' + qr + '<p class="aus-s">Handy-Kamera auf den Code halten und den Link antippen.</p><p class="aus-slogan">' + esc(SLOGAN) + '</p><p class="aus-f">Kostenlos · Ohne Anmeldung · Ohne Werbung</p></div>';
   var gross = '<div class="zeigen" role="dialog" aria-modal="true" aria-label="QR-Code zum Vorzeigen" data-act="zeigen-zu"><div class="zeigen-n">' + NAME + '</div>' + qr + '<p class="zeigen-t">Kamera draufhalten, Link antippen</p><button class="btn" id="zeigen-zu" data-act="zeigen-zu">Schließen</button></div>';
-  return '<div class="stack-lg">' + kopf('Weitersagen', 'Zeig die App weiter', 'Gute Gespräche stecken an. Zeig ' + NAME + ' Menschen, denen es geht wie dir: auf der Demo, am Infostand, im Verein oder im Freundeskreis.', '') +
+  return '<div class="stack-lg">' + kopf('Weitersagen', SLOGAN, 'Gute Gespräche stecken an. Zeig ' + NAME + ' Menschen, denen es geht wie dir: auf der Demo, am Infostand, im Verein oder im Freundeskreis.', '') +
     '<section class="panel teilen">' + (qr ? qr + '<p class="small muted">Die andere Person hält ihre Handy-Kamera auf den Code und tippt den Link an, der erscheint.</p>' : '') +
       '<div class="row center">' + (qr ? '<button class="btn primary" id="zeigen-auf" data-act="zeigen">Groß zeigen</button>' : '') + '<button class="btn" data-act="teilen-link">Link teilen</button></div></section>' +
     '<div class="choices">' +
@@ -327,6 +338,153 @@ function vTeilen() {
       (qr ? '<div class="choice-card"><h3>Zum Aufhängen und Auslegen</h3><p>Ein Aushang mit QR-Code für Infostand, Vereinsheim oder Schwarzes Brett.</p><div class="row"><button class="btn" data-act="aushang">Aushang drucken</button></div><p class="small muted">Tipp: Am Computer klappt das Drucken immer, am Handy nicht in jedem Browser. Im Druckfenster „Kopf- und Fußzeilen“ ausschalten, sonst druckt der Browser Datum und Web-Adresse mit.</p></div>' : '') +
       '<div class="note"><strong>Gut zu wissen</strong>Beim Vorzeigen sieht niemand deine Notizen. Empfiehl die App, aber dräng sie niemandem auf. Und zeig sie nicht der Person, um die du dich sorgst: Das wirkt schnell wie ein Vorwurf.</div>' +
     '</div>' + (qr ? aushang : '') + (qr && state.zeigen ? gross : '') + '</div>';
+}
+
+/* ---------- Selbsttest „Wo stehe ich?“ ---------- */
+// Teil 1 „Was liegt dir?“ ergibt eine Stärke und den passenden Bereich. Teil 2 vergleicht Antworten zu Thesen mit den Wahlprogrammen.
+// Antworten bleiben nur im Arbeitsspeicher; gespeichert wird erst, wenn man es ausdrücklich will (politische Meinungen sind besonders schutzwürdig).
+// Sie gehen nie in die Sicherung (backupAll) und nie über das Netz.
+var ST_POS = { zu: 'stimmt zu', ab: 'lehnt ab', neutral: 'neutral', offen: 'keine klare Aussage' };
+var ST_DU = { zu: 'Du: stimme zu', ab: 'Du: stimme nicht zu', neutral: 'Du: neutral', skip: 'Du: übersprungen' };
+function stLeer() { return { teil: null, i: 0, a: {}, w: {}, s: {}, staerkeFertig: false, gespeichert: false }; }
+function stState() {
+  if (!state.st) {
+    var g = store.get('selbsttest', null); state.st = stLeer();
+    if (g) { state.st.a = g.a || {}; state.st.w = g.w || {}; state.st.s = g.s || {}; state.st.staerkeFertig = !!g.staerkeFertig; state.st.gespeichert = true; }
+  }
+  return state.st;
+}
+function stMerken() { var st = stState(); if (st.gespeichert) store.set('selbsttest', { a: st.a, w: st.w, s: st.s, staerkeFertig: st.staerkeFertig }); }
+function stParteienAbc() { return ST.parteien.slice().sort(function (x, y) { return x.name < y.name ? -1 : x.name > y.name ? 1 : 0; }); }
+function stQuelle(p, id) { var q = p.quellen || []; for (var i = 0; i < q.length; i++) if (!id || q[i].id === id) return q[i]; return q[0] || { titel: 'Wahlprogramm 2025', url: '' }; }
+function stUnd(namen) { return namen.length < 2 ? namen.join('') : namen.slice(0, -1).join(', ') + ' und ' + namen[namen.length - 1]; }
+function stTyp(s) {
+  var punkte = {};
+  ST.staerken.typen.forEach(function (t) { punkte[t.id] = 0; });
+  ST.staerken.fragen.forEach(function (f) { var o = findIn(f.optionen, s[f.id]); if (o) Object.keys(o.typ).forEach(function (k) { punkte[k] = (punkte[k] || 0) + o.typ[k]; }); });
+  // Reihenfolge der Typen entscheidet bei Gleichstand (Kraft zuerst)
+  var reihe = ST.staerken.typen.slice().sort(function (x, y) { return punkte[y.id] - punkte[x.id]; });
+  return { typ: reihe[0], zweit: reihe[1] && punkte[reihe[1].id] > 0 ? reihe[1] : null };
+}
+function stErgebnis(st) {
+  var beantwortet = 0;
+  ST.thesen.forEach(function (t) { var a = st.a[t.id]; if (a && a !== 'skip') beantwortet++; });
+  var liste = ST.parteien.map(function (p) {
+    var pkt = 0, max = 0, offen = 0, gleich = [];
+    ST.thesen.forEach(function (t) {
+      var a = st.a[t.id]; if (!a || a === 'skip') return;
+      var pp = (t.positionen[p.id] || {}).pos || 'offen';
+      var w = st.w[t.id] ? 2 : 1;
+      max += 2 * w;
+      // Ohne klare Aussage im Programm zählt die These halb: weder Übereinstimmung noch Widerspruch.
+      // So bekommt eine Partei, die zu vielen Thesen schweigt, keinen Vorteil durch die kleinere Zahl verglichener Thesen.
+      if (pp === 'offen') { offen++; pkt += w; return; }
+      pkt += w * (a === pp ? 2 : (a === 'neutral' || pp === 'neutral') ? 1 : 0);
+      if (a === pp) gleich.push(t);
+    });
+    return { p: p, pct: max ? Math.round(100 * pkt / max) : null, offen: offen, gleich: gleich };
+  });
+  liste.sort(function (x, y) { var a = x.pct == null ? -1 : x.pct, b = y.pct == null ? -1 : y.pct; return b - a || (x.p.name < y.p.name ? -1 : x.p.name > y.p.name ? 1 : 0); });
+  return { liste: liste, beantwortet: beantwortet };
+}
+function vSelbsttest() {
+  if (!ST) return missing('Selbsttest');
+  var st = stState();
+  if (st.teil === 'staerken') return stStaerkenView(st);
+  if (st.teil === 'thesen' && ST.thesen.length) return stThesenView(st);
+  if (st.teil === 'ergebnis' && ST.thesen.length) return stErgebnisView(st);
+  var N = ST.thesen.length, angefangen = ST.thesen.some(function (t) { return st.a[t.id]; });
+  var karte = function (teil, titel, text, cta) { return '<div class="choice-card" role="button" tabindex="0" data-act="st-teil" data-teil="' + teil + '"><h3>' + esc(titel) + '</h3><p>' + esc(text) + '</p><span class="choice-cta">' + esc(cta) + ' ›</span></div>'; };
+  return '<div class="stack-lg">' + kopf('Selbsttest', 'Wo stehe ich?', 'Bevor du andere verstehst: Wo stehst du selbst? Zwei kurze Teile, zusammen etwa zehn Minuten.', '') +
+    '<div class="choices">' +
+      karte('staerken', 'Teil 1: Was liegt dir?', ST.staerken.fragen.length + ' Fragen. Du erfährst, was deine Stärke im Gespräch ist und wo du in der App am besten anfängst.', st.staerkeFertig ? 'Dein Ergebnis ansehen' : 'Starten') +
+      (N ? karte('thesen', 'Teil 2: Wo stehst du politisch?', N + ' Thesen. Du siehst, wie weit sich deine Antworten mit den Wahlprogrammen der Parteien decken, die bei der Bundestagswahl 2025 mindestens 1 % der Zweitstimmen bekommen haben. CDU und CSU haben ein gemeinsames Programm und stehen deshalb zusammen.', angefangen ? 'Weitermachen' : 'Starten')
+        : '<div class="choice-card"><h3>Teil 2: Wo stehst du politisch?</h3><p>Kommt bald.</p></div>') +
+      '<div class="note"><strong>Gut zu wissen</strong>Keine Wahlempfehlung: Der Test zeigt nur, wo sich deine Antworten mit den Wahlprogrammen decken. Deine Antworten werden nur auf diesem Gerät ausgewertet und nur gespeichert, wenn du es willst.</div>' +
+    '</div></div>';
+}
+function stStaerkenView(st) {
+  var F = ST.staerken.fragen, fehlt = F.filter(function (f) { return !st.s[f.id]; }).length;
+  if (st.staerkeFertig && !fehlt) {
+    var r = stTyp(st.s), t = r.typ;
+    // Starke Belastung (Frage s4) oder Kraft auf Platz zwei: Hinweis auf Selbstschutz, auch wenn eine andere Stärke vorne liegt
+    var belastet = t.id !== 'kraft' && (st.s.s4 === 'c' || st.s.s4 === 'd' || (r.zweit && r.zweit.id === 'kraft'));
+    return '<div class="stack-lg">' + kopf('Teil 1', 'Deine Stärke', 'Dein Ergebnis und wo du in der App am besten anfängst.', '') +
+      '<section class="panel stack choices"><div class="eyebrow">Deine Stärke</div><h2>' + esc(t.name) + '</h2><p>' + esc(t.staerke) + '</p>' +
+        '<div class="note"><strong>Darauf kannst du achten</strong>' + esc(t.tipp) + '</div>' +
+        (belastet ? '<div class="note warn"><strong>Achte auch auf dich</strong>Einige deiner Antworten zeigen, dass dich diese Gespräche gerade viel Kraft kosten. Pausen sind erlaubt. Wie du dich schützt und wo du Hilfe bekommst, steht unter „Mich schützen &amp; Grenzen setzen“.</div>' : '') +
+        (r.zweit && r.zweit.id !== 'kraft' ? '<p class="small muted">Auch stark: ' + esc(r.zweit.name) + '</p>' : '') +
+        '<div class="row"><button class="btn primary" data-go="' + esc(t.hub) + '">' + esc(t.cta) + '</button>' + (belastet ? '<button class="btn" data-go="schutz">Zu „Mich schützen &amp; Grenzen setzen“</button>' : '') + (ST.thesen.length ? '<button class="btn" data-act="st-teil" data-teil="thesen">Weiter zu Teil 2</button>' : '') + '</div>' +
+        '<div class="row"><button class="link" data-act="st-staerken-neu">Antworten ändern</button><button class="link" data-act="st-start">Zur Übersicht</button></div>' +
+      '</section></div>';
+  }
+  var fragen = F.map(function (f, n) {
+    return '<div class="group" role="group" aria-labelledby="st-f-' + esc(f.id) + '"><div class="eyebrow">Frage ' + (n + 1) + ' von ' + F.length + '</div><div class="group-title" id="st-f-' + esc(f.id) + '">' + esc(f.text) + '</div><div class="choice">' +
+      f.optionen.map(function (o) { var an = st.s[f.id] === o.id; return '<button type="button" id="st-o-' + esc(f.id) + '-' + esc(o.id) + '" data-act="st-wahl" data-f="' + esc(f.id) + '" data-o="' + esc(o.id) + '" aria-pressed="' + an + '"' + (an ? ' class="pick"' : '') + '>' + esc(o.text) + '</button>'; }).join('') + '</div></div>';
+  }).join('');
+  return '<div class="stack-lg">' + kopf('Teil 1', 'Was liegt dir?', 'Wähle jeweils die Antwort, die am ehesten passt. Es gibt kein Richtig oder Falsch.', '') +
+    '<div class="panel">' + fragen + '<div class="form-end"><button class="btn primary" data-act="st-auswerten">Auswerten</button>' +
+      (state.stHinweis ? '<span class="small">' + esc(state.stHinweis) + '</span>' : (fehlt ? '<span class="small muted">Noch ' + anz(fehlt, 'Frage', 'Fragen') + ' offen</span>' : '')) +
+      '<button class="link" data-act="st-start">Zur Übersicht</button></div></div></div>';
+}
+function stThesenView(st) {
+  var N = ST.thesen.length, i = Math.min(Math.max(st.i, 0), N - 1), t = ST.thesen[i], a = st.a[t.id];
+  var alleBeantwortet = ST.thesen.every(function (x) { return st.a[x.id]; });
+  var knopf = function (w, text) { var an = a === w; return '<button type="button" class="btn' + (an ? ' primary' : '') + '" data-act="st-antwort" data-wert="' + w + '" aria-pressed="' + an + '">' + text + '</button>'; };
+  // Schon beantwortet: weiter, ohne die Antwort zu überschreiben; sonst überspringen
+  var weiter = a && a !== 'skip' ? '<button class="link" data-act="st-weiter">Weiter, Antwort behalten ›</button>' : '<button class="link" data-act="st-antwort" data-wert="skip">Überspringen</button>';
+  return '<div class="stack-lg st">' +
+    '<div class="st-kopf"><button class="link" data-act="st-zurueck">‹ Zurück</button><span class="small muted">These ' + (i + 1) + ' von ' + N + '</span><button class="link" data-act="st-start">Übersicht</button></div>' +
+    '<div class="progress-bar"><span style="width:' + Math.round(100 * i / N) + '%"></span></div>' +
+    '<section class="panel stack st-these"><div class="tag">' + esc(t.thema) + '</div><h2 id="st-these" tabindex="-1">' + esc(t.text) + '</h2>' +
+      (t.erklaerung ? '<details class="why"><summary>Worum geht es?</summary><p>' + esc(t.erklaerung) + '</p></details>' : '') +
+      '<div class="st-antw">' + knopf('zu', 'Stimme zu') + knopf('neutral', 'Neutral') + knopf('ab', 'Stimme nicht zu') + '</div>' +
+      '<div class="row st-unten"><button type="button" class="btn sm" id="st-wichtig" data-act="st-wichtig" aria-pressed="' + !!st.w[t.id] + '">' + (st.w[t.id] ? '★ Zählt doppelt' : '☆ Ist mir besonders wichtig') + '</button>' + weiter + '</div>' +
+    '</section>' + (alleBeantwortet ? '<div class="row center"><button class="link" data-act="st-teil" data-teil="thesen">Zum Ergebnis ›</button></div>' : '') + '</div>';
+}
+function stErgebnisView(st) {
+  var r = stErgebnis(st);
+  var kopfzeile = kopf('Teil 2', 'Dein Ergebnis', 'So weit decken sich deine Antworten mit den Wahlprogrammen der Parteien zur Bundestagswahl 2025.', '');
+  if (!r.beantwortet) return '<div class="stack-lg">' + kopfzeile + '<div class="empty">Du hast alle Thesen übersprungen. Ohne Antworten gibt es keinen Vergleich. <button class="link" data-act="st-neu">Noch einmal von vorn</button> <button class="link" data-act="st-start">Zur Übersicht</button></div></div>';
+  var balken = r.liste.map(function (x) { return '<div class="bar" data-partei="' + esc(x.p.id) + '"><span class="bar-l">' + esc(x.p.name) + '</span><span class="bar-t"><i style="width:' + (x.pct || 0) + '%"></i></span><span class="bar-v">' + (x.pct == null ? '–' : x.pct + ' %') + '</span></div>'; }).join('');
+  var offen = r.liste.filter(function (x) { return x.offen; }).map(function (x) { return x.p.name + ' ' + x.offen; });
+  var gewertet = r.liste.filter(function (x) { return x.pct != null; }), fern = gewertet[gewertet.length - 1];
+  var gemein = '';
+  if (fern) {
+    // Alle Parteien mit dem niedrigsten Wert gleichberechtigt nennen; Parteinamen als Bezeichnung, damit keine Artikel nötig sind
+    var tief = gewertet.filter(function (x) { return x.pct === fern.pct; }).sort(function (x, y) { return x.p.name < y.p.name ? -1 : 1; });
+    var liste = function (x) { return x.gleich.length ? ul(x.gleich.map(function (t) { return t.text; })) : '<p class="small muted">Bei diesen Thesen keine gemeinsame Position.</p>'; };
+    var kopfGemein = '';
+    if (tief.length === gewertet.length) kopfGemein = '<p>Alle Parteien liegen gleichauf.</p>';
+    else if (tief.length === 1) kopfGemein = fern.gleich.length ? '<p>Auch mit der Partei, mit der du am wenigsten übereinstimmst (' + esc(fern.p.name) + '), teilst du Positionen:</p>' + liste(fern) : '<p>Mit der Partei, mit der du am wenigsten übereinstimmst (' + esc(fern.p.name) + '), teilst du bei diesen Thesen keine Position. Bei anderen Fragen kann das ganz anders aussehen.</p>';
+    else kopfGemein = '<p>Am wenigsten stimmst du mit diesen Parteien überein, alle mit ' + fern.pct + ' %: ' + esc(stUnd(tief.map(function (x) { return x.p.name; }))) + '. Auch mit ihnen teilst du Positionen:</p>' + tief.map(function (x) { return '<p><strong>' + esc(x.p.name) + '</strong></p>' + liste(x); }).join('');
+    gemein = '<section class="stack" id="gemeinsam"><h2 class="sh sm">Gemeinsamkeiten</h2>' + kopfGemein +
+      '<p class="small muted">Gleiche Antwort wie du: ' + esc(stParteienAbc().map(function (p) { var x = r.liste.filter(function (y) { return y.p.id === p.id; })[0]; return p.name + ' ' + x.gleich.length; }).join(' · ')) + '</p></section>';
+  }
+  var vergleich = ST.thesen.map(function (t) {
+    var a = st.a[t.id] || 'skip';
+    return '<details class="acc"><summary>' + esc(t.text) + ' ' + chip(ST_DU[a]) + (st.w[t.id] && a !== 'skip' ? chip('zählt doppelt') : '') + '</summary><div class="body stack">' +
+      stParteienAbc().map(function (p) {
+        var x = t.positionen[p.id] || { pos: 'offen' }, q = stQuelle(p, x.quelle);
+        // Farbe nur für den Vergleich mit deiner Antwort (das misst die Rechnung), nie für die Richtung der Position selbst
+        var vgl = (a === 'skip' || x.pos === 'offen') ? '' : x.pos === a ? chip('wie du', 'st-good') : (x.pos === 'neutral' || a === 'neutral') ? chip('teils wie du', 'st-warn') : chip('anders als du', 'st-bad');
+        var beleg = q.titel + ', PDF-Seite ' + x.seite;
+        return '<div class="st-pos"><div class="row"><strong>' + esc(p.name) + '</strong>' + chip(ST_POS[x.pos] || ST_POS.offen) + vgl + '</div>' + (x.text ? '<p class="small">' + esc(x.text) + '</p>' : '') +
+          (x.zitat ? '<details class="why"><summary>Beleg aus dem Wahlprogramm</summary><div class="quote">„' + esc(x.zitat).replace(/„/g, '‚').replace(/“/g, '‘') + '“</div><p class="small">' + (q.url ? '<a href="' + esc(q.url) + '#page=' + esc(x.seite) + '" target="_blank" rel="noopener">' + esc(beleg) + '</a>' : esc(beleg)) + '</p></details>' : '') + '</div>';
+      }).join('') + '</div></details>';
+  }).join('');
+  var quellen = stParteienAbc().map(function (p) { return '<li><strong>' + esc(p.name) + '</strong>' + (p.lang && p.lang.toLowerCase() !== p.name.toLowerCase() ? ' – ' + esc(p.lang) : '') + ' (' + esc(p.ergebnis) + '): ' + (p.quellen || []).map(function (q) { return '<a href="' + esc(q.url) + '" target="_blank" rel="noopener">' + esc(q.titel) + '</a>'; }).join(', ') + '</li>'; }).join('');
+  var loeschen = state.stLoeschen ? '<span class="row"><span class="small">Wirklich alle Antworten aus beiden Teilen löschen? Das lässt sich nicht rückgängig machen.</span><button class="btn sm danger" data-act="st-loeschen-ja">Ja, alles löschen</button><button class="btn sm" data-act="st-loeschen-nein">Abbrechen</button></span>' : '<button class="btn danger" data-act="st-loeschen">Alle Antworten löschen</button>';
+  return '<div class="stack-lg">' + kopfzeile +
+    '<div class="note warn"><strong>Keine Wahlempfehlung</strong>Der Vergleich zeigt nur, wo sich deine Antworten zu ' + anz(r.beantwortet, 'These', 'Thesen') + ' mit den Wahlprogrammen decken. Er sagt nichts darüber aus, wie eine Partei als Ganzes zu bewerten ist.</div>' +
+    '<div class="card"><div class="bars st-bars">' + balken + '</div>' + (offen.length ? '<p class="small muted" style="margin-top:10px">Zu manchen Thesen sagt ein Programm nichts Klares. Dann bekommt die Partei die Hälfte der Punkte, egal wie du geantwortet hast; das zählt weder als Übereinstimmung noch als Widerspruch und zieht ihren Wert in Richtung 50 %. Anzahl solcher Thesen bei deinen Antworten: ' + esc(offen.join(' · ')) + '.</p>' : '') + '</div>' +
+    '<div class="row"><button class="btn" data-act="st-neu">Antworten ändern</button>' + (st.gespeichert ? '<span class="small muted">Auf diesem Gerät gespeichert</span>' : '<button class="btn" data-act="st-speichern">Auf diesem Gerät speichern</button>') + loeschen + '<button class="link" data-act="st-start">Zur Übersicht</button></div>' +
+    (st.gespeichert ? '' : '<p class="small muted">Gespeichert wird nur im Browser dieses Geräts. Wer das Gerät benutzt, kann deine Antworten dann sehen. In deiner Sicherung unter „Meine Inhalte“ sind sie nicht enthalten.</p>') +
+    gemein +
+    '<section class="stack" id="vergleich"><h2 class="sh sm">Thesen im Vergleich</h2><p class="small muted">Tippe auf eine These: Du siehst, wie jede Partei sie in ihrem Wahlprogramm sieht, mit Zitat und Seite, wo das Programm etwas Klares sagt.</p><div class="faq">' + vergleich + '</div></section>' +
+    '<details class="acc"><summary>So wird gerechnet</summary><div class="body stack"><p>Für jede These wird deine Antwort mit der Position der Partei verglichen: gleiche Antwort 2 Punkte, eine Seite neutral 1 Punkt, entgegengesetzt 0 Punkte. Thesen, die dir besonders wichtig sind, zählen doppelt. Übersprungene Thesen zählen nicht. Sagt ein Programm zu einer These nichts Klares, bekommt die Partei dafür die Hälfte der Punkte (1 von 2, bei doppelt gewichteten Thesen 2 von 4), egal wie du geantwortet hast. Das zählt weder als Übereinstimmung noch als Widerspruch. Je öfter das bei einer Partei vorkommt, desto näher liegt ihr Wert bei 50 %.</p><p>Die Einordnungen stammen aus den Wahlprogrammen zur Bundestagswahl 2025. Jede Zustimmung, Ablehnung und neutrale Position ist mit einem wörtlichen Zitat und der Seite in der PDF-Datei belegt; wo ein Programm nichts Klares sagt, steht „keine klare Aussage“. Jede Einordnung wurde ein zweites Mal mit dem Programmtext abgeglichen. Die Parteien selbst haben sie nicht geprüft. Fehler sind trotzdem möglich: Lies im Zweifel das Zitat im Programm nach. Stand: ' + esc(ST.stand) + '.</p></div></details>' +
+    '<details class="acc"><summary>Parteien und Quellen</summary><div class="body stack"><p class="small">Dabei sind alle Parteien, die bei der Bundestagswahl 2025 mindestens 1 % der Zweitstimmen erhalten haben, in alphabetischer Reihenfolge. Ergebnisse: © Die Bundeswahlleiterin, Wiesbaden 2025, endgültiges Ergebnis der Bundestagswahl 2025 (<a href="https://www.bundeswahlleiterin.de/bundestagswahlen/2025/ergebnisse/bund-99.html" target="_blank" rel="noopener">bundeswahlleiterin.de</a>), Datenlizenz Deutschland – Namensnennung – Version 2.0 (<a href="https://www.govdata.de/dl-de/by-2-0" target="_blank" rel="noopener">govdata.de/dl-de/by-2-0</a>); Prozentwerte gerundet. Zitate aus den Wahlprogrammen der jeweiligen Parteien; das Urheberrecht liegt bei den Parteien.</p><ul class="small">' + quellen + '</ul></div></details>' +
+  '</div>';
 }
 
 /* ---------- Seitenkopf ---------- */
@@ -728,7 +886,7 @@ function vTagebuch() {
       '<div class="wide row"><button class="btn primary" type="submit">Eintrag speichern</button></div></form>' +
     '<section class="stack"><h2>Einträge</h2>' + (list ? '<div class="faq">' + list + '</div>' : '<div class="empty">Noch keine Einträge.</div>') + '</section>' +
     '<details class="acc" id="sicherung"><summary>Sichern und auf ein anderes Gerät übertragen</summary><div class="body stack">' +
-      '<p class="small muted">Die Sicherung enthält Kompass-Ergebnis, Kampagnenplan und Tagebuch. Schick sie dir selbst – per Signal, per Mail oder in deine Notizen – oder speichere sie als Datei. Auf dem anderen Gerät spielst du sie an dieser Stelle wieder ein.</p>' +
+      '<p class="small muted">Die Sicherung enthält Kompass-Ergebnis, Mein Fall, Archiv, Kampagnenplan, Tagebuch und deine Anfragen. Deine Antworten aus „Wo stehe ich?“ sind nicht dabei, sie bleiben nur auf diesem Gerät. Die Sicherung kann Notizen über andere Menschen enthalten. Schick sie dir selbst – per Signal, per Mail oder in deine Notizen – oder speichere sie als Datei. Auf dem anderen Gerät spielst du sie an dieser Stelle wieder ein.</p>' +
       '<div class="row"><button class="btn primary" data-act="bk-share">Sicherung teilen</button>' + (HOSTED ? '<button class="btn" data-act="bk-download">Als Datei speichern</button><label class="btn" for="bk-file">Datei einspielen<input type="file" id="bk-file" accept="application/json,.json" hidden></label>' : '') + '<button class="btn" data-act="bk-copy">Kopieren</button></div>' +
       '<label class="fld">Oder Sicherungstext einfügen<textarea id="bk-io" placeholder="Hier den kopierten Sicherungstext einfügen"></textarea></label>' +
       '<div class="row"><button class="btn sm" data-act="bk-import">Einspielen</button>' + (state.confirmClear ? '<span class="row"><span class="small">Alle Tagebuch-Einträge wirklich löschen?</span><button class="btn sm danger" data-act="tb-clear-yes">Ja</button><button class="btn sm" data-act="tb-clear-no">Nein</button></span>' : '<button class="btn sm danger" data-act="tb-clear">Tagebuch löschen</button>') + '</div></div></details></div>';
@@ -987,10 +1145,11 @@ function fallHub(res) {
     '<div class="row"><button class="btn" data-act="share-kompass">Fahrplan teilen</button><button class="btn" data-act="copy-kompass">Als Text kopieren</button><button class="btn" data-act="kompass-edit">Antworten ändern</button><button class="btn" data-act="kompass-reset">Neu beginnen</button></div></div>';
 }
 
-var VIEWS = { start: vStart, meins: vMeins, suche: vSuche, antworten: vAntworten, archiv: vArchiv, netz: vNetz, kompass: vKompass, trainer: vTrainer, kampagne: vKampagne, wissen: vWissen, leitplanken: vLeitplanken, tagebuch: vTagebuch, teilen: vTeilen };
+var VIEWS = { start: vStart, meins: vMeins, suche: vSuche, antworten: vAntworten, archiv: vArchiv, netz: vNetz, kompass: vKompass, trainer: vTrainer, kampagne: vKampagne, wissen: vWissen, leitplanken: vLeitplanken, tagebuch: vTagebuch, teilen: vTeilen, selbsttest: vSelbsttest };
 HUB_IDS.forEach(function (h) { VIEWS[h] = function () { return vHub(h); }; });
 function trainerNeu(id) { var sz = findIn(SZENARIEN, id); return sz ? { id: sz.id, node: sz.start, chosen: null, history: [], score: 0, max: 0, order: {} } : null; }
 var AFTER = {
+  selbsttest: function () { if (state.stFokus) { var f = $('#' + state.stFokus); state.stFokus = null; if (f) { try { f.focus({ preventScroll: true }); } catch (e) { f.focus(); } } } },
   // Großer QR-Code: Tastatur-Fokus auf „Schließen“ setzen und nach dem Schließen zurück auf „Groß zeigen“
   teilen: function () {
     if (state.zeigen) { var zu = $('#zeigen-zu'); if (zu) zu.focus(); }
@@ -1053,6 +1212,20 @@ document.addEventListener('click', function (e) {
   else if (a === 'arch-del-yes') { var ad = archGet(); ad.eintraege = ad.eintraege.filter(function (x) { return x.id !== d.id; }); ad.pins = ad.pins.filter(function (x) { return x !== d.id; }); archSet(ad); state.confirmDel = null; render(); toast('Eintrag gelöscht'); }
   else if (a === 'copy-text') { copyText(d.text || ''); }
   else if (a === 'sheet') { state.sheet = !state.sheet; render(); }
+  else if (a === 'st-teil') { var st0 = stState(); state.stHinweis = null; if (d.teil === 'thesen') { var offenI = -1; ST.thesen.forEach(function (t, n) { if (offenI < 0 && !st0.a[t.id]) offenI = n; }); if (offenI < 0 && ST.thesen.length) st0.teil = 'ergebnis'; else { st0.teil = 'thesen'; st0.i = Math.max(offenI, 0); } } else st0.teil = d.teil; render(); window.scrollTo(0, 0); }
+  else if (a === 'st-start') { stState().teil = null; state.stHinweis = null; render(); window.scrollTo(0, 0); }
+  else if (a === 'st-wahl') { stState().s[d.f] = d.o; state.stHinweis = null; state.stFokus = 'st-o-' + d.f + '-' + d.o; stMerken(); render(); }
+  else if (a === 'st-auswerten') { var st1 = stState(), fehlt1 = ST.staerken.fragen.filter(function (f) { return !st1.s[f.id]; }).length; if (fehlt1) { state.stHinweis = 'Es fehlen noch ' + anz(fehlt1, 'Antwort', 'Antworten') + '.'; render(); return; } st1.staerkeFertig = true; stMerken(); render(); window.scrollTo(0, 0); }
+  else if (a === 'st-staerken-neu') { stState().staerkeFertig = false; render(); window.scrollTo(0, 0); }
+  else if (a === 'st-antwort') { var st2 = stState(), t2 = ST.thesen[st2.i]; if (!t2) return; st2.a[t2.id] = d.wert; st2.i++; if (st2.i >= ST.thesen.length) st2.teil = 'ergebnis'; else state.stFokus = 'st-these'; stMerken(); render(); window.scrollTo(0, 0); }
+  else if (a === 'st-weiter') { var st6 = stState(); st6.i++; if (st6.i >= ST.thesen.length) st6.teil = 'ergebnis'; else state.stFokus = 'st-these'; render(); window.scrollTo(0, 0); }
+  else if (a === 'st-zurueck') { var st3 = stState(); if (st3.i > 0) { st3.i--; state.stFokus = 'st-these'; } else st3.teil = null; render(); window.scrollTo(0, 0); }
+  else if (a === 'st-wichtig') { var st4 = stState(), t4 = ST.thesen[st4.i]; if (t4) { st4.w[t4.id] = !st4.w[t4.id]; state.stFokus = 'st-wichtig'; stMerken(); render(); } }
+  else if (a === 'st-neu') { var st5 = stState(); st5.teil = 'thesen'; st5.i = 0; render(); window.scrollTo(0, 0); }
+  else if (a === 'st-speichern') { stState().gespeichert = true; stMerken(); render(); toast('Gespeichert, nur auf diesem Gerät'); }
+  else if (a === 'st-loeschen') { state.stLoeschen = true; render(); }
+  else if (a === 'st-loeschen-nein') { state.stLoeschen = false; render(); }
+  else if (a === 'st-loeschen-ja') { store.del('selbsttest'); state.st = stLeer(); state.stHinweis = null; state.stLoeschen = false; render(); toast('Alle Antworten gelöscht'); }
   else if (a === 'zeigen') { state.zeigen = true; state.zeigenSeit = Date.now(); try { if (!(history.state && history.state.zeigen)) history.pushState({ zeigen: 1 }, ''); } catch (err) {} render(); }
   // Ein zweiter Tipp direkt nach dem Öffnen landet auf der Fläche und soll nicht gleich wieder schließen; „Schließen“ wirkt immer
   else if (a === 'zeigen-zu') { if (el.id !== 'zeigen-zu' && Date.now() - (state.zeigenSeit || 0) < 600) return; zeigenZu(); }

@@ -25,7 +25,7 @@ function fetchAttrappe(url, opt = {}) {
 const verlauf = { liste: [{ state: null }], i: 0, get state() { return this.liste[this.i].state; }, pushState(st) { this.liste.splice(this.i + 1); this.liste.push({ state: st }); this.i++; }, back() { if (this.i > 0) { this.i--; if (handlers['win:popstate']) handlers['win:popstate']({ state: this.state }); } } };
 const ctx = { window, document, localStorage, location: { hash: '' }, navigator: {}, history: verlauf, console, crypto: webcrypto, TextEncoder, setTimeout: (fn, ms) => setTimeout(fn, Math.min(ms || 0, 5)), clearTimeout, fetch: fetchAttrappe, MouseEvent: function () {}, FormData: function (f) { const w = (f && f._werte) || {}; return { get: k => (w[k] == null ? '' : w[k]) }; } };
 vm.createContext(ctx);
-for (const f of ['linien', 'techniken', 'kompass', 'szenarien', 'kampagne', 'leitplanken', 'hilfe', 'messung', 'argumente']) vm.runInContext(fs.readFileSync(path.join(__dirname, 'data', f + '.js'), 'utf8'), ctx, { filename: f + '.js' });
+for (const f of ['linien', 'techniken', 'kompass', 'szenarien', 'kampagne', 'leitplanken', 'hilfe', 'messung', 'argumente', 'selbsttest']) vm.runInContext(fs.readFileSync(path.join(__dirname, 'data', f + '.js'), 'utf8'), ctx, { filename: f + '.js' });
 window.APP_DATA.argumente.argumente[0].anfragen = ['beantwortet-1', 'alt-1'].map(id => createHash('sha256').update(id).digest('hex'));
 if (fs.existsSync(path.join(__dirname, 'qr.js'))) vm.runInContext(fs.readFileSync(path.join(__dirname, 'qr.js'), 'utf8'), ctx, { filename: 'qr.js' });
 vm.runInContext(fs.readFileSync(path.join(__dirname, 'app.js'), 'utf8'), ctx, { filename: 'app.js' });
@@ -47,11 +47,14 @@ function route(r) { ctx.location.hash = '#' + r; try { handlers['win:hashchange'
 }
 const sizes = {};
 const HUBS = ['verstehen', 'argumentieren', 'vorbereiten', 'aktiv', 'schutz'];
-for (const r of ['start'].concat(HUBS, ['meins', 'suche', 'teilen', 'netz', 'kompass', 'trainer', 'antworten', 'archiv', 'kampagne', 'wissen', 'leitplanken', 'tagebuch'])) sizes[r] = route(r);
+for (const r of ['start'].concat(HUBS, ['meins', 'suche', 'teilen', 'selbsttest', 'netz', 'kompass', 'trainer', 'antworten', 'archiv', 'kampagne', 'wissen', 'leitplanken', 'tagebuch'])) sizes[r] = route(r);
 const D = window.APP_DATA;
 // Startseite: Zweck, „Hier anfangen“, fünf Bereiche; untere Leiste mit Start, Meine Inhalte, Suche, Mehr
 route('start');
-if (main.innerHTML.indexOf('Jemand aus deinem Umfeld') < 0 || main.innerHTML.indexOf('Hier anfangen') < 0) fails.push('Startseite erklärt den Zweck nicht');
+if (main.innerHTML.indexOf('Jemand aus deinem Umfeld') < 0) fails.push('Startseite erklärt den Zweck nicht');
+// Zwei Tests nebeneinander ganz oben: zur Person (blau) und Selbsttest (rot)
+const heroTeil = (/<section class="hero">([\s\S]*?)<\/section>/.exec(main.innerHTML) || [])[1] || '';
+if (!/class="test-knopf blau"[^>]*data-go="kompass"/.test(heroTeil) || !/class="test-knopf rot"[^>]*data-go="selbsttest"/.test(heroTeil)) fails.push('Startseite ohne die beiden Test-Knöpfe nebeneinander');
 HUBS.forEach(h => { if (main.innerHTML.indexOf('class="area" data-go="' + h + '"') < 0) fails.push('Startseite ohne Bereich ' + h); });
 const tabs = (els['#tabbar'].innerHTML.match(/<span>[^<]+<\/span>/g) || []).join(' ');
 if (tabs !== '<span>Start</span> <span>Meine Inhalte</span> <span>Suche</span> <span>Mehr</span>') fails.push('Untere Leiste: ' + tabs);
@@ -137,7 +140,7 @@ if (gross()) fails.push('Escape schließt den großen QR-Code nicht');
 click({ act: 'zeigen' }); click({ act: 'zeigen-zu' }, 'zeigen-zu'); if (gross()) fails.push('„Schließen“ schließt den großen QR-Code nicht');
 // Zurück-Taste schließt nur den großen Code und bleibt auf „Weitersagen“ (zeigt nicht die vorher geöffnete Seite)
 click({ act: 'zeigen' }); verlauf.back();
-if (gross() || main.innerHTML.indexOf('Zeig die App weiter') < 0) fails.push('Zurück-Taste schließt den großen QR-Code nicht auf der Seite „Weitersagen“');
+if (gross() || main.innerHTML.indexOf('data-act="teilen-link"') < 0) fails.push('Zurück-Taste schließt den großen QR-Code nicht auf der Seite „Weitersagen“');
 // Öffnen und Schließen hinterlässt keine zusätzlichen Einträge im Verlauf
 for (let i = 0; i < 3; i++) { click({ act: 'zeigen' }); click({ act: 'zeigen-zu' }, 'zeigen-zu'); }
 if (verlauf.i !== 0) fails.push('Öffnen und Schließen des großen QR-Codes hinterlässt Einträge im Verlauf');
@@ -163,6 +166,16 @@ click({ act: 'aushang' }); if (geraet.drucke !== 1) fails.push('„Aushang druck
 // Startseite und Menü „Mehr“ weisen aufs Weitersagen hin
 route('start'); if (main.innerHTML.indexOf('data-go="teilen"') < 0) fails.push('Startseite ohne Hinweis aufs Weitersagen');
 click({ act: 'sheet' }); if (els['#sheet'].innerHTML.indexOf('data-go="teilen"') < 0) fails.push('Menü „Mehr“ ohne Weitersagen'); click({ act: 'sheet' });
+// Selbsttest mit den echten Thesen bis zum Ergebnis: alle Parteien erscheinen, jede These hat einen Vergleich
+{
+  route('selbsttest'); click({ act: 'st-teil', teil: 'thesen' });
+  D.selbsttest.thesen.forEach(() => click({ act: 'st-antwort', wert: 'zu' }));
+  const bars = (main.innerHTML.match(/data-partei="/g) || []).length, vgl = (main.innerHTML.match(/<details class="acc"><summary>/g) || []).length;
+  if (bars !== D.selbsttest.parteien.length) fails.push('Selbsttest mit echten Daten zeigt ' + bars + ' statt ' + D.selbsttest.parteien.length + ' Parteien');
+  if (vgl < D.selbsttest.thesen.length) fails.push('Selbsttest mit echten Daten: Vergleich unvollständig (' + vgl + ')');
+  sizes['selbsttest:ergebnis'] = main.innerHTML.length;
+  click({ act: 'st-loeschen' }); click({ act: 'st-loeschen-ja' }); route('start');
+}
 // jede Station einmal anzeigen
 D.linien.forEach(l => { click({ go: 'netz', linie: l.id, station: '' }); l.stationen.forEach(s => click({ go: 'netz', linie: l.id, station: s.id })); });
 sizes.station = main.innerHTML.length;
